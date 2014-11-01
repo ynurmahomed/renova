@@ -46,7 +46,7 @@ public class HttpClient {
             scrapeSessionId(doc);
             scrapeBooks(doc);
 
-            Log.d("HttpClient", "logged in " + username);
+            Log.d("HttpClient", "logged in user " + username);
 
         } catch (ParseException e) {
             Log.d("HttpClient", e.toString());
@@ -73,7 +73,7 @@ public class HttpClient {
             // *   renovação cancelada por causa da data renovação
             // *   renovação cancelada porque o livro foi solicitado
             //
-            Log.d("HttpClient", book.getBarcode() + "renew failed: " + renewMessage);
+            Log.d("HttpClient", "book " + book.getBarcode() + " renew failed: " + renewMessage);
             e.printStackTrace();
 
             if (isRenewDateInvalid(renewMessage)) {
@@ -175,7 +175,7 @@ public class HttpClient {
             b.setCallNumber(callNumbers.get(i).text());
             b.setNote(notes.get(i).text());
             b.setStatus(statuses.get(i).text());
-            b.setBarcode(barcodes.get(i).text());
+            b.setBarcode(barcodes.get(i).val());
             books.add(b);
         }
 
