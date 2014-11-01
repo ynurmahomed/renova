@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.renovapp.app.scraper.Book;
-import com.renovapp.app.scraper.HttpClient;
-import com.renovapp.app.scraper.LoginException;
+import com.renovapp.app.scraper.*;
 
 import java.io.IOException;
 
@@ -26,6 +26,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         booksListView = (ListView) findViewById(R.id.books_list_view);
+
+        booksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                new RenewTask().execute(biblioteca.getBooks().get(position));
+            }
+        });
 
         new LoginTask().execute();
     }
@@ -50,7 +57,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoginTask extends AsyncTask<Void, Integer, HttpClient> {
+    private class LoginTask extends AsyncTask<Void, Void, HttpClient> {
 
         @Override
         protected HttpClient doInBackground(Void... params) {
@@ -59,10 +66,10 @@ public class MainActivity extends ActionBarActivity {
                     return new HttpClient("77009083697606", "7606");
                 }
             } catch (IOException e) {
-                Log.d("MainActivity", e.toString());
+                Log.d("LoginTask", e.toString());
                 e.printStackTrace();
             } catch (LoginException e) {
-                Log.d("MainActivity", "Login Error");
+                Log.d("LoginTask", "Login Error");
                 e.printStackTrace();
             }
 
@@ -75,7 +82,30 @@ public class MainActivity extends ActionBarActivity {
 
             adapter = new ArrayAdapter<Book>(MainActivity.this, android.R.layout.simple_list_item_1, biblioteca.getBooks());
 
+            MainActivity.this.biblioteca = biblioteca;
+
             booksListView.setAdapter(adapter);
+        }
+    }
+
+    private class RenewTask extends AsyncTask<Book, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Book... params) {
+            Book b = params[0];
+
+            try {
+                biblioteca.renew(b);
+            } catch (IOException e) {
+                Log.d("RenewTask", e.toString());
+                e.printStackTrace();
+            } catch (BookReservedException e) {
+                e.printStackTrace();
+            } catch (RenewDateException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }
