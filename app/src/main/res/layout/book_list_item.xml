@@ -22,12 +22,36 @@
             android:id="@+id/book_authors_text_view"
             android:text="Authors"/>
 
-    <TextView
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10px"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/book_renew_date_text_view"
             android:layout_gravity="right"
-            android:text="Expiration"></TextView>
+            android:orientation="horizontal">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10px"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/book_renew_date_text_view"
+                android:text="Expiration"/>
+
+        <LinearLayout
+                android:id="@+id/book_renew_activity_circle"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10px"
+                android:visibility="gone">
+            <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:layout_marginRight="5dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message_book_renewing" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -44,6 +44,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onPause() {
+        loginProgress.dismiss();
+        super.onPause();
+    }
+
+    @Override
     public void onClick(View v) {
         String login = loginEditText.getText().toString();
         String password = passwordEditText.getText().toString();
@@ -123,6 +129,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(HttpClient library) {
+
             LoginActivity.this.loginProgress.hide();
 
             if (this.e != null) {
