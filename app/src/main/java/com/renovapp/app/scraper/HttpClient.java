@@ -171,7 +171,7 @@ public class HttpClient {
             Book b = new Book();
             b.setExpiration(expirations[i]);
             b.setTitle(titles[i]);
-            b.setAuthors(authors[i]);
+            b.setAuthors(authors[i].trim());
             b.setCallNumber(callNumbers.get(i).text());
             b.setNote(notes.get(i).text());
             b.setStatus(statuses.get(i).text());
