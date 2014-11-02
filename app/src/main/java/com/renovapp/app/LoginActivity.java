@@ -2,6 +2,7 @@ package com.renovapp.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText loginEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private ProgressDialog loginProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginEditText = (EditText) findViewById(R.id.login_edit_text);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
         loginButton = (Button) findViewById(R.id.login_button);
+
+        loginProgress = new ProgressDialog(this);
+        loginProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loginProgress.setMessage(getString(R.string.message_login_progress));
+        loginProgress.setCancelable(false);
 
         loginButton.setOnClickListener(this);
     }
@@ -51,6 +58,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             toast.show();
             return;
         }
+
+
 
         new LoginTask().execute(login, password);
     }
@@ -86,6 +95,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         private Exception e = null;
 
         @Override
+        protected void onPreExecute() {
+            LoginActivity.this.loginProgress.show();
+        }
+
+        @Override
         protected HttpClient doInBackground(String... params) {
             String login = params[0];
             String password = params[1];
@@ -109,6 +123,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(HttpClient library) {
+            LoginActivity.this.loginProgress.hide();
+
             if (this.e != null) {
                 LoginActivity.this.showErrorDialog(this.e);
                 return;

@@ -1,5 +1,6 @@
 package com.renovapp.app.scraper;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 /**
  * Created by yassin on 30/10/14.
  */
-public class Book {
+public class Book implements Serializable {
     private String barcode;
     private String title;
     private String authors;

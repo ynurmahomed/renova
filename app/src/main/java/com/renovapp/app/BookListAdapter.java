@@ -32,9 +32,9 @@ public class BookListAdapter extends ArrayAdapter<Book> {
         Book b = getItem(position);
 
         if (b != null) {
-            TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title);
-            TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors);
-            TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date);
+            TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title_text_view);
+            TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
+            TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date_text_view);
 
             if (titleTextView != null) {
                 titleTextView.setText(b.getTitle());
