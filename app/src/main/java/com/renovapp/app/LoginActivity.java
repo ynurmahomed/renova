@@ -8,9 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.renovapp.app.scraper.HttpClient;
 import com.renovapp.app.scraper.LoginException;
 
@@ -25,6 +26,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText passwordEditText;
     private Button loginButton;
     private ProgressDialog loginProgress;
+
+    private AdView adView;
+    private static final String AD_UNIT_ID = "ca-app-pub-6713098943014804/6078729371";
+    //private static final String AD_UNIT_ID = "ca-app-pub-6713098943014804/4601996177";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,30 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginProgress.setCancelable(false);
 
         loginButton.setOnClickListener(this);
+
+        adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId(AD_UNIT_ID);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.login_form);
+        RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lay.addRule(RelativeLayout.ALIGN_BOTTOM, RelativeLayout.TRUE);
+        lay.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        //adView.setLayoutParams(lay);
+        layout.addView(adView,lay);
+
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device.
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128")
+                .build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+
     }
 
     @Override
@@ -88,6 +117,32 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         builder
             .setPositiveButton("OK", null)
             .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    /** Called before the activity is destroyed. */
+    @Override
+    public void onDestroy() {
+        // Destroy the AdView.
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 
     private class LoginTask extends AsyncTask<String,Void,HttpClient> {
