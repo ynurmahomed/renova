@@ -6,15 +6,14 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_books">Livros</string>
-
     <string name="message_login_empty">Por favor digite o seu login.</string>
     <string name="message_password_empty">Por favor digite a sua senha.</string>
-
     <string name="title_incorrect_login">Dados incorretos</string>
     <string name="message_incorrect_login">O login ou a senha não estão corretos.</string>
-
     <string name="title_connection_error">Sem conexão</string>
     <string name="message_connection_error">Certifique-se que está conectado à internet.</string>
-
     <string name="message_login_progress">Conectando...</string>
+    <string name="message_book_list_empty">Nenhum livro emprestado.</string>
+    <string name="message_book_renewing">Renovando...</string>
+
 </resources>
