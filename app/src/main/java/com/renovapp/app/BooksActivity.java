@@ -1,5 +1,6 @@
 package com.renovapp.app;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,16 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.renovapp.app.scraper.*;
 
 import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class BooksActivity extends ActionBarActivity {
 
-    HttpClient biblioteca;
+    HttpClient library;
     ListView booksListView;
 
     @Override
@@ -25,16 +25,20 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+
+        library = (HttpClient) intent.getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
+
         booksListView = (ListView) findViewById(R.id.books_list_view);
+
+        booksListView.setAdapter(new BookListAdapter(this, R.layout.book_list_item, library.getBooks()));
 
         booksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new RenewTask().execute(biblioteca.getBooks().get(position));
+                new RenewTask().execute(BooksActivity.this.library.getBooks().get(position));
             }
         });
-
-        new LoginTask().execute();
     }
 
 
@@ -57,37 +61,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoginTask extends AsyncTask<Void, Void, HttpClient> {
-
-        @Override
-        protected HttpClient doInBackground(Void... params) {
-            try {
-                if (biblioteca == null) {
-                    return new HttpClient("77009083697606", "7606");
-                }
-            } catch (IOException e) {
-                Log.d("LoginTask", e.toString());
-                e.printStackTrace();
-            } catch (LoginException e) {
-                Log.d("LoginTask", "Login Error");
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(HttpClient biblioteca) {
-            ArrayAdapter<Book> adapter;
-
-            adapter = new BookListAdapter(MainActivity.this, R.layout.book_list_item, biblioteca.getBooks());
-
-            MainActivity.this.biblioteca = biblioteca;
-
-            booksListView.setAdapter(adapter);
-        }
-    }
-
     private class RenewTask extends AsyncTask<Book, Void, Void> {
 
         @Override
@@ -95,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
             Book b = params[0];
 
             try {
-                biblioteca.renew(b);
+                library.renew(b);
             } catch (IOException e) {
                 Log.d("RenewTask", e.toString());
                 e.printStackTrace();

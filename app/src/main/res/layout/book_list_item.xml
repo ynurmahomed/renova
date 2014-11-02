@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10px"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/book_title"
+            android:id="@+id/book_title_text_view"
             android:text="Title"/>
 
     <TextView
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10px"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/book_authors"
+            android:id="@+id/book_authors_text_view"
             android:text="Authors"/>
 
     <TextView
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10px"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/book_renew_date"
+            android:id="@+id/book_renew_date_text_view"
             android:layout_gravity="right"
             android:text="Expiration"></TextView>
 </LinearLayout>

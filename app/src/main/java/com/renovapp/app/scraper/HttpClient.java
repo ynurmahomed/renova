@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by yassin on 27/10/14.
  */
-public class HttpClient {
+public class HttpClient implements Serializable {
     private final String URL = "http://www.acervobiblioteca.ufu.br:8000/cgi-bin/gw/chameleon";
 
     private String patronhost;
