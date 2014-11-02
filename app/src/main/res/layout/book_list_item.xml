@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="10px">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/book_title"
+            android:text="Title"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/book_authors"
+            android:text="Authors"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/book_renew_date"
+            android:layout_gravity="right"
+            android:text="Expiration"></TextView>
+</LinearLayout>

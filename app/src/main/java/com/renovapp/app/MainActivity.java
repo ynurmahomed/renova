@@ -80,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(HttpClient biblioteca) {
             ArrayAdapter<Book> adapter;
 
-            adapter = new ArrayAdapter<Book>(MainActivity.this, android.R.layout.simple_list_item_1, biblioteca.getBooks());
+            adapter = new BookListAdapter(MainActivity.this, R.layout.book_list_item, biblioteca.getBooks());
 
             MainActivity.this.biblioteca = biblioteca;
 
