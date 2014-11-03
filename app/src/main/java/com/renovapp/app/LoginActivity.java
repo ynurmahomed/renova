@@ -132,6 +132,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         if (adView != null) {
             adView.pause();
         }
+        loginProgress.dismiss();
         super.onPause();
     }
 
@@ -178,6 +179,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(HttpClient library) {
+
             LoginActivity.this.loginProgress.hide();
 
             if (this.e != null) {
