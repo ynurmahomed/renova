@@ -1,8 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme.AppTheme" parent="Theme.AppCompat">
+        <item name="android:actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
+        <item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
     </style>
 
+    <style name="Widget.AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:displayOptions">showHome|useLogo</item>
+        <item name="displayOptions">showHome|useLogo</item>
+    </style>
 </resources>

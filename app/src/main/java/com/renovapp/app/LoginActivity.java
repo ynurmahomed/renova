@@ -137,7 +137,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 return;
             }
 
-            Intent intent = new Intent(LoginActivity.this, BooksActivity.class);
+            Intent intent = new Intent(LoginActivity.this, AppActivity.class);
             intent.putExtra(EXTRA_LIBRARY_CLIENT, library);
             startActivity(intent);
         }
