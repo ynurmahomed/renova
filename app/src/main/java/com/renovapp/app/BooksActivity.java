@@ -9,10 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.google.android.gms.ads.*;
+import com.renovapp.app.admob.Interstitial;
 import com.renovapp.app.scraper.*;
 
 import java.io.IOException;
@@ -22,6 +21,9 @@ public class BooksActivity extends ActionBarActivity {
 
     HttpClient library;
     ListView booksListView;
+
+    private boolean interstitialControl = false;
+    private Interstitial interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,9 @@ public class BooksActivity extends ActionBarActivity {
                 new RenewTask().execute(item);
             }
         });
-    }
 
+        this.interstitial = new Interstitial(BooksActivity.this).getInterstitial();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,6 +77,15 @@ public class BooksActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume(){
+        Log.d("TESTE","AQUI");
+        if(this.interstitialControl)
+            this.interstitial.getInterstitial();
+        this.interstitialControl = (this.interstitialControl) ? false : true;
+        super.onResume();
     }
 
     private class RenewTaskItem {
