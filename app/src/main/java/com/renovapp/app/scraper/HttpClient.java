@@ -70,9 +70,10 @@ public class HttpClient implements Serializable {
 
         } catch (ParseException e) {
             //
-            // duas situações possíveis:
+            // três situações possíveis:
             // *   renovação cancelada por causa da data renovação
             // *   renovação cancelada porque o livro foi solicitado
+            // *   TODO: renovação cancelada por causa do limite de renovações
             //
             Log.d("HttpClient", "book " + book.getBarcode() + " renew failed: " + renewMessage);
             e.printStackTrace();

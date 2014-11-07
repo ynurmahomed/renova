@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat" >
+        android:theme="@style/Theme.AppTheme">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BooksActivity"
-            android:label="@string/title_activity_books" >
+            android:name=".AppActivity"
+            android:label="@string/title_activity_app">
         </activity>
     </application>
 
