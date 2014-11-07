@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import com.renovapp.app.scraper.HttpClient;
 
 
@@ -27,6 +29,8 @@ public class SettingsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private HttpClient library;
+    private Spinner daysBeforeSpinner;
+    private Integer[] daysBeforeOptions = new Integer[]{1,2,3,4,5,6,7,};
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,7 +65,17 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+//        daysBeforeSpinner = (Spinner) rootView.findViewById(R.id.days_before_spinner);
+//
+//        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity().getApplicationContext(),
+//                android.R.layout.simple_spinner_item, daysBeforeOptions);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//        daysBeforeSpinner.setAdapter(adapter);
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
