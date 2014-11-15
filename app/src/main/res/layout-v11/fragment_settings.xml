@@ -11,7 +11,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
 
         <TextView
                 android:layout_width="match_parent"
@@ -19,10 +21,28 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Notificações"/>
 
-        <TextView
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Notificar 5 dias antes do vencimento"/>
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notificar "/>
+
+            <TextView
+                    android:id="@+id/notification_preference_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" dias antes do vencimento"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -36,15 +56,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Sair"
-                android:clickable="true"
-                android:background="?android:attr/selectableItemBackground"/>
+                android:text="Sair"/>
 
     </LinearLayout>
 

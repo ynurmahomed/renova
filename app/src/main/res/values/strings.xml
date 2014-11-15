@@ -20,5 +20,7 @@
     <string name="preference_file_key">prefs</string>
     <string name="preference_login">pref_login</string>
     <string name="preference_password">pref_password</string>
+    <string name="preference_notifications">pref_notifications</string>
+    <string name="logout_preference_value">Sair</string>
 
 </resources>

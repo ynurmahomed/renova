@@ -117,7 +117,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             if (i == 0) {
                 fragment = BookListFragment.newInstance(library);
             } else if (i == 1) {
-                fragment = SettingsFragment.newInstance(library);
+                fragment = SettingsFragment.newInstance();
             }
 
             return fragment;
