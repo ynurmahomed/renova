@@ -68,13 +68,20 @@ public class SettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         LinearLayout notificationPref = (LinearLayout) rootView.findViewById(R.id.notification_preference);
-
         notificationPrefText = (TextView) rootView.findViewById(R.id.notification_preference_value);
         notificationPrefText.setText(getNotificationSubtitle(numDays));
         notificationPref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onNotificationPreferenceClick();
+            }
+        });
+
+        LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
+        logoutPref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLogoutPreferenceClick();
             }
         });
 
@@ -99,6 +106,12 @@ public class SettingsFragment extends Fragment {
             }
         });
         builder.show();
+    }
+
+    public void onLogoutPreferenceClick() {
+        if (mListener != null) {
+            mListener.onLogout();
+        }
     }
 
     @Override
@@ -130,6 +143,7 @@ public class SettingsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public void onNotificationDateSelect(int numDays);
+        public void onLogout();
     }
 
     private String getNotificationSubtitle(int numDays) {

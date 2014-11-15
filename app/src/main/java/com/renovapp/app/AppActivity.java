@@ -1,6 +1,7 @@
 package com.renovapp.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -109,6 +110,19 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(getString(R.string.preference_notifications), numDays);
         editor.commit();
+    }
+
+    @Override
+    public void onLogout() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.preference_login), "");
+        editor.putString(getString(R.string.preference_password), "");
+        editor.commit();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     @Override
