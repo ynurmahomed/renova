@@ -78,13 +78,15 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
         actionBar.addTab(
                 actionBar.newTab()
-                    .setText(BookListFragment.TITLE)
+                    //.setText(BookListFragment.TITLE)
+                    .setIcon(R.drawable.ic_action_view_as_list)
                     .setTabListener(tabListener)
         );
 
         actionBar.addTab(
                 actionBar.newTab()
-                    .setText(SettingsFragment.TITLE)
+                    //.setText(SettingsFragment.TITLE)
+                    .setIcon(R.drawable.ic_action_settings)
                     .setTabListener(tabListener)
         );
     }
