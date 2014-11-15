@@ -17,5 +17,8 @@
     <string name="message_book_renewing">Renovando...</string>
     <string name="title_activity_app">RenovApp</string>
     <string name="hello_blank_fragment">Settings</string>
+    <string name="preference_file_key">prefs</string>
+    <string name="preference_login">pref_login</string>
+    <string name="preference_password">pref_password</string>
 
 </resources>

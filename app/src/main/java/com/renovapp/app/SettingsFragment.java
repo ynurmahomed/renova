@@ -1,6 +1,9 @@
 package com.renovapp.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import com.renovapp.app.scraper.HttpClient;
 
@@ -29,8 +33,7 @@ public class SettingsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private HttpClient library;
-    private Spinner daysBeforeSpinner;
-    private Integer[] daysBeforeOptions = new Integer[]{1,2,3,4,5,6,7,};
+    private String[] daysBeforeOptions = new String[]{"1","2","3","4","5","6","7"};
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,6 +77,26 @@ public class SettingsFragment extends Fragment {
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //
 //        daysBeforeSpinner.setAdapter(adapter);
+
+        LinearLayout notification_pref = (LinearLayout) rootView.findViewById(R.id.notification_preference);
+
+        notification_pref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsFragment.this.getActivity());
+
+                builder.setTitle("Notificar");
+
+                builder.setItems(SettingsFragment.this.daysBeforeOptions, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         return rootView;
     }

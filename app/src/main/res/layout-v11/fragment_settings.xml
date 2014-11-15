@@ -32,6 +32,7 @@
         android:background="@android:color/darker_gray"/>
 
     <LinearLayout
+            android:id="@+id/logout_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -41,7 +42,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Sair"/>
+                android:text="Sair"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"/>
 
     </LinearLayout>
 
