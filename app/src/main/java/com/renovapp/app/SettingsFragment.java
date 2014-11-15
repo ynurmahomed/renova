@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import com.renovapp.app.scraper.HttpClient;
 
 
 /**
@@ -28,27 +23,30 @@ import com.renovapp.app.scraper.HttpClient;
  *
  */
 public class SettingsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_NUM_DAYS = "num_days";
+
     public static final CharSequence TITLE = "Configurações";
 
-    // TODO: Rename and change types of parameters
+    private int numDays;
+
     private String[] daysBeforeOptions = new String[]{"1","2","3","4","5","6","7"};
 
-    private SharedPreferences prefs;
-
     private OnFragmentInteractionListener mListener;
+
+    private TextView notificationPrefText;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param numDays quantos dias antes deve se enviar notificações
      * @return A new instance of fragment SettingsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance() {
+    public static SettingsFragment newInstance(int numDays) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_NUM_DAYS, numDays);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,6 +57,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            numDays = getArguments().getInt(ARG_NUM_DAYS);
+        }
     }
 
     @Override
@@ -69,37 +70,12 @@ public class SettingsFragment extends Fragment {
 
         LinearLayout notificationPref = (LinearLayout) rootView.findViewById(R.id.notification_preference);
 
-        final TextView notificationPrefText = (TextView) rootView.findViewById(R.id.notification_preference_value);
-
-        final Context appContext = SettingsFragment.this.getActivity();
-        prefs = appContext.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        // Seta numero de dias
-        int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
-        String resource = appContext.getResources().getString(R.string.preference_notifications);
-        int numDays = prefs.getInt(resource, defaultValue);
+        notificationPrefText = (TextView) rootView.findViewById(R.id.notification_preference_value);
         notificationPrefText.setText(""+numDays);
-
         notificationPref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(appContext);
-                builder.setTitle("Notificar");
-                builder.setItems(SettingsFragment.this.daysBeforeOptions, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                        int numDays = which + 1;
-
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt(getString(R.string.preference_notifications), numDays);
-                        editor.commit();
-
-                        notificationPrefText.setText(""+numDays);
-                    }
-                });
-                builder.show();
+                onNotificationPreferenceClick();
             }
         });
 
@@ -107,10 +83,24 @@ public class SettingsFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onNotificationPreferenceClick() {
+        final Context appContext = SettingsFragment.this.getActivity();
+        final int[] numDays = new int[1];
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(appContext);
+        builder.setTitle("Notificar");
+        builder.setItems(daysBeforeOptions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                numDays[0] = which + 1;
+                notificationPrefText.setText(""+ numDays[0]);
+                if (mListener != null) {
+                    mListener.onNotificationDateSelect(numDays[0]);
+                }
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -141,8 +131,7 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onNotificationDateSelect(int numDays);
     }
 
 }
