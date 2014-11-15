@@ -42,7 +42,6 @@ public class SettingsFragment extends Fragment {
      * @param numDays quantos dias antes deve se enviar notificações
      * @return A new instance of fragment SettingsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance(int numDays) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -71,7 +70,7 @@ public class SettingsFragment extends Fragment {
         LinearLayout notificationPref = (LinearLayout) rootView.findViewById(R.id.notification_preference);
 
         notificationPrefText = (TextView) rootView.findViewById(R.id.notification_preference_value);
-        notificationPrefText.setText(""+numDays);
+        notificationPrefText.setText(getNotificationSubtitle(numDays));
         notificationPref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +81,6 @@ public class SettingsFragment extends Fragment {
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onNotificationPreferenceClick() {
         final Context appContext = SettingsFragment.this.getActivity();
         final int[] numDays = new int[1];
@@ -94,7 +92,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 numDays[0] = which + 1;
-                notificationPrefText.setText(""+ numDays[0]);
+                notificationPrefText.setText(getNotificationSubtitle(numDays[0]));
                 if (mListener != null) {
                     mListener.onNotificationDateSelect(numDays[0]);
                 }
@@ -132,6 +130,11 @@ public class SettingsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public void onNotificationDateSelect(int numDays);
+    }
+
+    private String getNotificationSubtitle(int numDays) {
+        String days = (numDays > 1) ? numDays + " dias" : numDays + " dia";
+        return "Notificar " + days + " antes do vencimento";
     }
 
 }
