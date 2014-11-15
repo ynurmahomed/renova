@@ -1,5 +1,8 @@
 package com.renovapp.app;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -17,6 +20,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
     ViewPager viewPager;
     HttpClient library;
     AppPagerAdapter appPagerAdapter;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,8 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
+
+        prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         viewPager = (ViewPager) findViewById(R.id.app_view_pager);
         viewPager.setAdapter(appPagerAdapter);
@@ -100,6 +106,26 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
     }
 
     @Override
+    public void onNotificationDateSelect(int numDays) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(getString(R.string.preference_notifications), numDays);
+        editor.commit();
+    }
+
+    @Override
+    public void onLogout() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.preference_login), "");
+        editor.putString(getString(R.string.preference_password), "");
+        editor.commit();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
@@ -113,11 +139,14 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = null;
+            Context appContext = AppActivity.this;
 
             if (i == 0) {
                 fragment = BookListFragment.newInstance(library);
             } else if (i == 1) {
-                fragment = SettingsFragment.newInstance(library);
+                int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
+                String resource = appContext.getString(R.string.preference_notifications);
+                fragment = SettingsFragment.newInstance(prefs.getInt(resource, defaultValue));
             }
 
             return fragment;

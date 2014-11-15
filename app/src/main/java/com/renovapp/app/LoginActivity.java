@@ -3,7 +3,9 @@ package com.renovapp.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private EditText passwordEditText;
     private Button loginButton;
     private ProgressDialog loginProgress;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         loginEditText = (EditText) findViewById(R.id.login_edit_text);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
+
         loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(this);
 
         loginProgress = new ProgressDialog(this);
         loginProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loginProgress.setMessage(getString(R.string.message_login_progress));
         loginProgress.setCancelable(false);
 
-        loginButton.setOnClickListener(this);
+        // Verifica se o login e o password já estão gravados no preferences e tenta fazer
+        // login automático.
+        prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String login = prefs.getString(getString(R.string.preference_login), "");
+        String password = prefs.getString(getString(R.string.preference_password), "");
+        if (!(login.isEmpty() || password.isEmpty())) {
+            loginEditText.setText(login);
+            passwordEditText.setText(password);
+            loginButton.performClick();
+        }
     }
 
     @Override
@@ -112,7 +126,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             try {
 
-                return new HttpClient(login, password);
+                HttpClient library = new HttpClient(login, password);
+
+                // Grava o login e o password no shared preferences se não estiver gravado.
+                SharedPreferences.Editor editor = prefs.edit();
+                String prefLogin = prefs.getString(getString(R.string.preference_login), "");
+                String prefPassword = prefs.getString(getString(R.string.preference_password), "");
+                if (prefLogin.isEmpty() || prefPassword.isEmpty()) {
+                    editor.putString(getString(R.string.preference_login), login);
+                    editor.putString(getString(R.string.preference_password), password);
+                    editor.commit();
+                }
+
+                return library;
 
             } catch (IOException e) {
                 this.e = e;
