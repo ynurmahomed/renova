@@ -4,23 +4,22 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:paddingTop="110dp"
-              android:paddingLeft="50dp"
-              android:paddingRight="50dp">
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/imageView"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/login_logo"/>
+              android:paddingLeft="40dp"
+              android:paddingRight="40dp"
+              android:gravity="center_vertical">
 
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/login_logo"
+                android:layout_marginBottom="30dp"/>
 
         <EditText
                 android:layout_width="match_parent"
@@ -37,13 +36,14 @@
                 android:id="@+id/password_edit_text"
                 android:layout_gravity="center_horizontal"
                 android:hint="Senha"/>
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entrar"
+                android:id="@+id/login_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"/>
+
     </LinearLayout>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Entrar"
-            android:id="@+id/login_button"
-            android:layout_gravity="center_horizontal"/>
-
 </LinearLayout>
