@@ -11,6 +11,7 @@ import com.renovapp.app.scraper.Book;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by yassin on 01/11/14.
@@ -45,7 +46,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             }
 
             if (renewDateTextView != null) {
-                DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM");
+                DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
                 renewDateTextView.setText(dateFormat.format(b.getExpiration()));
             }
         }
