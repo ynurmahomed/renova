@@ -6,7 +6,8 @@
               android:layout_height="match_parent"
               android:paddingLeft="40dp"
               android:paddingRight="40dp"
-              android:gravity="center_vertical">
+              android:gravity="center_vertical"
+              android:background="@color/login_background">
 
     <LinearLayout
             android:orientation="vertical"
@@ -21,29 +22,19 @@
                 android:src="@drawable/login_logo"
                 android:layout_marginBottom="30dp"/>
 
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_edit_text"
-                android:layout_gravity="center_horizontal"
-                android:hint="Login"/>
+        <EditText android:id="@+id/login_edit_text"
+                android:hint="Login"
+                style="@style/LoginText"/>
 
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+        <EditText android:id="@+id/password_edit_text"
                 android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/password_edit_text"
-                android:layout_gravity="center_horizontal"
-                android:hint="Senha"/>
+                android:hint="Senha"
+                style="@style/LoginText"/>
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+        <Button android:id="@+id/login_button"
                 android:text="Entrar"
-                android:id="@+id/login_button"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                style="@style/LoginButton"/>
 
     </LinearLayout>
 </LinearLayout>
