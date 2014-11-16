@@ -1,5 +1,7 @@
 package com.renovapp.app;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.renovapp.app.scraper.Book;
 import com.renovapp.app.scraper.HttpClient;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.OnFragmentInteractionListener,
@@ -95,8 +101,25 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
     }
 
     private void createNotifications() {
+        DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher);
+
+        Intent resultIntent = new Intent(this, LoginActivity.class);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(LoginActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
         for (Book b: library.getBooks()) {
-            
+            mBuilder.setContentTitle(b.getTitle());
+            mBuilder.setContentText("Livro com vencimento em " + dateFormat.format(b.getExpiration()));
+            mBuilder.setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+
+            mNotificationManager.notify(0, mBuilder.build());
         }
     }
 
