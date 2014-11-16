@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.renovapp.app.scraper.Book;
 import com.renovapp.app.scraper.HttpClient;
 
 
@@ -57,6 +58,8 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             }
         });
 
+        createNotifications();
+
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -89,6 +92,12 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
                     .setIcon(R.drawable.ic_action_settings)
                     .setTabListener(tabListener)
         );
+    }
+
+    private void createNotifications() {
+        for (Book b: library.getBooks()) {
+            
+        }
     }
 
 
