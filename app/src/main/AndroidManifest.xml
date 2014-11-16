@@ -23,6 +23,7 @@
             android:name=".AppActivity"
             android:label="@string/title_activity_app">
         </activity>
+        <!--<receiver android:name=".NotificationPublisher" />-->
     </application>
 
 </manifest>
