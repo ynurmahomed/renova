@@ -19,7 +19,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/imageView"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/login_logo"
+                android:src="@drawable/logo"
                 android:layout_marginBottom="30dp"/>
 
         <EditText android:id="@+id/login_edit_text"
