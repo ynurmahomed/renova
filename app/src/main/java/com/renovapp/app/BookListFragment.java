@@ -39,6 +39,7 @@ public class BookListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private HttpClient library;
     private ListView booksListView;
+    private BookListAdapter mAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,7 +79,9 @@ public class BookListFragment extends Fragment {
         booksListView = (ListView) rootView.findViewById(R.id.books_list_view);
         booksListView.setEmptyView(rootView.findViewById(R.id.empty_books_list_message));
 
-        booksListView.setAdapter(new BookListAdapter(getActivity().getApplicationContext(), R.layout.book_list_item, library.getBooks()));
+        mAdapter = new BookListAdapter(getActivity().getApplicationContext(), R.layout.book_list_item, library.getBooks());
+
+        booksListView.setAdapter(mAdapter);
 
         booksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -170,6 +173,8 @@ public class BookListFragment extends Fragment {
         protected void onPostExecute(Void nothing) {
             LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
             TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
+
+            mAdapter.notifyDataSetChanged();
 
             renew_date.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
