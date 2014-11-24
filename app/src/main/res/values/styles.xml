@@ -19,7 +19,6 @@
     <style name="ViewWithPadding">
         <item name="android:paddingLeft">@dimen/activity_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_padding</item>
-        <item name="android:paddingBottom">@dimen/activity_vertical_padding</item>
     </style>
     
     <style name="LoginText" parent="TextAppearance.AppCompat.Medium">
