@@ -1,6 +1,7 @@
 package com.renovapp.app;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -66,7 +68,11 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             }
         });
 
-        createNotifications();
+        createBooksHash();
+
+        //createNotifications();
+        //setNotifications();
+        testee();
 
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -102,6 +108,13 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         );
     }
 
+    private void createBooksHash(){
+        for (Book b: library.getBooks()) {
+            BooksListGlobal.getInstance().setBook(b);
+        }
+    }
+
+    /*
     private void createNotifications() {
         DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
 
@@ -122,7 +135,17 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
             mNotificationManager.notify(0, mBuilder.build());
         }
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
+    */
 
 
     @Override
@@ -202,4 +225,61 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             return "";
         }
     }
+
+    ///*
+    private void scheduleNotification(Notification notification, int delay) {
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        //Notification.Builder builder = new Notification.Builder(this);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        return builder.build();
+    }
+
+    public void setNotifications(/*int days, Book book*/){
+        scheduleNotification(getNotification("5 second delay"), 10000);
+    }
+    //*/
+
+
+
+    public void testee(){
+        // get a Calendar object with current time
+        for(Book b : BooksListGlobal.getInstance().getAllBooks().values()){
+            /*
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.SECOND, 10);
+            Intent intent = new Intent(this, NotificationPublisher.class);
+            //Intent intent = new Intent(this, LoginActivity.class);
+            //intent.putExtra("alarm_message", "O'Doyle Rules!");
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher);
+            builder.setContentTitle("Renove seu(s) livro(s)");
+            builder.setContentText(b.getTitle());
+            //builder.setSmallIcon(R.drawable.ic_launcher);
+            intent.putExtra(b.getBarcode(), 1);
+            intent.putExtra(b.getTitle(), builder.build());
+
+            // In reality, you would want to have a static variable for the request code instead of 192837
+            PendingIntent sender = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Get the AlarmManager service
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+            //*/
+        }
+    }
+
 }

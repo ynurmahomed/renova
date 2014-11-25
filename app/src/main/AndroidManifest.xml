@@ -3,6 +3,7 @@
     package="com.renovapp.app" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +24,19 @@
             android:name=".AppActivity"
             android:label="@string/title_activity_app">
         </activity>
-        <!--<receiver android:name=".NotificationPublisher" />-->
+
+        <receiver android:name=".NotificationPublisher" />
+
+        <receiver
+                android:name="StartMyServiceAtBootReceiver"
+                android:enabled="true"
+                android:exported="true"
+                android:label="StartMyServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
