@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -25,15 +26,9 @@
             android:label="@string/title_activity_app">
         </activity>
 
-        <receiver android:name=".NotificationPublisher" />
-
-        <receiver
-                android:name="StartMyServiceAtBootReceiver"
-                android:enabled="true"
-                android:exported="true"
-                android:label="StartMyServiceAtBootReceiver">
+        <receiver android:name=".NotificationPublisher">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
 

@@ -3,13 +3,16 @@ package com.renovapp.app;
 import com.renovapp.app.scraper.Book;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by pablohenrique on 11/24/14.
  */
 public class BooksListGlobal {
     private static BooksListGlobal instance;
-    private HashMap<String, Book> bookHashMap = new HashMap<String, Book>();
+    private int alertDays = 2;
+    private List<Book> bookList = new ArrayList<Book>();
 
     private BooksListGlobal(){}
 
@@ -19,15 +22,9 @@ public class BooksListGlobal {
         return instance;
     }
 
-    public void setBook(Book b){
-        this.bookHashMap.put(b.getBarcode(), b);
-    }
+    public void setBookList(List<Book> b){ this.bookList = b; }
+    public List<Book> getBookList(){ return this.bookList; }
 
-    public HashMap<String, Book> getAllBooks(){
-        return this.bookHashMap;
-    }
-
-    public Book getBook(String key){
-        return this.bookHashMap.get(key);
-    }
+    public int getAlertDays(){ return this.alertDays; }
+    public void setAlertDays(int days){ this.alertDays = days; }
 }
