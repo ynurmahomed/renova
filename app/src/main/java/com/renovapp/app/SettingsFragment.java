@@ -16,7 +16,7 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SettingsFragment.OnFragmentInteractionListener} interface
+ * {@link com.renovapp.app.SettingsFragment.SettingsFragmentListener} interface
  * to handle interaction events.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -31,7 +31,7 @@ public class SettingsFragment extends Fragment {
 
     private String[] daysBeforeOptions = new String[]{"1","2","3","4","5","6","7"};
 
-    private OnFragmentInteractionListener mListener;
+    private SettingsFragmentListener mListener;
 
     private TextView notificationPrefText;
 
@@ -118,10 +118,10 @@ public class SettingsFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (SettingsFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement SettingsFragmentListener");
         }
     }
 
@@ -141,7 +141,7 @@ public class SettingsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface SettingsFragmentListener {
         public void onNotificationDateSelect(int numDays);
         public void onLogout();
     }

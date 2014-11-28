@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import com.renovapp.app.scraper.HttpClient;
 
 
-public class AppActivity extends ActionBarActivity implements SettingsFragment.OnFragmentInteractionListener,
+public class AppActivity extends ActionBarActivity implements SettingsFragment.SettingsFragmentListener,
                                                              BookListFragment.OnFragmentInteractionListener {
 
     ViewPager viewPager;
