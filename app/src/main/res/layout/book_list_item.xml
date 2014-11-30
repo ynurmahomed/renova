@@ -25,10 +25,11 @@
             android:text="Authors"
             android:textColor="@color/abc_primary_text_material_light"/>
 
-    <LinearLayout
-            android:layout_width="wrap_content"
+    <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:id="@+id/book_renew_date_text_view"
                 android:text="Expiration"
-                android:textColor="@color/abc_secondary_text_material_light"/>
+                android:textColor="@color/abc_secondary_text_material_light"
+                android:layout_centerVertical="true"/>
 
         <LinearLayout
                 android:id="@+id/book_renew_activity_circle"
@@ -44,7 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_centerVertical="true">
             <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,5 +60,13 @@
                     android:text="@string/message_book_renewing"
                     android:textColor="@color/abc_secondary_text_material_light" />
         </LinearLayout>
-    </LinearLayout>
+
+        <ImageView
+                android:id="@+id/book_renew_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_error"
+                android:visibility="invisible"/>
+    </RelativeLayout>
 </LinearLayout>
