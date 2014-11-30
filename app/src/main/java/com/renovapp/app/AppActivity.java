@@ -11,11 +11,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import com.renovapp.app.scraper.HttpClient;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.SettingsFragmentListener,
-                                                             BookListFragment.OnFragmentInteractionListener {
+        NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
+        BookListFragment.OnFragmentInteractionListener {
 
     ViewPager viewPager;
     HttpClient library;
@@ -108,10 +113,14 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     }
 
     @Override
-    public void onNotificationDateSelect(int numDays) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(getString(R.string.preference_notifications), numDays);
-        editor.commit();
+
+
+    public void onNotificationPreferenceClick() {
+        int defaultValue = getResources().getInteger(R.integer.preference_notifications_default);
+        String numDaysPref = getString(R.string.preference_notifications);
+        int numDays = prefs.getInt(numDaysPref, defaultValue);
+        DialogFragment numberPickerDialog = NumberPickerDialogFragment.newInstance("Antecedência", 1,7, numDays, R.plurals.dia);
+        numberPickerDialog.show(getSupportFragmentManager(), "NumberPicker");
     }
 
     @Override
@@ -132,26 +141,47 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
     }
 
+    @Override
+    public void handleNumberPickerDialogFragmentResult(int result) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(getString(R.string.preference_notifications), result);
+        editor.commit();
+        SettingsFragment settingsFragment = (SettingsFragment) appPagerAdapter.getFragment(viewPager.getCurrentItem());
+        settingsFragment.setNumDays(result);
+
+
+    }
+
     private class AppPagerAdapter extends FragmentPagerAdapter {
+
+        private Map<Integer, Fragment> mPageReferenceMap;
 
         public AppPagerAdapter(FragmentManager fm) {
             super(fm);
+            mPageReferenceMap = new HashMap<Integer, Fragment>();
         }
 
         @Override
-        public Fragment getItem(int i) {
+        public Fragment getItem(int index) {
             Fragment fragment = null;
             Context appContext = AppActivity.this;
 
-            if (i == 0) {
+            if (index == 0) {
                 fragment = BookListFragment.newInstance(library);
-            } else if (i == 1) {
+            } else if (index == 1) {
                 int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
                 String resource = appContext.getString(R.string.preference_notifications);
                 fragment = SettingsFragment.newInstance(prefs.getInt(resource, defaultValue));
             }
 
+            mPageReferenceMap.put(index, fragment);
             return fragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+            mPageReferenceMap.remove(position);
         }
 
         @Override
@@ -167,6 +197,10 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
                 return SettingsFragment.TITLE;
             }
             return "";
+        }
+
+        public Fragment getFragment(int index) {
+            return mPageReferenceMap.get(index);
         }
     }
 }

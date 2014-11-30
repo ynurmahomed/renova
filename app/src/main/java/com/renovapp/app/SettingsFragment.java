@@ -1,9 +1,6 @@
 package com.renovapp.app;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,8 +25,6 @@ public class SettingsFragment extends Fragment {
     public static final CharSequence TITLE = "Configurações";
 
     private int numDays;
-
-    private String[] daysBeforeOptions = new String[]{"1","2","3","4","5","6","7"};
 
     private SettingsFragmentListener mListener;
 
@@ -73,7 +68,9 @@ public class SettingsFragment extends Fragment {
         notificationPref.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onNotificationPreferenceClick();
+                if (mListener != null) {
+                    mListener.onNotificationPreferenceClick();
+                }
             }
         });
 
@@ -86,26 +83,6 @@ public class SettingsFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    public void onNotificationPreferenceClick() {
-        final Context appContext = SettingsFragment.this.getActivity();
-        final int[] numDays = new int[1];
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(appContext);
-        builder.setTitle("Notificar");
-        builder.setItems(daysBeforeOptions, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                numDays[0] = which + 1;
-                notificationPrefText.setText(getNotificationSubtitle(numDays[0]));
-                if (mListener != null) {
-                    mListener.onNotificationDateSelect(numDays[0]);
-                }
-            }
-        });
-        builder.show();
     }
 
     public void onLogoutPreferenceClick() {
@@ -142,13 +119,17 @@ public class SettingsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface SettingsFragmentListener {
-        public void onNotificationDateSelect(int numDays);
+        public void onNotificationPreferenceClick();
         public void onLogout();
     }
 
+    public void setNumDays(int days) {
+        numDays = days;
+        notificationPrefText.setText(getNotificationSubtitle(numDays));
+    }
+
     private String getNotificationSubtitle(int numDays) {
-        String days = (numDays > 1) ? numDays + " dias" : numDays + " dia";
-        return "Notificar " + days + " antes do vencimento";
+        return getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
     }
 
 }

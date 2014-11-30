@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="dia">
+        <item quantity="one">dia</item>
+        <item quantity="other">dias</item>
+    </plurals>
+    <plurals name="config_notifications">
+        <item quantity="one">Notificar %d dia antes do vencimento</item>
+        <item quantity="other">Notificar %d dias antes do vencimento</item>
+    </plurals>
+</resources>
