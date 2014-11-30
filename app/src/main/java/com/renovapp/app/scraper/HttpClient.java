@@ -67,6 +67,7 @@ public class HttpClient implements Serializable {
 
             Date expirationDate = dateFormat.parse(renewMessage);
             book.setExpiration(expirationDate);
+            book.setState(Book.State.RENEWED);
 
         } catch (ParseException e) {
             //
@@ -79,8 +80,10 @@ public class HttpClient implements Serializable {
             e.printStackTrace();
 
             if (isRenewDateInvalid(renewMessage)) {
+                book.setState(Book.State.INVALID_RENEW_DATE);
                 throw new RenewDateException();
             } else {
+                book.setState(Book.State.REQUESTED);
                 throw new BookReservedException();
             }
         }
@@ -179,6 +182,7 @@ public class HttpClient implements Serializable {
             b.setStatus(statuses.get(i).text());
             b.setBarcode(barcodes.get(i).val());
             books.add(b);
+
         }
 
     }
