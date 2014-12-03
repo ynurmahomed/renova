@@ -1,21 +1,17 @@
 package com.renovapp.app;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.IBinder;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.renovapp.app.scraper.Book;
 import com.renovapp.app.scraper.HttpClient;
 
 import java.util.Calendar;
@@ -29,6 +25,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
     AppPagerAdapter appPagerAdapter;
     SharedPreferences prefs;
 
+    private RenovaService mRenovaService;
+    private boolean mRenovaServiceBound = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +37,8 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
         library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
 
-        BooksListGlobal.getInstance().setBookList(library.getBooks());
-        setNotifications();
+        // BooksListGlobal.getInstance().setBookList(library.getBooks());
+        // setNotifications();
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -107,6 +106,20 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         }
     }
 */
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Intent i = new Intent(this, RenovaService.class);
+        startService(i);
+        bindService(i, mRenovaServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unbindService(mRenovaServiceConnection);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,6 +199,21 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         }
     }
 
+    private ServiceConnection mRenovaServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            RenovaService.Binder b = (RenovaService.Binder) service;
+            mRenovaService = b.getService();
+            mRenovaServiceBound = true;
+            mRenovaService.hello();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mRenovaService = null;
+            mRenovaServiceBound = false;
+        }
+    };
 
     public void setNotifications(){
         Calendar cal = Calendar.getInstance();
