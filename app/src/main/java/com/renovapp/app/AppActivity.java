@@ -1,12 +1,14 @@
 package com.renovapp.app;
 
-import android.app.NotificationManager;
+import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -16,9 +18,7 @@ import android.view.MenuItem;
 import com.renovapp.app.scraper.Book;
 import com.renovapp.app.scraper.HttpClient;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.Calendar;
 
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.OnFragmentInteractionListener,
@@ -37,6 +37,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
         final ActionBar actionBar = getSupportActionBar();
 
         library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
+
+        BooksListGlobal.getInstance().setBookList(library.getBooks());
+        setNotifications();
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -63,8 +66,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
             }
         });
-
-        createNotifications();
 
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -99,30 +100,13 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
                     .setTabListener(tabListener)
         );
     }
-
-    private void createNotifications() {
-        DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher);
-
-        Intent resultIntent = new Intent(this, LoginActivity.class);
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(LoginActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-
+/*
+    private void createBooksHash(){
         for (Book b: library.getBooks()) {
-            mBuilder.setContentTitle(b.getTitle());
-            mBuilder.setContentText("Livro com vencimento em " + dateFormat.format(b.getExpiration()));
-            mBuilder.setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
-
-            mNotificationManager.notify(0, mBuilder.build());
+            BooksListGlobal.getInstance().setBook(b);
         }
     }
-
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -201,4 +185,15 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             return "";
         }
     }
+
+
+    public void setNotifications(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, 10);
+        Intent intent = new Intent(this, NotificationPublisher.class);
+        PendingIntent sender = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+    }
+
 }
