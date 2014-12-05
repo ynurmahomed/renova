@@ -4,6 +4,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -36,11 +38,15 @@ public class NotificationPublishReceiver extends BroadcastReceiver {
         Intent login = new Intent(context, LoginActivity.class);
         PendingIntent loginPendingIntent = PendingIntent.getActivity(context, 0, login, 0);
 
+        Uri soundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setSound(soundURI)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("Renove seu livro")
-                        .setContentText(b.getTitle())
+                        .setContentTitle(b.getTitle())
+                        .setContentText("Livro com vencimento próximo.")
                         .setContentIntent(loginPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
