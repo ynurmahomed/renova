@@ -34,9 +34,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
         library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
 
-        // BooksListGlobal.getInstance().setBookList(library.getBooks());
-        // setNotifications();
-
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
         prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -173,15 +170,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             }
             return "";
         }
-    }
-
-    public void setNotifications(){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 10);
-        Intent intent = new Intent(this, NotificationPublisher.class);
-        PendingIntent sender = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
     }
 
 }

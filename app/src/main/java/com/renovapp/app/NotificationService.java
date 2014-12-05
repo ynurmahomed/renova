@@ -10,31 +10,65 @@ import com.renovapp.app.scraper.*;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 
 public class NotificationService extends Service {
 
     private HttpClient library;
+    private SharedPreferences prefs;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("NotificationService", "Received start id " + startId + ": " + intent);
 
-        /*SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        String login = prefs.getString(getString(R.string.preference_login), "");
-        String password = prefs.getString(getString(R.string.preference_password), "");
+        prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        final String login = prefs.getString(getString(R.string.preference_login), "");
+        final String password = prefs.getString(getString(R.string.preference_password), "");
 
-        try {
-            if (!(login.isEmpty() || password.isEmpty())) {
-                library = new HttpClient(login, password);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }*/
+        if (!(login.isEmpty() || password.isEmpty())) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    try {
+
+                        library = new HttpClient(login, password);
+
+                        for(Book b: library.getBooks()) {
+                            if (shouldNotify(b)) {
+                                Intent i = new Intent(NotificationService.this, NotificationPublisherReceiver.class);
+                                i.putExtra(NotificationPublisherReceiver.EXTRA_BOOK, b);
+                                sendBroadcast(i);
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (LoginException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }).start();
+        }
+
 
         return Service.START_REDELIVER_INTENT;
+    }
+
+    private boolean shouldNotify(Book b) {
+        int defaultValue = getResources().getInteger(R.integer.preference_notifications_default);
+        int defaultDays = prefs.getInt(getString(R.string.preference_notifications), defaultValue);
+
+        Calendar today = Calendar.getInstance();
+
+        long diff = b.getExpiration().getTime() - today.getTimeInMillis();
+        long days =  diff / (24 * 60 * 60 * 1000);
+
+        return days <= defaultDays;
     }
 
     @Override

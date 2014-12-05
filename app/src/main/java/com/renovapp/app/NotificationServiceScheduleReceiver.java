@@ -13,7 +13,7 @@ import java.util.Calendar;
  */
 public class NotificationServiceScheduleReceiver extends BroadcastReceiver {
 
-    private static final long REPEAT_TIME = 1000 * 30; // mSecs
+    private static final long REPEAT_TIME = 1000 * 60 * 60 * 24; // mSecs
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,6 +22,8 @@ public class NotificationServiceScheduleReceiver extends BroadcastReceiver {
         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, 30);
+
+        // doesnt trigger right away!
         alarmService.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), REPEAT_TIME, pending);
     }
 }
