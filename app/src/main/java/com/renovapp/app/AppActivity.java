@@ -20,13 +20,10 @@ import java.util.Calendar;
 public class AppActivity extends ActionBarActivity implements SettingsFragment.OnFragmentInteractionListener,
                                                              BookListFragment.OnFragmentInteractionListener {
 
-    ViewPager viewPager;
-    HttpClient library;
-    AppPagerAdapter appPagerAdapter;
-    SharedPreferences prefs;
-
-    private RenovaService mRenovaService;
-    private boolean mRenovaServiceBound = false;
+    private ViewPager viewPager;
+    private HttpClient library;
+    private AppPagerAdapter appPagerAdapter;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,27 +95,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
                     .setIcon(R.drawable.ic_action_settings)
                     .setTabListener(tabListener)
         );
-    }
-/*
-    private void createBooksHash(){
-        for (Book b: library.getBooks()) {
-            BooksListGlobal.getInstance().setBook(b);
-        }
-    }
-*/
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Intent i = new Intent(this, RenovaService.class);
-        startService(i);
-        bindService(i, mRenovaServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        unbindService(mRenovaServiceConnection);
     }
 
     @Override
@@ -198,22 +174,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
             return "";
         }
     }
-
-    private ServiceConnection mRenovaServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            RenovaService.Binder b = (RenovaService.Binder) service;
-            mRenovaService = b.getService();
-            mRenovaServiceBound = true;
-            mRenovaService.hello();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mRenovaService = null;
-            mRenovaServiceBound = false;
-        }
-    };
 
     public void setNotifications(){
         Calendar cal = Calendar.getInstance();

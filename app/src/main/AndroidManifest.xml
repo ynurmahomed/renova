@@ -34,18 +34,18 @@
         </receiver>
 
         <service
-                android:name=".RenovaService"
+                android:name=".NotificationService"
                 android:enabled="true"
                 android:exported="false" >
         </service>
         
-        <receiver android:name=".RenovaServiceScheduleReceiver" >
+        <receiver android:name=".NotificationServiceScheduleReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".RenovaServiceStartReceiver">
+        <receiver android:name=".NotificationServiceStartReceiver">
         </receiver>
 
     </application>
