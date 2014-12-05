@@ -163,6 +163,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 return;
             }
 
+            Boolean firstRun = prefs.getBoolean(getString(R.string.preference_first_run), true);
+
+            if (firstRun) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(getString(R.string.preference_first_run), false);
+                editor.commit();
+                Intent intent = new Intent(LoginActivity.this, NotificationServiceScheduleReceiver.class);
+                sendBroadcast(intent);
+            }
+
             Intent intent = new Intent(LoginActivity.this, AppActivity.class);
             intent.putExtra(EXTRA_LIBRARY_CLIENT, library);
             startActivity(intent);

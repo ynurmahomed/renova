@@ -20,7 +20,7 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("NotificationService", "Received start id " + startId + ": " + intent);
 
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        /*SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String login = prefs.getString(getString(R.string.preference_login), "");
         String password = prefs.getString(getString(R.string.preference_password), "");
 
@@ -32,7 +32,7 @@ public class NotificationService extends Service {
             e.printStackTrace();
         } catch (LoginException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return Service.START_REDELIVER_INTENT;
     }

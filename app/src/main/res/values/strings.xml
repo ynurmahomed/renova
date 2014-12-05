@@ -22,5 +22,6 @@
     <string name="preference_password">pref_password</string>
     <string name="preference_notifications">pref_notifications</string>
     <string name="logout_preference_value">Sair</string>
+    <string name="preference_first_run">pref_first_run</string>
 
 </resources>
