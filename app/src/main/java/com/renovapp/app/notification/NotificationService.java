@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package com.renovapp.app.notification;
 
 import android.app.Service;
 import android.content.Context;
@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
+import com.renovapp.app.R;
 import com.renovapp.app.scraper.*;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.List;
 
 public class NotificationService extends Service {
 
@@ -39,8 +38,8 @@ public class NotificationService extends Service {
 
                         for(Book b: library.getBooks()) {
                             if (shouldNotify(b)) {
-                                Intent i = new Intent(NotificationService.this, NotificationPublisherReceiver.class);
-                                i.putExtra(NotificationPublisherReceiver.EXTRA_BOOK, b);
+                                Intent i = new Intent(NotificationService.this, NotificationPublishReceiver.class);
+                                i.putExtra(NotificationPublishReceiver.EXTRA_BOOK, b);
                                 sendBroadcast(i);
                             }
                         }

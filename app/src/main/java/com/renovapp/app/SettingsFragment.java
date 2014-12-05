@@ -100,8 +100,6 @@ public class SettingsFragment extends Fragment {
                 dialog.dismiss();
                 numDays[0] = which + 1;
 
-                BooksListGlobal.getInstance().setAlertDays(numDays[0]);
-
                 notificationPrefText.setText(getNotificationSubtitle(numDays[0]));
                 if (mListener != null) {
                     mListener.onNotificationDateSelect(numDays[0]);

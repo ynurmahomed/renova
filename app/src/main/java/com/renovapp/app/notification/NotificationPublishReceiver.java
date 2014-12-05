@@ -1,8 +1,5 @@
-package com.renovapp.app;
+package com.renovapp.app.notification;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,17 +7,14 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.widget.Toast;
+import com.renovapp.app.LoginActivity;
+import com.renovapp.app.R;
 import com.renovapp.app.scraper.Book;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by pablohenrique on 11/16/14.
  */
-public class NotificationPublisherReceiver extends BroadcastReceiver {
+public class NotificationPublishReceiver extends BroadcastReceiver {
 
     public static final String EXTRA_BOOK = "EXTRA_BOOK";
 
@@ -37,16 +31,17 @@ public class NotificationPublisherReceiver extends BroadcastReceiver {
     }
 
     private void callNotification(Context context, Book b){
-        int notificationId = Integer.parseInt(b.getBarcode());
+        int notificationId = b.getNotificationId();
 
-        PendingIntent viewPendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, LoginActivity.class), 0);
+        Intent login = new Intent(context, LoginActivity.class);
+        PendingIntent loginPendingIntent = PendingIntent.getActivity(context, 0, login, 0);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Renove seu livro")
                         .setContentText(b.getTitle())
-                        .setContentIntent(viewPendingIntent);
+                        .setContentIntent(loginPendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationId, notificationBuilder.build());

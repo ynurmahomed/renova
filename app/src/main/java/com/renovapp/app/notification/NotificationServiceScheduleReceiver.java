@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package com.renovapp.app.notification;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

@@ -1,11 +1,8 @@
 package com.renovapp.app;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -14,11 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.renovapp.app.scraper.HttpClient;
 
-import java.util.Calendar;
-
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.OnFragmentInteractionListener,
                                                              BookListFragment.OnFragmentInteractionListener {
+
+    public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
 
     private ViewPager viewPager;
     private HttpClient library;
@@ -32,7 +29,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.O
 
         final ActionBar actionBar = getSupportActionBar();
 
-        library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
+        library = (HttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 

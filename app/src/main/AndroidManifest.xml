@@ -27,25 +27,25 @@
             android:label="@string/title_activity_app" >
         </activity>
 
-        <receiver android:name=".NotificationPublisherReceiver" >
+        <receiver android:name=".notification.NotificationPublishReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-                android:name=".NotificationService"
+                android:name=".notification.NotificationService"
                 android:enabled="true"
                 android:exported="false" >
         </service>
         
-        <receiver android:name=".NotificationServiceScheduleReceiver" >
+        <receiver android:name=".notification.NotificationServiceScheduleReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".NotificationServiceStartReceiver">
+        <receiver android:name=".notification.NotificationServiceStartReceiver">
         </receiver>
 
     </application>

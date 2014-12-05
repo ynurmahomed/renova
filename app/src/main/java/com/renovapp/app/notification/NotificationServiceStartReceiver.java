@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package com.renovapp.app.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
