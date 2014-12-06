@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="login_background">#1c957a</color>
+    <color name="book_list_item_border">#ffafafaf</color>
+    <color name="book_list_background">#22487d67</color>
+</resources>

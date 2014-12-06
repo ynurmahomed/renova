@@ -16,10 +16,25 @@
     <!--<style name="Widget.AppTheme.ActionBar.TabBar" parent="Widget.AppCompat.ActionBar.TabBar">-->
     <!--</style>-->
 
-    <style name="view_with_padding">
+    <style name="ViewWithPadding">
         <item name="android:paddingLeft">@dimen/activity_horizontal_padding</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_padding</item>
-        <item name="android:paddingBottom">@dimen/activity_vertical_padding</item>
+    </style>
+    
+    <style name="LoginText" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorHint">#FFCDCDCD</item>
+        <item name="android:background">@drawable/login_edit_text_default</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="LoginButton">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
 </resources>
