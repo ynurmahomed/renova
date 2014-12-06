@@ -77,4 +77,8 @@ public class Book implements Serializable {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return title + " - " + authors + " - " + dateFormat.format(expiration);
     }
+
+    public int getNotificationId() {
+        return Integer.parseInt(barcode);
+    }
 }

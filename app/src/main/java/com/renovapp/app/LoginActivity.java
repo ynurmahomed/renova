@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.renovapp.app.notification.NotificationServiceScheduleReceiver;
 import com.renovapp.app.scraper.HttpClient;
 import com.renovapp.app.scraper.LoginException;
 
@@ -20,8 +21,6 @@ import java.io.IOException;
 
 
 public class LoginActivity extends Activity implements View.OnClickListener {
-
-    final static String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
 
     private EditText loginEditText;
     private EditText passwordEditText;
@@ -163,8 +162,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 return;
             }
 
+            Boolean firstRun = prefs.getBoolean(getString(R.string.preference_first_run), true);
+
+            if (firstRun) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(getString(R.string.preference_first_run), false);
+                editor.commit();
+                Intent intent = new Intent(LoginActivity.this, NotificationServiceScheduleReceiver.class);
+                sendBroadcast(intent);
+            }
+
             Intent intent = new Intent(LoginActivity.this, AppActivity.class);
-            intent.putExtra(EXTRA_LIBRARY_CLIENT, library);
+            intent.putExtra(AppActivity.EXTRA_LIBRARY_CLIENT, library);
             startActivity(intent);
         }
     }

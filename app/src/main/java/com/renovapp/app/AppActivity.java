@@ -1,8 +1,6 @@
 package com.renovapp.app;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -22,10 +20,12 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
         BookListFragment.OnFragmentInteractionListener {
 
-    ViewPager viewPager;
-    HttpClient library;
-    AppPagerAdapter appPagerAdapter;
-    SharedPreferences prefs;
+    public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
+
+    private ViewPager viewPager;
+    private HttpClient library;
+    private AppPagerAdapter appPagerAdapter;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         final ActionBar actionBar = getSupportActionBar();
 
-        library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
+        library = (HttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -95,7 +95,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
                     .setTabListener(tabListener)
         );
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -203,4 +202,5 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             return mPageReferenceMap.get(index);
         }
     }
+
 }
