@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_books">Livros</string>
+    <string name="title_fragment_books">Livros</string>
     <string name="message_login_empty">Por favor digite o seu login.</string>
     <string name="message_password_empty">Por favor digite a sua senha.</string>
     <string name="title_incorrect_login">Dados incorretos</string>
@@ -15,6 +15,14 @@
     <string name="message_login_progress">Conectando...</string>
     <string name="message_book_list_empty">Nenhum livro emprestado.</string>
     <string name="message_book_renewing">Renovando...</string>
+    <string name="title_activity_app">RenovApp</string>
+    <string name="hello_blank_fragment">Settings</string>
+    <string name="preference_file_key">prefs</string>
+    <string name="preference_login">pref_login</string>
+    <string name="preference_password">pref_password</string>
+    <string name="preference_notifications">pref_notifications</string>
+    <string name="logout_preference_value">Sair</string>
+    <string name="preference_first_run">pref_first_run</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
