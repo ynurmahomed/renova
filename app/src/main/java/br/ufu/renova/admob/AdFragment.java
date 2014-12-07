@@ -30,7 +30,11 @@ public class AdFragment extends Fragment {
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128")
+                .addTestDevice("FFA680EF5BC1615AEDF85264F09B8E94")
+                .build();
 
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);

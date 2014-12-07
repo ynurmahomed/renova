@@ -23,6 +23,7 @@ public class Interstitial {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128")
+                .addTestDevice("FFA680EF5BC1615AEDF85264F09B8E94")
                 .build();
 
         interstitial = new InterstitialAd(this.activity);
