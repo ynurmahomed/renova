@@ -1,4 +1,4 @@
-package com.renovapp.app.notification;
+package br.ufu.renova.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

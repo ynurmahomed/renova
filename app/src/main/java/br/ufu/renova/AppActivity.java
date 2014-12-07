@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.content.*;
 import android.net.Uri;
@@ -10,7 +10,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import com.renovapp.app.scraper.HttpClient;
+import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.R;
 
 import java.util.HashMap;
 import java.util.Map;

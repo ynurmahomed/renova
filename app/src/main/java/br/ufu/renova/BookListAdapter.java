@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.renovapp.app.scraper.Book;
+import br.ufu.renova.R;
+import br.ufu.renova.scraper.Book;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

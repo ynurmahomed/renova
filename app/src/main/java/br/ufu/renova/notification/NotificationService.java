@@ -1,4 +1,4 @@
-package com.renovapp.app.notification;
+package br.ufu.renova.notification;
 
 import android.app.Service;
 import android.content.Context;
@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
-import com.renovapp.app.R;
-import com.renovapp.app.scraper.*;
+import br.ufu.renova.scraper.Book;
+import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.LoginException;
+import br.ufu.renova.R;
 
 import java.io.IOException;
 import java.util.Calendar;

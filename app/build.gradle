@@ -17,7 +17,7 @@ android {
     buildToolsVersion '19.1.0'
 
     defaultConfig {
-        applicationId "com.renovapp.app"
+        applicationId "br.ufu.renova"
         minSdkVersion 9
         targetSdkVersion 21
         versionCode 1

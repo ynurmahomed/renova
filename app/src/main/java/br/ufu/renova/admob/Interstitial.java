@@ -1,10 +1,8 @@
-package com.renovapp.app.admob;
+package br.ufu.renova.admob;
 
 import android.app.Activity;
-import com.google.ads.AdSize;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 /**

@@ -1,4 +1,4 @@
-package com.renovapp.app.scraper;
+package br.ufu.renova.scraper;
 
 
 import android.net.Uri;
@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

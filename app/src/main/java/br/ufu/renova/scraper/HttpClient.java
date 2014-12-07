@@ -1,4 +1,4 @@
-package com.renovapp.app.scraper;
+package br.ufu.renova.scraper;
 
 import java.io.IOException;
 import java.io.Serializable;

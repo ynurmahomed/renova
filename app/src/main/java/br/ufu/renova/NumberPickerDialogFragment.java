@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import br.ufu.renova.R;
 
 
 /**
  * A simple {@link DialogFragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link com.renovapp.app.NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler} interface
+ * {@link NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler} interface
  * to handle interaction events.
  * Use the {@link NumberPickerDialogFragment#newInstance} factory method to
  * create an instance of this fragment.

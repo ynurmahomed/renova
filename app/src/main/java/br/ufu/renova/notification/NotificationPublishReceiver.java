@@ -1,4 +1,4 @@
-package com.renovapp.app.notification;
+package br.ufu.renova.notification;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import com.renovapp.app.LoginActivity;
-import com.renovapp.app.R;
-import com.renovapp.app.scraper.Book;
+import br.ufu.renova.LoginActivity;
+import br.ufu.renova.scraper.Book;
+import br.ufu.renova.R;
 
 /**
  * Created by pablohenrique on 11/16/14.

@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

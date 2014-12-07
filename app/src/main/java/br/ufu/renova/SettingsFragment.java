@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.ufu.renova.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link com.renovapp.app.SettingsFragment.SettingsFragmentListener} interface
+ * {@link SettingsFragment.SettingsFragmentListener} interface
  * to handle interaction events.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.

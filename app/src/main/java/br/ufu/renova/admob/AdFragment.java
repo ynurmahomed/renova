@@ -1,4 +1,4 @@
-package com.renovapp.app.admob;
+package br.ufu.renova.admob;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.renovapp.app.R;
+import br.ufu.renova.R;
 
 /**
  * Created by yassin on 06/12/14.
