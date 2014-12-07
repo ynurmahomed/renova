@@ -15,13 +15,12 @@ repositories {
 android {
     compileSdkVersion 21
     buildToolsVersion '19.1.0'
-
     defaultConfig {
-        applicationId "br.ufu.renova"
+        applicationId 'br.ufu.renova'
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 10005
+        versionName '2.0.0'
     }
     buildTypes {
         release {
