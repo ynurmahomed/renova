@@ -33,12 +33,6 @@
 
         <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <receiver android:name="br.ufu.renova.notification.NotificationPublishReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <service
                 android:name="br.ufu.renova.notification.NotificationService"
                 android:enabled="true"
