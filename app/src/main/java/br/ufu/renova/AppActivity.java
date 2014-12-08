@@ -127,9 +127,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     public void onLogout() {
 
         new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.title_leave_app))
-            .setMessage(getString(R.string.message_leave_app))
-            .setPositiveButton(getString(R.string.leave_app_positive_button_text), new DialogInterface.OnClickListener() {
+            .setTitle(getString(R.string.leave_dialog_title))
+            .setMessage(getString(R.string.leave_dialog_message))
+            .setPositiveButton(getString(R.string.leave_dialog_positive_text), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     SharedPreferences.Editor editor = prefs.edit();
@@ -143,7 +143,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
                     finish();
                 }
             })
-            .setNegativeButton(getString(R.string.negative_button_text), null)
+            .setNegativeButton(getString(R.string.dialog_negative_text), null)
             .show();
     }
 

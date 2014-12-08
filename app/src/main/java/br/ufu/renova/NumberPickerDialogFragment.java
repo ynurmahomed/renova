@@ -105,12 +105,12 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
 
         builder.setMessage(title)
                 .setView(view)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.number_picker_dialog_positive_text), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onPositiveClick(numberPicker.getValue());
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.dialog_negative_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
