@@ -103,7 +103,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
             }
         });
 
-        builder.setMessage(title)
+        builder.setTitle(title)
                 .setView(view)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
