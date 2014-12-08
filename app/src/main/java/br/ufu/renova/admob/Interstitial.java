@@ -13,7 +13,8 @@ public class Interstitial {
     private InterstitialAd interstitial;
     private Activity activity;
 
-    private static final String AD_INTERSTITIAL_ID = "ca-app-pub-6713098943014804/4601996177";
+    //private static final String AD_INTERSTITIAL_ID = "ca-app-pub-6713098943014804/4601996177";
+    private static final String AD_INTERSTITIAL_ID = "ca-app-pub-2113484633994413/3386134884";
 
     public Interstitial(Activity activity){
         this.activity = activity;

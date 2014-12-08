@@ -29,6 +29,28 @@
     </LinearLayout>
 
     <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+            android:id="@+id/share_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/share_preference_value"/>
+
+    </LinearLayout>
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
