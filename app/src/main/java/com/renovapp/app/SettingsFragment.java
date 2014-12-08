@@ -101,8 +101,8 @@ public class SettingsFragment extends Fragment {
     public void onShareClick() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Yassin, I s2 you! E o sharing button too! HAHAHAHA";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check me out");
+        String shareBody = "Renove seus livros na UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
+        //sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Renove seus livros na UFU com um toque");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
     }
