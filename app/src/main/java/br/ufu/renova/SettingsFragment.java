@@ -1,12 +1,15 @@
 package br.ufu.renova;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import br.ufu.renova.R;
 
@@ -75,6 +78,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        LinearLayout sharePref = (LinearLayout) rootView.findViewById(R.id.share_preference);
+        sharePref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShareClick();
+            }
+        });
+
         LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
         logoutPref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +95,14 @@ public class SettingsFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void onShareClick() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Renove seus livros na UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
     }
 
     public void onLogoutPreferenceClick() {
