@@ -1,12 +1,15 @@
 package com.renovapp.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 
@@ -29,6 +32,8 @@ public class SettingsFragment extends Fragment {
     private SettingsFragmentListener mListener;
 
     private TextView notificationPrefText;
+
+    private ShareActionProvider mShareActionProvider;
 
     /**
      * Use this factory method to create a new instance of
@@ -74,6 +79,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        LinearLayout sharePref = (LinearLayout) rootView.findViewById(R.id.share_preference);
+        sharePref.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onShareClick();
+            }
+        });
+
         LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
         logoutPref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +96,15 @@ public class SettingsFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void onShareClick() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Here is the share content body";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     public void onLogoutPreferenceClick() {

@@ -22,6 +22,7 @@
     <string name="preference_password">pref_password</string>
     <string name="preference_notifications">pref_notifications</string>
     <string name="logout_preference_value">Sair</string>
+    <string name="share_preference_value">Compartilhar</string>
     <string name="preference_first_run">pref_first_run</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
