@@ -26,5 +26,9 @@
     <string name="preference_first_run">pref_first_run</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-2113484633994413/8374737681</string>
+    <string name="title_leave_app">Sair?</string>
+    <string name="message_leave_app">Se sair não poderá mais receber notificações.</string>
+    <string name="leave_app_positive_button_text">Sair</string>
+    <string name="negative_button_text">Cancelar</string>
 
 </resources>

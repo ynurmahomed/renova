@@ -1,5 +1,6 @@
 package br.ufu.renova;
 
+import android.app.AlertDialog;
 import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import br.ufu.renova.scraper.HttpClient;
-import br.ufu.renova.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,15 +125,26 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
     @Override
     public void onLogout() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.preference_login), "");
-        editor.putString(getString(R.string.preference_password), "");
-        editor.commit();
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.title_leave_app))
+            .setMessage(getString(R.string.message_leave_app))
+            .setPositiveButton(getString(R.string.leave_app_positive_button_text), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(getString(R.string.preference_login), "");
+                    editor.putString(getString(R.string.preference_password), "");
+                    editor.commit();
+
+                    Intent intent = new Intent(AppActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            })
+            .setNegativeButton(getString(R.string.negative_button_text), null)
+            .show();
     }
 
     @Override
