@@ -78,7 +78,7 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-
+//*
         LinearLayout sharePref = (LinearLayout) rootView.findViewById(R.id.share_preference);
         sharePref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,7 @@ public class SettingsFragment extends Fragment {
                 onShareClick();
             }
         });
-
+//*/
         LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
         logoutPref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +101,10 @@ public class SettingsFragment extends Fragment {
     public void onShareClick() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Here is the share content body";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        String shareBody = "Yassin, I s2 you! E o sharing button too! HAHAHAHA";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check me out");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
     }
 
     public void onLogoutPreferenceClick() {
