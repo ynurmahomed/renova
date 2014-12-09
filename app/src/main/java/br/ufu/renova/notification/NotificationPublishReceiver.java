@@ -44,7 +44,7 @@ public class NotificationPublishReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setSound(soundURI)
-                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setSmallIcon(R.drawable.notification_icon)
                         .setContentTitle(b.getTitle())
                         .setContentText("Livro com vencimento próximo.")
                         .setContentIntent(loginPendingIntent);
