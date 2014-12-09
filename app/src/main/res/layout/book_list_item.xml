@@ -12,13 +12,14 @@
         android:padding="10dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/book_title_text_view"
             android:text="Title"
-            android:textColor="@color/abc_primary_text_material_light"/>
+            android:textColor="@color/abc_primary_text_material_light"
+            android:singleLine="true"/>
 
         <TextView
             android:layout_width="match_parent"
