@@ -169,7 +169,13 @@ public class Scraper {
                                              .split("/");
             titles[i] = parts[0];
 
-            authors[i] = (parts.length > 1) ? parts[1] : "";
+            if (parts.length > 1) {
+                authors[i] = parts[1]
+                        .replaceAll("[^A-Za-z0-9 ,]", "")
+                        .trim();
+            } else {
+                authors[i] = "";
+            }
 
             // Parse das datas
             expirations[i] = dateFormat.parse(expirationDates.get(i)
