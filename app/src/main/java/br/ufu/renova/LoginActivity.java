@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.scraper.HttpClient;
 import br.ufu.renova.scraper.LoginException;
