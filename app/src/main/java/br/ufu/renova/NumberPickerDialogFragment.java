@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import br.ufu.renova.R;
 
 
 /**
@@ -103,7 +102,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
             }
         });
 
-        builder.setMessage(title)
+        builder.setTitle(title)
                 .setView(view)
                 .setPositiveButton(getString(R.string.number_picker_dialog_positive_text), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
