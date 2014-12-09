@@ -161,7 +161,8 @@ public class Scraper {
             // Divide titulos em titulos e autores
             String[] parts = titlesAndAuthors.get(i).text().split("/");
             titles[i] = parts[0];
-            authors[i] = parts[1];
+
+            authors[i] = (parts.length > 1) ? parts[1] : "";
 
             // Parse das datas
             expirations[i] = dateFormat.parse(expirationDates.get(i).text());
