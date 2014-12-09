@@ -45,8 +45,9 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="br.ufu.renova.notification.NotificationServiceStartReceiver">
-        </receiver>
+        <receiver android:name="br.ufu.renova.notification.NotificationServiceStartReceiver"/>
+
+        <receiver android:name="br.ufu.renova.notification.NotificationPublishReceiver"/>
 
     </application>
 
