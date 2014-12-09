@@ -20,6 +20,10 @@ import java.util.List;
  */
 public class Scraper {
     private static final String URL = "http://www.acervobiblioteca.ufu.br:8000/cgi-bin/gw/chameleon";
+    /**
+     * Regex para caracteres que devem ser removidos da string dos autores.
+     */
+    private static final String AUTHORS_INVALID_CHAR_REGEX = "[.\\[\\]-]";
 
     public static String login(String patronhost, String username, String password) throws IOException, LoginException {
 
@@ -175,10 +179,12 @@ public class Scraper {
 
             if (parts.length > 1) {
                 authors[i] = parts[1]
-                        .replaceAll("[^A-Za-z0-9 ,]", "")
+                        .replaceAll(AUTHORS_INVALID_CHAR_REGEX, "")
                         .trim();
             } else {
                 authors[i] = "";
+                titles[i] = titles[i].trim()
+                                     .replaceAll("\\.$", "");
             }
 
             // Parse das datas
