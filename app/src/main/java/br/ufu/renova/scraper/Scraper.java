@@ -25,7 +25,8 @@ public class Scraper {
 
         Document doc = Jsoup.connect(buildLoginURL(patronhost, username, password)).get();
 
-        Element loginError = doc.select("body > table:nth-child(7) > tbody > tr:nth-child(1) > td:nth-child(3) > table > tbody > tr > td > h2").first();
+        Element loginError = doc.select("body > table:nth-child(7) > tbody > tr:nth-child(1) > td:nth-child(3) > table > tbody > tr > td > h2")
+                                .first();
 
         if (loginError != null)
             throw new LoginException();
@@ -40,7 +41,9 @@ public class Scraper {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        String renewMessage = doc.select("table.outertable > tbody > tr:nth-child(7) > td").first().text();
+        String renewMessage = doc.select("table.outertable > tbody > tr:nth-child(7) > td")
+                                 .first()
+                                 .text();
 
         try {
 
@@ -111,7 +114,9 @@ public class Scraper {
 
     public static String scrapePatronhost() throws IOException {
         Document doc = Jsoup.connect(URL).get();
-        String patronhost = doc.select("input[name=patronhost]").first().val();
+        String patronhost = doc.select("input[name=patronhost]")
+                               .first()
+                               .val();
         Log.d("Scraper", "patronhost is " + patronhost);
         return patronhost;
     }
@@ -159,13 +164,16 @@ public class Scraper {
 
         for (int i = 0; i < numBooks; i++) {
             // Divide titulos em titulos e autores
-            String[] parts = titlesAndAuthors.get(i).text().split("/");
+            String[] parts = titlesAndAuthors.get(i)
+                                             .text()
+                                             .split("/");
             titles[i] = parts[0];
 
             authors[i] = (parts.length > 1) ? parts[1] : "";
 
             // Parse das datas
-            expirations[i] = dateFormat.parse(expirationDates.get(i).text());
+            expirations[i] = dateFormat.parse(expirationDates.get(i)
+                                                             .text());
 
             // Cria os livros
             Book b = new Book();
