@@ -41,7 +41,9 @@ public class Scraper {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        String renewMessage = doc.select("table.outertable > tbody > tr:nth-child(7) > td")
+        Log.d("Scraper", "renewing book " + book.getBarcode() + "...");
+
+        String renewMessage = doc.select("table.outertable > tbody > tr:last-child > td")
                                  .first()
                                  .text();
 
@@ -50,6 +52,8 @@ public class Scraper {
             Date expirationDate = dateFormat.parse(renewMessage);
             book.setExpiration(expirationDate);
 
+            Log.d("Scraper", "renew OK");
+
         } catch (ParseException e) {
             //
             // três situações possíveis:
@@ -57,7 +61,7 @@ public class Scraper {
             // *   renovação cancelada porque o livro foi solicitado
             // *   TODO: renovação cancelada por causa do limite de renovações
             //
-            Log.d("Scraper", "book " + book.getBarcode() + " renew failed: " + renewMessage);
+            Log.d("Scraper", "renew failed: " + renewMessage);
             e.printStackTrace();
 
             if (isRenewDateInvalid(renewMessage)) {
