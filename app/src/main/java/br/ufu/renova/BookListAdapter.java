@@ -27,6 +27,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final Boolean[] titleTextViewExpanded = {false};
+        final Boolean[] authorsTextViewExpanded = {false};
 
         if (convertView == null) {
             LayoutInflater li = LayoutInflater.from(getContext());
@@ -37,7 +38,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
 
         if (b != null) {
             final TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title_text_view);
-            TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
+            final TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
             TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date_text_view);
 
             if (titleTextView != null) {
@@ -53,6 +54,13 @@ public class BookListAdapter extends ArrayAdapter<Book> {
 
             if (authorsTextView != null) {
                 authorsTextView.setText(b.getAuthors());
+                authorsTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        authorsTextView.setSingleLine(!authorsTextViewExpanded[0]);
+                        authorsTextViewExpanded[0] = !authorsTextViewExpanded[0];
+                    }
+                });
             }
 
             if (renewDateTextView != null) {

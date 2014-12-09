@@ -28,7 +28,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/book_authors_text_view"
             android:text="Authors"
-            android:textColor="@color/abc_primary_text_material_light"/>
+            android:textColor="@color/abc_primary_text_material_light"
+            android:singleLine="true"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
