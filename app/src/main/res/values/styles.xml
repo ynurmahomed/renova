@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.AppTheme" parent="Theme.AppCompat.Light">
-        <item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
-        <!--<item name="android:actionBarTabBarStyle">@style/Widget.AppTheme.ActionBar.TabBar</item>-->
-        <!--<item name="actionBarTabBarStyle">@style/Widget.AppTheme.ActionBar.TabBar</item>-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
     </style>
 
-    <style name="Widget.AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
+    <style name="AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
         <item name="displayOptions">showHome|useLogo</item>
     </style>
-    
-    <!--<style name="Widget.AppTheme.ActionBar.TabBar" parent="Widget.AppCompat.ActionBar.TabBar">-->
-    <!--</style>-->
 
     <style name="ViewWithPadding">
         <item name="android:paddingLeft">@dimen/activity_horizontal_padding</item>
