@@ -43,20 +43,27 @@ public class Scraper {
     public static void renew(String patronhost, String sessionId, String username, Book book) throws IOException, BookReservedException, RenewDateException {
         Document doc = Jsoup.connect(buildRenewURL(patronhost, sessionId, username, book)).get();
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
         Log.d("Scraper", "renewing book " + book.getBarcode() + "...");
 
-        String renewMessage = doc.select("table.outertable > tbody > tr:last-child > td")
-                                 .first()
-                                 .text();
+        Elements tableLines = doc.select("table.outertable > tbody > tr");
+        String renewMessage = tableLines.last().text();
 
         try {
 
-            Date expirationDate = dateFormat.parse(renewMessage);
-            book.setExpiration(expirationDate);
-
-            Log.d("Scraper", "renew OK");
+            Element header = null;
+            Element value = null;
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date expirationDate;
+            for (Element line: tableLines) {
+                header = line.select("th").first();
+                value = line.select("td").first();
+                if (header != null && header.text().contains("Data Devolução") && value != null) {
+                    expirationDate = dateFormat.parse(value.text());
+                    book.setExpiration(expirationDate);
+                    Log.d("Scraper", "renew OK");
+                    return;
+                }
+            }
 
         } catch (ParseException e) {
             //
