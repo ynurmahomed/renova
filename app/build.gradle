@@ -19,8 +19,8 @@ android {
         applicationId 'br.ufu.renova'
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 10007
-        versionName '2.0.2'
+        versionCode 10008
+        versionName '2.0.3'
     }
     buildTypes {
         release {
