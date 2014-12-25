@@ -1,4 +1,4 @@
-package com.renovapp.app.scraper;
+package br.ufu.renova.scraper;
 
 /**
  * Created by yassin on 31/10/14.

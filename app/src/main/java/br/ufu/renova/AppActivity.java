@@ -1,8 +1,7 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -12,7 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import com.renovapp.app.scraper.HttpClient;
+import br.ufu.renova.scraper.HttpClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +21,12 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
         BookListFragment.OnFragmentInteractionListener {
 
-    ViewPager viewPager;
-    HttpClient library;
-    AppPagerAdapter appPagerAdapter;
-    SharedPreferences prefs;
+    public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
+
+    private ViewPager viewPager;
+    private HttpClient library;
+    private AppPagerAdapter appPagerAdapter;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         final ActionBar actionBar = getSupportActionBar();
 
-        library = (HttpClient) getIntent().getSerializableExtra(LoginActivity.EXTRA_LIBRARY_CLIENT);
+        library = (HttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -96,7 +97,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         );
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -125,15 +125,26 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
     @Override
     public void onLogout() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.preference_login), "");
-        editor.putString(getString(R.string.preference_password), "");
-        editor.commit();
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.leave_dialog_title))
+            .setMessage(getString(R.string.leave_dialog_message))
+            .setPositiveButton(getString(R.string.leave_dialog_positive_text), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(getString(R.string.preference_login), "");
+                    editor.putString(getString(R.string.preference_password), "");
+                    editor.commit();
+
+                    Intent intent = new Intent(AppActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            })
+            .setNegativeButton(getString(R.string.dialog_negative_text), null)
+            .show();
     }
 
     @Override
@@ -203,4 +214,5 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             return mPageReferenceMap.get(index);
         }
     }
+
 }

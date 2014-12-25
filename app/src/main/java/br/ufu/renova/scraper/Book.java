@@ -1,4 +1,4 @@
-package com.renovapp.app.scraper;
+package br.ufu.renova.scraper;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -100,5 +100,9 @@ public class Book implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public int getNotificationId() {
+        return Integer.parseInt(barcode);
     }
 }

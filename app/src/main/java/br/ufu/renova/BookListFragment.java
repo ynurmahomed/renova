@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.renovapp.app.scraper.Book;
-import com.renovapp.app.scraper.BookReservedException;
-import com.renovapp.app.scraper.HttpClient;
-import com.renovapp.app.scraper.RenewDateException;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import br.ufu.renova.scraper.Book;
+import br.ufu.renova.scraper.BookReservedException;
+import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.RenewDateException;
 
 import java.io.IOException;
 

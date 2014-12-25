@@ -1,4 +1,4 @@
-package com.renovapp.app;
+package br.ufu.renova;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 /**
  * A simple {@link DialogFragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link com.renovapp.app.NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler} interface
+ * {@link NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler} interface
  * to handle interaction events.
  * Use the {@link NumberPickerDialogFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -102,14 +102,14 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
             }
         });
 
-        builder.setMessage(title)
+        builder.setTitle(title)
                 .setView(view)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.number_picker_dialog_positive_text), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onPositiveClick(numberPicker.getValue());
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.dialog_negative_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
