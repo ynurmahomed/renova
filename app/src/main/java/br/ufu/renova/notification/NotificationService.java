@@ -12,7 +12,9 @@ import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class NotificationService extends Service {
 
@@ -37,13 +39,19 @@ public class NotificationService extends Service {
                     try {
 
                         library = new HttpClient(login, password);
+                        List<Book> books = library.getBooks();
+                        List<Book> toExpire = new ArrayList<Book>();
 
-                        for(Book b: library.getBooks()) {
+                        for(Book b: books) {
                             if (shouldNotify(b)) {
-                                Intent i = new Intent(NotificationService.this, NotificationPublishReceiver.class);
-                                i.putExtra(NotificationPublishReceiver.EXTRA_BOOK, b);
-                                sendBroadcast(i);
+                                toExpire.add(b);
                             }
+                        }
+
+                        if (!toExpire.isEmpty()) {
+                            Intent i = new Intent(NotificationService.this, NotificationPublishReceiver.class);
+                            i.putExtra(NotificationPublishReceiver.EXTRA_BOOKS, toExpire.toArray());
+                            sendBroadcast(i);
                         }
 
                     } catch (IOException e) {
