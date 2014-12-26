@@ -76,12 +76,14 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_book_list, container, false);
+        View adBanner = inflater.inflate(R.layout.banner, null);
 
         booksListView = (ListView) rootView.findViewById(R.id.books_list_view);
         booksListView.setEmptyView(rootView.findViewById(R.id.empty_books_list_message));
 
         mAdapter = new BookListAdapter(getActivity().getApplicationContext(), R.layout.book_list_item, library.getBooks());
 
+        booksListView.addFooterView(adBanner);
         booksListView.setAdapter(mAdapter);
 
         booksListView.setOnItemClickListener(this);
