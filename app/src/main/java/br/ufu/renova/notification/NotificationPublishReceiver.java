@@ -47,7 +47,8 @@ public class NotificationPublishReceiver extends BroadcastReceiver {
                         .setSmallIcon(R.drawable.notification_icon)
                         .setContentTitle(b.getTitle())
                         .setContentText("Livro com vencimento próximo.")
-                        .setContentIntent(loginPendingIntent);
+                        .setContentIntent(loginPendingIntent)
+                        .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationId, notificationBuilder.build());
