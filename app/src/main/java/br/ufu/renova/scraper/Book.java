@@ -9,6 +9,22 @@ import java.util.Date;
  * Created by yassin on 30/10/14.
  */
 public class Book implements Serializable {
+    public enum State {
+        INITIAL("", false),
+        RENEWED("", false),
+        INVALID_RENEW_DATE("O livro não pode ser renovado na data atual.", true),
+        REQUESTED("O livro foi solicitado.", true),
+        RENEW_LIMIT_REACHED("O limite de renovações do livro foi alcançado.", true);
+
+        public final String msg;
+        public final boolean isErrorState;
+
+        State(String msg, boolean isErrorState) {
+            this.msg = msg;
+            this.isErrorState = isErrorState;
+        }
+    };
+    private State state = State.INITIAL;
     private String barcode;
     private String title;
     private String authors;
@@ -76,6 +92,14 @@ public class Book implements Serializable {
     public String toString() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return title + " - " + authors + " - " + dateFormat.format(expiration);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public int getNotificationId() {
