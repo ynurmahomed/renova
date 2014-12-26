@@ -30,12 +30,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/book_authors_text_view"
             android:text="Authors"
             android:textColor="@color/abc_primary_text_material_light"
             android:singleLine="true"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/book_call_number_text_view"
+                android:text="Call Number"
+                android:textColor="@color/abc_primary_text_material_light"
+                android:singleLine="true"/>
 
         <RelativeLayout
                 android:layout_width="match_parent"

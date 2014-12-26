@@ -41,6 +41,7 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             final TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title_text_view);
             final TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
             TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date_text_view);
+            TextView callNumberTextView = (TextView) convertView.findViewById(R.id.book_call_number_text_view);
             ImageView errorIcon = (ImageView) convertView.findViewById(R.id.book_renew_warning);
 
             if (titleTextView != null) {
@@ -63,6 +64,10 @@ public class BookListAdapter extends ArrayAdapter<Book> {
                         authorsTextViewExpanded[0] = !authorsTextViewExpanded[0];
                     }
                 });
+            }
+
+            if (callNumberTextView != null) {
+                callNumberTextView.setText(b.getCallNumber());
             }
 
             if (renewDateTextView != null) {
