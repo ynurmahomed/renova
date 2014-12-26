@@ -48,6 +48,17 @@ public class Scraper {
         Elements tableLines = doc.select("table.outertable > tbody > tr");
         String renewMessage = tableLines.last().text();
 
+        //
+        // três situações possíveis:
+        // *   renovação cancelada por causa da data renovação
+        // *   TODO: renovação cancelada porque o livro foi solicitado
+        // *   TODO: renovação cancelada por causa do limite de renovações
+        //
+        if (isRenewDateInvalid(renewMessage)) {
+            book.setState(Book.State.INVALID_RENEW_DATE);
+            throw new RenewDateException();
+        }
+
         try {
 
             Element header = null;
@@ -60,26 +71,13 @@ public class Scraper {
                 if (header != null && header.text().contains("Data Devolução") && value != null) {
                     expirationDate = dateFormat.parse(value.text());
                     book.setExpiration(expirationDate);
-                    Log.d("Scraper", "renew OK");
-                    return;
+                    book.setState(Book.State.RENEWED);
                 }
             }
 
         } catch (ParseException e) {
-            //
-            // três situações possíveis:
-            // *   renovação cancelada por causa da data renovação
-            // *   renovação cancelada porque o livro foi solicitado
-            // *   TODO: renovação cancelada por causa do limite de renovações
-            //
             Log.d("Scraper", "renew failed: " + renewMessage);
             e.printStackTrace();
-
-            if (isRenewDateInvalid(renewMessage)) {
-                throw new RenewDateException();
-            } else {
-                throw new BookReservedException();
-            }
         }
 
     }
@@ -208,6 +206,7 @@ public class Scraper {
             b.setStatus(statuses.get(i).text());
             b.setBarcode(barcodes.get(i).val());
             books.add(b);
+
         }
 
         return books;
