@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import br.ufu.renova.admob.Interstitial;
 import br.ufu.renova.scraper.HttpClient;
 
 import java.util.HashMap;
@@ -43,6 +44,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         viewPager = (ViewPager) findViewById(R.id.app_view_pager);
         viewPager.setAdapter(appPagerAdapter);
+
+        // Show Interstitial
+        new Interstitial(this).getInterstitial().displayInterstitial();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
