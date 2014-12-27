@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import br.ufu.renova.R;
 import br.ufu.renova.scraper.Book;
@@ -34,12 +35,14 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             convertView = li.inflate(R.layout.book_list_item, null);
         }
 
-        Book b = getItem(position);
+        final Book b = getItem(position);
 
         if (b != null) {
             final TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title_text_view);
             final TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
             TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date_text_view);
+            TextView callNumberTextView = (TextView) convertView.findViewById(R.id.book_call_number_text_view);
+            ImageView errorIcon = (ImageView) convertView.findViewById(R.id.book_renew_warning);
 
             if (titleTextView != null) {
                 titleTextView.setText(b.getTitle());
@@ -63,9 +66,18 @@ public class BookListAdapter extends ArrayAdapter<Book> {
                 });
             }
 
+            if (callNumberTextView != null) {
+                callNumberTextView.setText(b.getCallNumber());
+            }
+
             if (renewDateTextView != null) {
                 DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
                 renewDateTextView.setText(dateFormat.format(b.getExpiration()));
+            }
+
+            if (errorIcon != null && b.getState().isErrorState) {
+                errorIcon.setVisibility(View.VISIBLE);
+
             }
         }
 

@@ -9,11 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.*;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import br.ufu.renova.R;
 import br.ufu.renova.scraper.Book;
 import br.ufu.renova.scraper.BookReservedException;
 import br.ufu.renova.scraper.HttpClient;
@@ -31,7 +31,7 @@ import java.io.IOException;
  * create an instance of this fragment.
  *
  */
-public class BookListFragment extends Fragment {
+public class BookListFragment extends Fragment implements AdapterView.OnItemClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_LIBRARY = "library";
@@ -76,30 +76,17 @@ public class BookListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_book_list, container, false);
+        View adBanner = inflater.inflate(R.layout.banner, null);
 
         booksListView = (ListView) rootView.findViewById(R.id.books_list_view);
         booksListView.setEmptyView(rootView.findViewById(R.id.empty_books_list_message));
 
         mAdapter = new BookListAdapter(getActivity().getApplicationContext(), R.layout.book_list_item, library.getBooks());
 
+        booksListView.addFooterView(adBanner);
         booksListView.setAdapter(mAdapter);
 
-        booksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RenewTaskItem item = new RenewTaskItem();
-                item.book = BookListFragment.this.library.getBooks().get(position);
-                item.view = view;
-
-                LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
-                TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
-
-                renew_date.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
-
-                new RenewTask().execute(item);
-            }
-        });
+        booksListView.setOnItemClickListener(this);
 
         return rootView;
     }
@@ -180,6 +167,32 @@ public class BookListFragment extends Fragment {
             renew_date.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Book b = library.getBooks().get(position);
+
+        if (b.getState().isErrorState) {
+            showErrorMsgToast(b);
+            return;
+        }
+
+        RenewTaskItem item = new RenewTaskItem();
+        item.book = b;
+        item.view = view;
+
+        LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
+        TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
+
+        renew_date.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+
+        new RenewTask().execute(item);
+    }
+
+    public void showErrorMsgToast(Book b) {
+        Toast.makeText(getActivity().getApplicationContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
     }
 
 }

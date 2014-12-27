@@ -8,4 +8,8 @@
         <item quantity="one">Notificar %d dia antes do vencimento</item>
         <item quantity="other">Notificar %d dias antes do vencimento</item>
     </plurals>
+    <plurals name="notification_title">
+        <item quantity="one">Livro com vencimento próximo</item>
+        <item quantity="other">%d livros com vencimento próximo</item>
+    </plurals>
 </resources>
