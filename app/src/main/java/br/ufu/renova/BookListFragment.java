@@ -173,11 +173,6 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Book b = library.getBooks().get(position);
 
-        if (b.getState().isErrorState) {
-            showErrorMsgToast(b);
-            return;
-        }
-
         RenewTaskItem item = new RenewTaskItem();
         item.book = b;
         item.view = view;
@@ -189,10 +184,6 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
         progress.setVisibility(View.VISIBLE);
 
         new RenewTask().execute(item);
-    }
-
-    public void showErrorMsgToast(Book b) {
-        Toast.makeText(getActivity().getApplicationContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
-    }
+    }   
 
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import br.ufu.renova.R;
 import br.ufu.renova.scraper.Book;
 
@@ -77,6 +78,12 @@ public class BookListAdapter extends ArrayAdapter<Book> {
 
             if (errorIcon != null && b.getState().isErrorState) {
                 errorIcon.setVisibility(View.VISIBLE);
+                errorIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         }

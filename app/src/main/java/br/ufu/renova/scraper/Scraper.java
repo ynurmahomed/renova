@@ -41,9 +41,16 @@ public class Scraper {
     }
 
     public static void renew(String patronhost, String sessionId, String username, Book book) throws IOException, BookReservedException, RenewDateException {
-        Document doc = Jsoup.connect(buildRenewURL(patronhost, sessionId, username, book)).get();
 
         Log.d("Scraper", "renewing book " + book.getBarcode() + "...");
+
+        if (book.getState().isErrorState) {
+            Log.d("Scraper", "renew cancelled: " + book.getState().msg);
+            return;
+        }
+
+
+        Document doc = Jsoup.connect(buildRenewURL(patronhost, sessionId, username, book)).get();
 
         Elements tableLines = doc.select("table.outertable > tbody > tr");
         String renewMessage = tableLines.last().text();
