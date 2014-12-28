@@ -4,6 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +25,11 @@ import java.util.Locale;
  */
 public class BookListAdapter extends ArrayAdapter<Book> {
 
+    private int mShortAnimationDuration;
+
     public BookListAdapter(Context context, int resource, List<Book> objects) {
         super(context, resource, objects);
+        mShortAnimationDuration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
     @Override
@@ -77,17 +84,37 @@ public class BookListAdapter extends ArrayAdapter<Book> {
             }
 
             if (errorIcon != null && b.getState().isErrorState) {
+                
+                zoomIn(errorIcon);
                 errorIcon.setVisibility(View.VISIBLE);
+
                 errorIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
             }
+
+            if (errorIcon != null && !b.getState().isErrorState) {
+                errorIcon.setVisibility(View.INVISIBLE);
+            }
         }
 
         return convertView;
+    }
+
+    private void zoomIn(View v) {
+        ScaleAnimation scale = new ScaleAnimation(0.0f,1.0f,0.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+
+        AnimationSet anim = new AnimationSet(true);
+
+        anim.addAnimation(alpha);
+        anim.addAnimation(scale);
+        anim.setDuration(mShortAnimationDuration);
+
+        v.startAnimation(anim);
     }
 }

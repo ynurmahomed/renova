@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.*;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -181,9 +183,15 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
 
         LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
         final TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
-        ImageView errorIcon = (ImageView) item.view.findViewById(R.id.book_renew_warning);
+        final ImageView errorIcon = (ImageView) item.view.findViewById(R.id.book_renew_warning);
 
-        errorIcon.setVisibility(View.INVISIBLE);
+        if (errorIcon.getVisibility() == View.VISIBLE) {
+            ScaleAnimation scale = new ScaleAnimation(1.0f,0.0f,1.0f,0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            scale.setDuration(mShortAnimationDuration);
+            errorIcon.startAnimation(scale);
+            errorIcon.setVisibility(View.INVISIBLE);
+        }
+
         crossfade(renew_date, progress);
         new RenewTask().execute(item);
     }
