@@ -1,5 +1,6 @@
 package br.ufu.renova;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -44,6 +45,8 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
 
     private OnFragmentInteractionListener mListener;
 
+    private int mShortAnimationDuration;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -87,6 +90,9 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
         booksListView.setAdapter(mAdapter);
 
         booksListView.setOnItemClickListener(this);
+
+        mShortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
 
         return rootView;
     }
@@ -153,19 +159,15 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
             } catch (RenewDateException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
         @Override
         protected void onPostExecute(Void nothing) {
-            LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
+            final LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
             TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
-
             mAdapter.notifyDataSetChanged();
-
-            renew_date.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
+            crossfade(progress, renew_date);
         }
     }
 
@@ -178,12 +180,48 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
         item.view = view;
 
         LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
-        TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
+        final TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
+        ImageView errorIcon = (ImageView) item.view.findViewById(R.id.book_renew_warning);
 
-        renew_date.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
-
+        errorIcon.setVisibility(View.INVISIBLE);
+        crossfade(renew_date, progress);
         new RenewTask().execute(item);
-    }   
+    }
+
+    public void crossfade(final View x, View y) {
+
+        y.setAlpha(0);
+        y.setVisibility(View.VISIBLE);
+
+        y.animate()
+                .alpha(1)
+                .setDuration(mShortAnimationDuration)
+                .setListener(null);
+
+        x.animate()
+                .alpha(0)
+                .setDuration(mShortAnimationDuration)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        x.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+    }
 
 }
