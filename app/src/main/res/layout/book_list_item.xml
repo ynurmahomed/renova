@@ -18,8 +18,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/book_title_text_view"
             android:text="Title"
-            android:textColor="@color/abc_primary_text_material_light"
-            android:singleLine="true"/>
+            android:textColor="@color/abc_primary_text_material_light"/>
 
         <View
                 android:layout_width="fill_parent"
@@ -34,8 +33,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/book_authors_text_view"
             android:text="Authors"
-            android:textColor="@color/abc_primary_text_material_light"
-            android:singleLine="true"/>
+            android:textColor="@color/abc_primary_text_material_light"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -44,8 +42,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/book_call_number_text_view"
                 android:text="Call Number"
-                android:textColor="@color/abc_primary_text_material_light"
-                android:singleLine="true"/>
+                android:textColor="@color/abc_primary_text_material_light"/>
 
         <RelativeLayout
                 android:layout_width="match_parent"
