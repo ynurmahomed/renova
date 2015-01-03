@@ -1,66 +1,51 @@
 package br.ufu.renova;
 
-import android.animation.Animator;
 import android.app.Activity;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.*;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import br.ufu.renova.scraper.Book;
-import br.ufu.renova.scraper.BookReservedException;
-import br.ufu.renova.scraper.HttpClient;
-import br.ufu.renova.scraper.RenewDateException;
 
-import java.io.IOException;
+import java.util.Arrays;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BookListFragment.OnFragmentInteractionListener} interface
+ * {@link br.ufu.renova.BookListFragment.BookClickListener} interface
  * to handle interaction events.
  * Use the {@link BookListFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
  */
-public class BookListFragment extends Fragment implements AdapterView.OnItemClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_LIBRARY = "library";
+public class BookListFragment extends Fragment implements BookListAdapter.ItemClickListener {
+
+    private static final String ARG_BOOKS = "books";
     public static final CharSequence TITLE = "Livros";
 
-    // TODO: Rename and change types of parameters
-    private HttpClient library;
-    private ListView booksListView;
-    private BookListAdapter mAdapter;
+    private Book[] mBooks;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
-    private OnFragmentInteractionListener mListener;
+    private BookClickListener mBookClickListener;
 
-    private int mShortAnimationDuration;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param library Parameter 1.
+     * @param books Parameter 1.
      * @return A new instance of fragment BookListFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static BookListFragment newInstance(HttpClient library) {
+    public static BookListFragment newInstance(Object[] books) {
         BookListFragment fragment = new BookListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_LIBRARY, library);
+        args.putSerializable(ARG_BOOKS, Arrays.copyOf(books, books.length, Book[].class));
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,7 +57,7 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            library = (HttpClient) getArguments().getSerializable(ARG_LIBRARY);
+            mBooks = (Book[]) getArguments().getSerializable(ARG_BOOKS);
         }
     }
 
@@ -81,36 +66,25 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_book_list, container, false);
-        View adBanner = inflater.inflate(R.layout.banner, null);
+        //View adBanner = inflater.inflate(R.layout.banner, null);
 
-        booksListView = (ListView) rootView.findViewById(R.id.books_list_view);
-        booksListView.setEmptyView(rootView.findViewById(R.id.empty_books_list_message));
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.books_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new BookListAdapter(getActivity().getApplicationContext(), R.layout.book_list_item, library.getBooks());
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        booksListView.addFooterView(adBanner);
-        booksListView.setAdapter(mAdapter);
-
-        booksListView.setOnItemClickListener(this);
-
-        mShortAnimationDuration = getResources().getInteger(
-                android.R.integer.config_shortAnimTime);
+        mAdapter = new BookListAdapter(getActivity().getApplicationContext(), mBooks, this);
+        mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mBookClickListener = (BookClickListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement SettingsFragmentListener");
@@ -120,7 +94,15 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mBookClickListener = null;
+    }
+
+    @Override
+    public void onItemClick(View view) {
+        int position = mRecyclerView.getChildPosition(view);
+        if (mBookClickListener != null) {
+            mBookClickListener.onBookClick(position);
+        }
     }
 
     /**
@@ -133,103 +115,11 @@ public class BookListFragment extends Fragment implements AdapterView.OnItemClic
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public interface BookClickListener {
+        public void onBookClick(int position);
     }
 
-    private class RenewTaskItem {
-        View view;
-        Book book;
+    public void notifyItemChanged(int position) {
+        mAdapter.notifyItemChanged(position);
     }
-
-    private class RenewTask extends AsyncTask<RenewTaskItem, Void, Void> {
-
-        private RenewTaskItem item;
-
-        @Override
-        protected Void doInBackground(RenewTaskItem... params) {
-            item = params[0];
-
-            try {
-                library.renew(item.book);
-            } catch (IOException e) {
-                Log.d("RenewTask", e.toString());
-                e.printStackTrace();
-            } catch (BookReservedException e) {
-                e.printStackTrace();
-            } catch (RenewDateException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void nothing) {
-            final LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
-            TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
-            mAdapter.notifyDataSetChanged();
-            crossfade(progress, renew_date);
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Book b = library.getBooks().get(position);
-
-        RenewTaskItem item = new RenewTaskItem();
-        item.book = b;
-        item.view = view;
-
-        LinearLayout progress = (LinearLayout) item.view.findViewById(R.id.book_renew_activity_circle);
-        final TextView renew_date = (TextView) item.view.findViewById(R.id.book_renew_date_text_view);
-        final ImageView errorIcon = (ImageView) item.view.findViewById(R.id.book_renew_warning);
-
-        if (errorIcon.getVisibility() == View.VISIBLE) {
-            ScaleAnimation scale = new ScaleAnimation(1.0f,0.0f,1.0f,0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            scale.setDuration(mShortAnimationDuration);
-            errorIcon.startAnimation(scale);
-            errorIcon.setVisibility(View.INVISIBLE);
-        }
-
-        crossfade(renew_date, progress);
-        new RenewTask().execute(item);
-    }
-
-    public void crossfade(final View x, View y) {
-
-        y.setAlpha(0);
-        y.setVisibility(View.VISIBLE);
-
-        y.animate()
-                .alpha(1)
-                .setDuration(mShortAnimationDuration)
-                .setListener(null);
-
-        x.animate()
-                .alpha(0)
-                .setDuration(mShortAnimationDuration)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        x.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-    }
-
 }

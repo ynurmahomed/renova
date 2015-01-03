@@ -1,6 +1,8 @@
 package br.ufu.renova;
 
+import android.animation.Animator;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,96 +10,163 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import br.ufu.renova.R;
 import br.ufu.renova.scraper.Book;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by yassin on 01/11/14.
  */
-public class BookListAdapter extends ArrayAdapter<Book> {
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
 
+    private Book[] mDataset;
+    private ItemClickListener mItemClickListener;
+    private DateFormat mDateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
+    private Context mContext;
     private int mShortAnimationDuration;
 
-    public BookListAdapter(Context context, int resource, List<Book> objects) {
-        super(context, resource, objects);
-        mShortAnimationDuration = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
+    private ScaleAnimation mScaleIn = new ScaleAnimation(0.0f,1.0f,0.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    private ScaleAnimation mScaleOut = new ScaleAnimation(1.0f,0.0f,1.0f,0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    private AlphaAnimation mFadeIn = new AlphaAnimation(0.0f, 1.0f);
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView titleTextView;
+        public TextView authorsTextView;
+        public TextView renewDateTextView;
+        public TextView callNumberTextView;
+        public ImageView errorIconImageView;
+        public LinearLayout loader;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = (TextView) itemView.findViewById(R.id.book_title_text_view);
+            authorsTextView = (TextView) itemView.findViewById(R.id.book_authors_text_view);
+            renewDateTextView = (TextView) itemView.findViewById(R.id.book_renew_date_text_view);
+            callNumberTextView = (TextView) itemView.findViewById(R.id.book_call_number_text_view);
+            errorIconImageView = (ImageView) itemView.findViewById(R.id.book_renew_warning);
+            loader = (LinearLayout) itemView.findViewById(R.id.book_renew_activity_circle);
+        }
+    }
+
+    public BookListAdapter(Context context, Book[] books, ItemClickListener onClickListener) {
+        mContext = context;
+        mDataset = books;
+        mItemClickListener = onClickListener;
+        mShortAnimationDuration = mContext.getResources().getInteger(android.R.integer.config_shortAnimTime);
+
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                               .inflate(R.layout.book_list_item, parent, false);
 
-        if (convertView == null) {
-            LayoutInflater li = LayoutInflater.from(getContext());
-            convertView = li.inflate(R.layout.book_list_item, null);
+        final ViewHolder vh = new ViewHolder(v);
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crossfade(vh.renewDateTextView, vh.loader);
+                if (vh.errorIconImageView.getVisibility() == View.VISIBLE) {
+                    zoomOut(vh.errorIconImageView);
+                }
+                mItemClickListener.onItemClick(v);
+            }
+        });
+
+        return vh;
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final Book book = mDataset[position];
+
+        holder.titleTextView.setText(book.getTitle());
+        holder.authorsTextView.setText(book.getAuthors());
+        holder.callNumberTextView.setText(book.getCallNumber());
+        holder.renewDateTextView.setText(mDateFormat.format(book.getExpiration()));
+
+        if (holder.loader.getVisibility() == View.VISIBLE) {
+            crossfade(holder.loader, holder.renewDateTextView);
         }
 
-        final Book b = getItem(position);
+        if (book.getState().isErrorState) {
+            zoomIn(holder.errorIconImageView);
+        }
 
-        if (b != null) {
-            final TextView titleTextView = (TextView) convertView.findViewById(R.id.book_title_text_view);
-            final TextView authorsTextView = (TextView) convertView.findViewById(R.id.book_authors_text_view);
-            TextView renewDateTextView = (TextView) convertView.findViewById(R.id.book_renew_date_text_view);
-            TextView callNumberTextView = (TextView) convertView.findViewById(R.id.book_call_number_text_view);
-            ImageView errorIcon = (ImageView) convertView.findViewById(R.id.book_renew_warning);
-
-            if (titleTextView != null) {
-                titleTextView.setText(b.getTitle());
+        holder.errorIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, book.getState().msg, Toast.LENGTH_SHORT).show();
             }
+        });
+    }
 
-            if (authorsTextView != null) {
-                authorsTextView.setText(b.getAuthors());
-            }
+    @Override
+    public int getItemCount() {
+        return mDataset.length;
+    }
 
-            if (callNumberTextView != null) {
-                callNumberTextView.setText(b.getCallNumber());
-            }
+    public interface ItemClickListener {
+        public void onItemClick(View view);
+    }
 
-            if (renewDateTextView != null) {
-                DateFormat dateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
-                renewDateTextView.setText(dateFormat.format(b.getExpiration()));
-            }
+    private void crossfade(final View x, View y) {
 
-            if (errorIcon != null && b.getState().isErrorState) {
+        y.setAlpha(0);
+        y.setVisibility(View.VISIBLE);
 
-                zoomIn(errorIcon);
-                errorIcon.setVisibility(View.VISIBLE);
+        y.animate()
+                .alpha(1)
+                .setDuration(mShortAnimationDuration)
+                .setListener(null);
 
-                errorIcon.setOnClickListener(new View.OnClickListener() {
+        x.animate()
+                .alpha(0)
+                .setDuration(mShortAnimationDuration)
+                .setListener(new Animator.AnimatorListener() {
                     @Override
-                    public void onClick(View v) {
-                    Toast.makeText(getContext(), b.getState().msg, Toast.LENGTH_SHORT).show();
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        x.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
                     }
                 });
-
-            }
-
-            if (errorIcon != null && !b.getState().isErrorState) {
-                errorIcon.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        return convertView;
     }
 
     private void zoomIn(View v) {
-        ScaleAnimation scale = new ScaleAnimation(0.0f,1.0f,0.0f,1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
-
         AnimationSet anim = new AnimationSet(true);
-
-        anim.addAnimation(alpha);
-        anim.addAnimation(scale);
+        anim.addAnimation(mFadeIn);
+        anim.addAnimation(mScaleIn);
         anim.setDuration(mShortAnimationDuration);
-
         v.startAnimation(anim);
+        v.setVisibility(View.VISIBLE);
+    }
+
+    private void zoomOut(View v) {
+        AnimationSet anim = new AnimationSet(true);
+        anim.addAnimation(mScaleOut);
+        anim.setDuration(mShortAnimationDuration);
+        v.startAnimation(anim);
+        v.setVisibility(View.INVISIBLE);
     }
 }

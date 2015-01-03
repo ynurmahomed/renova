@@ -1,25 +1,32 @@
 package br.ufu.renova;
 
 import android.app.AlertDialog;
-import android.content.*;
-import android.net.Uri;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import br.ufu.renova.scraper.BookReservedException;
 import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.RenewDateException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.SettingsFragmentListener,
         NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
-        BookListFragment.OnFragmentInteractionListener {
+        BookListFragment.BookClickListener {
 
     public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
 
@@ -148,8 +155,8 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onBookClick(int position) {
+        new RenewTask().execute(position);
     }
 
     @Override
@@ -157,7 +164,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(getString(R.string.preference_notifications), result);
         editor.commit();
-        SettingsFragment settingsFragment = (SettingsFragment) appPagerAdapter.getFragment(viewPager.getCurrentItem());
+        SettingsFragment settingsFragment = (SettingsFragment) appPagerAdapter.getFragment(AppPagerAdapter.SETTINGS_FRAGMENT);
         settingsFragment.setNumDays(result);
 
 
@@ -166,6 +173,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     private class AppPagerAdapter extends FragmentPagerAdapter {
 
         private Map<Integer, Fragment> mPageReferenceMap;
+
+        public final static int BOOK_LIST_FRAGMENT = 0;
+        public final static int SETTINGS_FRAGMENT = 1;
 
         public AppPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -177,9 +187,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             Fragment fragment = null;
             Context appContext = AppActivity.this;
 
-            if (index == 0) {
-                fragment = BookListFragment.newInstance(library);
-            } else if (index == 1) {
+            if (index == BOOK_LIST_FRAGMENT) {
+                fragment = BookListFragment.newInstance(library.getBooks().toArray());
+            } else if (index == SETTINGS_FRAGMENT) {
                 int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
                 String resource = appContext.getString(R.string.preference_notifications);
                 fragment = SettingsFragment.newInstance(prefs.getInt(resource, defaultValue));
@@ -202,9 +212,9 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position == 0) {
+            if (position == BOOK_LIST_FRAGMENT) {
                 return BookListFragment.TITLE;
-            } else if (position == 1) {
+            } else if (position == SETTINGS_FRAGMENT) {
                 return SettingsFragment.TITLE;
             }
             return "";
@@ -212,6 +222,34 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         public Fragment getFragment(int index) {
             return mPageReferenceMap.get(index);
+        }
+    }
+
+    private class RenewTask extends AsyncTask<Integer, Void, Void> {
+
+        private int mPosition;
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            mPosition = params[0];
+
+            try {
+                library.renew(library.getBooks().get(mPosition));
+            } catch (IOException e) {
+                Log.d("RenewTask", e.toString());
+                e.printStackTrace();
+            } catch (BookReservedException e) {
+                e.printStackTrace();
+            } catch (RenewDateException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void nothing) {
+            BookListFragment f = (BookListFragment) appPagerAdapter.getFragment(AppPagerAdapter.BOOK_LIST_FRAGMENT);
+            f.notifyItemChanged(mPosition);
         }
     }
 

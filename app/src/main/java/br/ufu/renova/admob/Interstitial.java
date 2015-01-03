@@ -31,7 +31,7 @@ public class Interstitial {
         interstitial.setAdUnitId(AD_INTERSTITIAL_ID);
         interstitial.loadAd(adRequest);
 
-        // Prepare an Interstitial Ad Listener
+        // Prepare an Interstitial Ad BookClickListener
         interstitial.setAdListener(new AdListener() {
             public void onAdLoaded() {
                 // Call displayInterstitial() function
@@ -53,7 +53,7 @@ public class Interstitial {
         interstitial.setAdUnitId(AD_INTERSTITIAL_ID);
         interstitial.loadAd(adRequest);
 
-        // Prepare an Interstitial Ad Listener
+        // Prepare an Interstitial Ad BookClickListener
         interstitial.setAdListener(new AdListener() {
             public void onAdLoaded() {
                 // Call displayInterstitial() function
