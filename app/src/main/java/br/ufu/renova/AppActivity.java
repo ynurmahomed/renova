@@ -45,7 +45,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         viewPager = (ViewPager) findViewById(R.id.app_view_pager);
         viewPager.setAdapter(appPagerAdapter);
 
-        // Show Interstitial
         new Interstitial(this).getInterstitial().displayInterstitial();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -2,7 +2,10 @@ package br.ufu.renova;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import br.ufu.renova.R;
+import br.ufu.renova.admob.Interstitial;
+
+import java.util.Calendar;
 
 
 /**
@@ -33,6 +39,8 @@ public class SettingsFragment extends Fragment {
     private SettingsFragmentListener mListener;
 
     private TextView notificationPrefText;
+
+    private Calendar currentDate = null;
 
     /**
      * Use this factory method to create a new instance of
@@ -86,6 +94,22 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        LinearLayout rateRenovapp = (LinearLayout) rootView.findViewById(R.id.rate_renovapp);
+        rateRenovapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRateRenovappClick((Activity) v.getContext());
+            }
+        });
+
+        LinearLayout helpUs = (LinearLayout) rootView.findViewById(R.id.help_us);
+        helpUs.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onHelpUsClick(v);
+            }
+        });
+
         LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
         logoutPref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,9 +124,23 @@ public class SettingsFragment extends Fragment {
     public void onShareClick() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Renove seus livros na UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
+        String shareBody = "Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
+    }
+
+    public void onRateRenovappClick(Activity activity){
+        Uri marketUri = Uri.parse("market://details?id=br.ufu.renova");
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
+        activity.startActivity(marketIntent);
+    }
+
+    public void onHelpUsClick(View v) {
+        Calendar today = Calendar.getInstance();
+        if( this.currentDate == null || this.amIOutdated(today, this.currentDate) ){
+            this.currentDate = today;
+            new Interstitial((Activity) v.getContext()).getInterstitial().displayInterstitial();
+        }
     }
 
     public void onLogoutPreferenceClick() {
@@ -150,6 +188,17 @@ public class SettingsFragment extends Fragment {
 
     private String getNotificationSubtitle(int numDays) {
         return getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
+    }
+
+    private boolean amIOutdated(Calendar today, Calendar suspicious){
+        if(today.get(Calendar.YEAR) > suspicious.get(Calendar.YEAR))
+            return true; //I'm outdated
+        else if(today.get(Calendar.MONTH) > suspicious.get(Calendar.MONTH))
+            return true; //I'm outdated
+        else if(today.get(Calendar.DAY_OF_MONTH) > suspicious.get(Calendar.DAY_OF_MONTH))
+            return true; //I'm outdated
+        else
+            return false;
     }
 
 }
