@@ -31,7 +31,9 @@
             android:label="@string/title_activity_app" >
         </activity>
 
-        <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+                  android:theme="@android:style/Theme.Translucent"/>
 
         <service
                 android:name="br.ufu.renova.notification.NotificationService"
