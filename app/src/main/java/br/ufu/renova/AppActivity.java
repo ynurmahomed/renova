@@ -1,7 +1,10 @@
 package br.ufu.renova;
 
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -44,9 +47,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         viewPager = (ViewPager) findViewById(R.id.app_view_pager);
         viewPager.setAdapter(appPagerAdapter);
-
-        // Show Interstitial
-        new Interstitial(this).getInterstitial().displayInterstitial();
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -125,6 +125,27 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         int numDays = prefs.getInt(numDaysPref, defaultValue);
         DialogFragment numberPickerDialog = NumberPickerDialogFragment.newInstance("Antecedência", 1,7, numDays, R.plurals.dia);
         numberPickerDialog.show(getSupportFragmentManager(), "NumberPicker");
+    }
+
+    @Override
+    public void onSharePreferenceClick() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
+    }
+
+    @Override
+    public void onRatePreferenceClick() {
+        Uri marketUri = Uri.parse("market://details?id=br.ufu.renova");
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
+        startActivity(marketIntent);
+    }
+
+    @Override
+    public void onHelpUsPreferenceClick() {
+        new Interstitial(this).getInterstitial().displayInterstitial();
     }
 
     @Override
