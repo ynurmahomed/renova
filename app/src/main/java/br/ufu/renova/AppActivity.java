@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import br.ufu.renova.admob.Interstitial;
 import br.ufu.renova.scraper.HttpClient;
 
 import java.util.HashMap;
@@ -124,6 +125,27 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         int numDays = prefs.getInt(numDaysPref, defaultValue);
         DialogFragment numberPickerDialog = NumberPickerDialogFragment.newInstance("Antecedência", 1,7, numDays, R.plurals.dia);
         numberPickerDialog.show(getSupportFragmentManager(), "NumberPicker");
+    }
+
+    @Override
+    public void onSharePreferenceClick() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
+    }
+
+    @Override
+    public void onRatePreferenceClick() {
+        Uri marketUri = Uri.parse("market://details?id=br.ufu.renova");
+        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
+        startActivity(marketIntent);
+    }
+
+    @Override
+    public void onHelpUsPreferenceClick() {
+        new Interstitial(this).getInterstitial().displayInterstitial();
     }
 
     @Override

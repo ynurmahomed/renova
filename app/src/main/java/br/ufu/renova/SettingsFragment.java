@@ -1,23 +1,13 @@
 package br.ufu.renova;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
-import br.ufu.renova.R;
-import br.ufu.renova.admob.Interstitial;
-
-import java.util.Calendar;
 
 
 /**
@@ -120,21 +110,21 @@ public class SettingsFragment extends Fragment {
     }
 
     public void onShareClick() {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        String shareBody = "Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        startActivity(Intent.createChooser(sharingIntent, "Compartilhar via"));
+        if (mListener != null) {
+            mListener.onSharePreferenceClick();
+        }
     }
 
     public void onRateRenovappClick(Activity activity){
-        Uri marketUri = Uri.parse("market://details?id=br.ufu.renova");
-        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
-        activity.startActivity(marketIntent);
+        if (mListener != null) {
+            mListener.onRatePreferenceClick();
+        }
     }
 
     public void onHelpUsClick(View v) {
-        new Interstitial((Activity) v.getContext()).getInterstitial().displayInterstitial();
+        if (mListener != null) {
+            mListener.onHelpUsPreferenceClick();
+        }
     }
 
     public void onLogoutPreferenceClick() {
@@ -172,6 +162,9 @@ public class SettingsFragment extends Fragment {
      */
     public interface SettingsFragmentListener {
         public void onNotificationPreferenceClick();
+        public void onSharePreferenceClick();
+        public void onRatePreferenceClick();
+        public void onHelpUsPreferenceClick();
         public void onLogout();
     }
 
