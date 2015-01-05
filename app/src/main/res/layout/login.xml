@@ -34,7 +34,8 @@
         <Button android:id="@+id/login_button"
                 android:text="Entrar"
                 android:layout_marginTop="30dp"
-                style="@style/LoginButton"/>
+                style="@style/LoginButton"
+                android:background="@drawable/button"/>
 
     </LinearLayout>
 </LinearLayout>
