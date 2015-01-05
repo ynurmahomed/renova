@@ -24,8 +24,8 @@
     <string name="logout_preference_value">Sair</string>
     <string name="share_preference_value">Compartilhar</string>
     <string name="rate_renovapp">Avalie o RenovApp</string>
-    <string name="help_us">Quer nos ajudar?</string>
-    <string name="help_us_explanation">Toque aqui uma vez ao dia. Obrigado!</string>
+    <string name="help_us">Ajude o RenovApp</string>
+    <string name="help_us_explanation">Visualize um anúncio</string>
     <string name="preference_first_run">pref_first_run</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-2113484633994413/8374737681</string>
