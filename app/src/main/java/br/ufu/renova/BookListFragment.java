@@ -45,7 +45,7 @@ public class BookListFragment extends Fragment implements BookListAdapter.ItemCl
     public static BookListFragment newInstance(Object[] books) {
         BookListFragment fragment = new BookListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_BOOKS, Arrays.copyOf(books, books.length, Book[].class));
+        args.putSerializable(ARG_BOOKS, books);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +57,8 @@ public class BookListFragment extends Fragment implements BookListAdapter.ItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mBooks = (Book[]) getArguments().getSerializable(ARG_BOOKS);
+            Object[] tmp = (Object[]) getArguments().getSerializable(ARG_BOOKS);
+            mBooks = Arrays.copyOf(tmp, tmp.length, Book[].class);
         }
     }
 

@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.ufu.renova.scraper.Book;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,7 +26,10 @@ import java.util.Locale;
 /**
  * Created by yassin on 01/11/14.
  */
-public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
+public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int TYPE_ITEM = 1;
+    private static final int TYPE_AD = 2;
 
     private Book[] mDataset;
     private ItemClickListener mItemClickListener;
@@ -54,6 +60,38 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         }
     }
 
+    public static class AdViewHolder extends RecyclerView.ViewHolder {
+
+        public AdView adview;
+
+        public AdViewHolder(final View itemView) {
+            super(itemView);
+            adview = (AdView) itemView.findViewById(R.id.ad_view);
+            final AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128")
+                    .addTestDevice("FFA680EF5BC1615AEDF85264F09B8E94")
+                    .build();
+
+            // Start loading the ad in the background.
+            android.os.Handler handler = new android.os.Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    adview.loadAd(adRequest);
+                }
+            });
+            adview.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    super.onAdFailedToLoad(errorCode);
+                    itemView.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+
     public BookListAdapter(Context context, Book[] books, ItemClickListener onClickListener) {
         mContext = context;
         mDataset = books;
@@ -63,54 +101,82 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                               .inflate(R.layout.book_list_item, parent, false);
-
-        final ViewHolder vh = new ViewHolder(v);
-
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                crossfade(vh.renewDateTextView, vh.loader);
-                if (vh.errorIconImageView.getVisibility() == View.VISIBLE) {
-                    zoomOut(vh.errorIconImageView);
-                }
-                mItemClickListener.onItemClick(v);
-            }
-        });
-
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final Book book = mDataset[position];
-
-        holder.titleTextView.setText(book.getTitle());
-        holder.authorsTextView.setText(book.getAuthors());
-        holder.callNumberTextView.setText(book.getCallNumber());
-        holder.renewDateTextView.setText(mDateFormat.format(book.getExpiration()));
-
-        if (holder.loader.getVisibility() == View.VISIBLE) {
-            crossfade(holder.loader, holder.renewDateTextView);
+    public int getItemViewType(int position) {
+        if (position == mDataset.length) {
+            return TYPE_AD;
         }
 
-        if (book.getState().isErrorState) {
-            zoomIn(holder.errorIconImageView);
-        }
-
-        holder.errorIconImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, book.getState().msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        return TYPE_ITEM;
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.length + 1;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v;
+
+        if (viewType == TYPE_AD) {
+
+            v = LayoutInflater.from(parent.getContext())
+                              .inflate(R.layout.banner, parent, false);
+
+            return new AdViewHolder(v);
+
+        } else if (viewType == TYPE_ITEM) {
+
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.book_list_item, parent, false);
+
+            final ViewHolder vh = new ViewHolder(v);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    crossfade(vh.renewDateTextView, vh.loader);
+                    if (vh.errorIconImageView.getVisibility() == View.VISIBLE) {
+                        zoomOut(vh.errorIconImageView);
+                    }
+                    mItemClickListener.onItemClick(v);
+                }
+            });
+
+            return vh;
+        }
+
+        throw new RuntimeException("Invalid ViewHolder type: " + viewType);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        if (holder instanceof ViewHolder) {
+            final Book book = mDataset[position];
+            ViewHolder vh = (ViewHolder) holder;
+
+            vh.titleTextView.setText(book.getTitle());
+            vh.authorsTextView.setText(book.getAuthors());
+            vh.callNumberTextView.setText(book.getCallNumber());
+            vh.renewDateTextView.setText(mDateFormat.format(book.getExpiration()));
+
+            if (vh.loader.getVisibility() == View.VISIBLE) {
+                crossfade(vh.loader, vh.renewDateTextView);
+            }
+
+            if (book.getState().isErrorState) {
+                zoomIn(vh.errorIconImageView);
+            }
+
+            vh.errorIconImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, book.getState().msg, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
 
     public interface ItemClickListener {
