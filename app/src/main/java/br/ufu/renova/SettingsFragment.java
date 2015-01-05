@@ -40,8 +40,6 @@ public class SettingsFragment extends Fragment {
 
     private TextView notificationPrefText;
 
-    private Calendar currentDate = null;
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -136,11 +134,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void onHelpUsClick(View v) {
-        Calendar today = Calendar.getInstance();
-        if( this.currentDate == null || this.amIOutdated(today, this.currentDate) ){
-            this.currentDate = today;
-            new Interstitial((Activity) v.getContext()).getInterstitial().displayInterstitial();
-        }
+        new Interstitial((Activity) v.getContext()).getInterstitial().displayInterstitial();
     }
 
     public void onLogoutPreferenceClick() {
@@ -188,17 +182,6 @@ public class SettingsFragment extends Fragment {
 
     private String getNotificationSubtitle(int numDays) {
         return getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
-    }
-
-    private boolean amIOutdated(Calendar today, Calendar suspicious){
-        if(today.get(Calendar.YEAR) > suspicious.get(Calendar.YEAR))
-            return true; //I'm outdated
-        else if(today.get(Calendar.MONTH) > suspicious.get(Calendar.MONTH))
-            return true; //I'm outdated
-        else if(today.get(Calendar.DAY_OF_MONTH) > suspicious.get(Calendar.DAY_OF_MONTH))
-            return true; //I'm outdated
-        else
-            return false;
     }
 
 }
