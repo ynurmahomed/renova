@@ -19,14 +19,13 @@ android {
         applicationId 'br.ufu.renova'
         minSdkVersion 12
         targetSdkVersion 21
-        versionCode 10009
-        versionName '2.0.4'
+        versionCode 10010
+        versionName '2.0.5'
     }
     buildTypes {
         release {
-            runProguard true
-            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
-            proguardFile 'proguard-rules.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
