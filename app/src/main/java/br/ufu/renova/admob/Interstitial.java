@@ -5,6 +5,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import java.util.Date;
+import java.util.Calendar;
+
 /**
  * Created by pablohpsilva on 11/6/14.
  */
@@ -12,6 +15,7 @@ public class Interstitial {
 
     private InterstitialAd interstitial;
     private Activity activity;
+    Calendar currentDate = null;
 
     //private static final String AD_INTERSTITIAL_ID = "ca-app-pub-6713098943014804/4601996177";
     private static final String AD_INTERSTITIAL_ID = "ca-app-pub-2113484633994413/3386134884";
@@ -25,6 +29,8 @@ public class Interstitial {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128")
                 .addTestDevice("FFA680EF5BC1615AEDF85264F09B8E94")
+                .addTestDevice("90851B6161853CD4D24DD174AC374A75") // Nexus 7
+                .addTestDevice("E0DC64EC0BFF17A4F00640C5294B0128") // Nexus 5
                 .build();
 
         interstitial = new InterstitialAd(this.activity);
