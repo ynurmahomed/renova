@@ -8,8 +8,9 @@ import java.util.*;
  */
 public class MockHttpClient implements IHttpClient {
 
-    @Override
-    public List<Book> getBooks() {
+    private Book[] books;
+
+    public MockHttpClient() {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
@@ -25,7 +26,11 @@ public class MockHttpClient implements IHttpClient {
         b2.setBarcode("987654321");
         b2.setExpiration(tomorrow.getTime());
 
-        Book[] books = {b1, b2};
+        books = new Book[]{b1, b2};
+    }
+
+    @Override
+    public List<Book> getBooks() {
         return Arrays.asList(books);
     }
 
@@ -36,5 +41,10 @@ public class MockHttpClient implements IHttpClient {
         nextWeek.add(Calendar.DAY_OF_MONTH, 7);
         b.setExpiration(nextWeek.getTime());
         b.setState(Book.State.RENEWED);
+        try {
+            Thread.sleep(1000l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
