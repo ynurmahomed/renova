@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             .show();
     }
 
-    private class LoginTask extends AsyncTask<String,Void,HttpClient> {
+    private class LoginTask extends AsyncTask<String,Void,IHttpClient> {
 
         private Exception e = null;
 
@@ -119,13 +120,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
 
         @Override
-        protected HttpClient doInBackground(String... params) {
+        protected IHttpClient doInBackground(String... params) {
             String login = params[0];
             String password = params[1];
 
             try {
 
-                HttpClient library = new HttpClient(login, password);
+                IHttpClient library = new HttpClient(login, password);
 
                 // Grava o login e o password no shared preferences se não estiver gravado.
                 SharedPreferences.Editor editor = prefs.edit();
@@ -153,7 +154,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
 
         @Override
-        protected void onPostExecute(HttpClient library) {
+        protected void onPostExecute(IHttpClient library) {
 
             LoginActivity.this.loginProgress.hide();
 

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by yassin on 04/12/14.
  */
-public class HttpClient implements Serializable {
+public class HttpClient implements IHttpClient {
 
     private String patronhost;
     private String sessionId;
@@ -32,10 +32,12 @@ public class HttpClient implements Serializable {
     }
 
 
+    @Override
     public List<Book> getBooks() {
         return books;
     }
 
+    @Override
     public void renew(Book b) throws RenewDateException, BookReservedException, IOException {
         Scraper.renew(patronhost, sessionId, username, b);
     }

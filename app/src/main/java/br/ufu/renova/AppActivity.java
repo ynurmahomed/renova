@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import br.ufu.renova.scraper.BookReservedException;
 import br.ufu.renova.admob.Interstitial;
-import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.RenewDateException;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
 
     private ViewPager viewPager;
-    private HttpClient library;
+    private IHttpClient library;
     private AppPagerAdapter appPagerAdapter;
     private SharedPreferences prefs;
 
@@ -44,7 +44,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         final ActionBar actionBar = getSupportActionBar();
 
-        library = (HttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
+        library = (IHttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
