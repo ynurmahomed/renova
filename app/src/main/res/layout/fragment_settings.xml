@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/ViewWithPadding"
-    tools:context="br.ufu.renova.SettingsFragment"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              style="@style/ViewWithPadding"
+              tools:context="br.ufu.renova.SettingsFragment"
+              android:orientation="vertical">
 
     <LinearLayout
             android:id="@+id/notification_preference"
@@ -55,9 +55,9 @@
     </LinearLayout>
 
     <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
     <LinearLayout
             android:id="@+id/rate_renovapp"
@@ -86,32 +86,6 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
 
-
-    <LinearLayout
-            android:id="@+id/help_us"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:clickable="true"
-            android:background="?android:attr/selectableItemBackground">
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/help_us"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/help_us_explanation"/>
-
-    </LinearLayout>
-
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
 
     <LinearLayout
             android:id="@+id/logout_preference"

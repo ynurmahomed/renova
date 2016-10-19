@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import br.ufu.renova.scraper.BookReservedException;
-import br.ufu.renova.admob.Interstitial;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.RenewDateException;
 
@@ -146,11 +145,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         Uri marketUri = Uri.parse("market://details?id=br.ufu.renova");
         Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(marketUri);
         startActivity(marketIntent);
-    }
-
-    @Override
-    public void onHelpUsPreferenceClick() {
-        new Interstitial(this).getInterstitial().displayInterstitial();
     }
 
     @Override

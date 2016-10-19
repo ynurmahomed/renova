@@ -9,16 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SettingsFragment.SettingsFragmentListener} interface
- * to handle interaction events.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class SettingsFragment extends Fragment {
     private static final String ARG_NUM_DAYS = "num_days";
 
@@ -31,9 +21,6 @@ public class SettingsFragment extends Fragment {
     private TextView notificationPrefText;
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
      * @param numDays quantos dias antes deve se enviar notificações
      * @return A new instance of fragment SettingsFragment.
      */
@@ -90,14 +77,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        LinearLayout helpUs = (LinearLayout) rootView.findViewById(R.id.help_us);
-        helpUs.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                onHelpUsClick(v);
-            }
-        });
-
         LinearLayout logoutPref = (LinearLayout) rootView.findViewById(R.id.logout_preference);
         logoutPref.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,25 +88,19 @@ public class SettingsFragment extends Fragment {
         return rootView;
     }
 
-    public void onShareClick() {
+    private void onShareClick() {
         if (mListener != null) {
             mListener.onSharePreferenceClick();
         }
     }
 
-    public void onRateRenovappClick(Activity activity){
+    private void onRateRenovappClick(Activity activity){
         if (mListener != null) {
             mListener.onRatePreferenceClick();
         }
     }
 
-    public void onHelpUsClick(View v) {
-        if (mListener != null) {
-            mListener.onHelpUsPreferenceClick();
-        }
-    }
-
-    public void onLogoutPreferenceClick() {
+    private void onLogoutPreferenceClick() {
         if (mListener != null) {
             mListener.onLogout();
         }
@@ -164,7 +137,6 @@ public class SettingsFragment extends Fragment {
         public void onNotificationPreferenceClick();
         public void onSharePreferenceClick();
         public void onRatePreferenceClick();
-        public void onHelpUsPreferenceClick();
         public void onLogout();
     }
 
