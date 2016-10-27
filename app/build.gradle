@@ -13,12 +13,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 24
     buildToolsVersion '21.1.1'
     defaultConfig {
         applicationId 'br.ufu.renova'
         minSdkVersion 12
-        targetSdkVersion 21
+        targetSdkVersion 24
         versionCode 10012
         versionName '2.0.7'
     }
@@ -28,14 +28,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        local {
+        }
+        production {
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'org.jsoup:jsoup:1.8.1'
-    compile 'com.android.support:support-v4:21.0.+'
-    compile 'com.android.support:appcompat-v7:21.0.+'
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.google.android.gms:play-services:6.1.71'
+    compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.google.android.gms:play-services:8.4.0'
 }

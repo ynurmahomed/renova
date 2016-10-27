@@ -1,16 +1,18 @@
 package br.ufu.renova.scraper;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 /**
- * Created by yassin on 10/19/16.
+ * Created by yassin on 04/12/14.
  */
-public class MockHttpClient implements IHttpClient {
+public class HttpClient implements IHttpClient {
 
     private Book[] books;
 
-    public MockHttpClient() {
+    public HttpClient(String username, String password) throws IOException, LoginException {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 

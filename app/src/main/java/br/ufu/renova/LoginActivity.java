@@ -80,7 +80,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
 
 
-
         new LoginTask().execute(login, password);
     }
 
@@ -93,24 +92,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         } catch (IOException e) {
             builder
-                .setTitle(R.string.title_connection_error)
-                .setMessage(R.string.message_connection_error);
+                    .setTitle(R.string.title_connection_error)
+                    .setMessage(R.string.message_connection_error);
 
         } catch (LoginException e) {
             builder
-                .setTitle(R.string.title_incorrect_login)
-                .setMessage(R.string.message_incorrect_login);
+                    .setTitle(R.string.title_incorrect_login)
+                    .setMessage(R.string.message_incorrect_login);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         builder
-            .setPositiveButton("OK", null)
-            .show();
+                .setPositiveButton("OK", null)
+                .show();
     }
 
-    private class LoginTask extends AsyncTask<String,Void,IHttpClient> {
+    private class LoginTask extends AsyncTask<String, Void, IHttpClient> {
 
         private Exception e = null;
 

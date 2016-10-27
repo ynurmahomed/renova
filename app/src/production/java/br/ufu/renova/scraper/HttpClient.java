@@ -1,7 +1,6 @@
 package br.ufu.renova.scraper;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
 
