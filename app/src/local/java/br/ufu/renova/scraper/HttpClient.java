@@ -1,5 +1,7 @@
 package br.ufu.renova.scraper;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -12,7 +14,7 @@ public class HttpClient implements IHttpClient {
 
     private Book[] books;
 
-    public HttpClient(String username, String password) throws IOException, LoginException {
+    public HttpClient(String username, String password) throws ScrapeException, LoginException, IOException {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
@@ -46,7 +48,7 @@ public class HttpClient implements IHttpClient {
         try {
             Thread.sleep(1000l);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getName(), "", e);
         }
     }
 }

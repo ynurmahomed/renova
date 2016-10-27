@@ -16,9 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import br.ufu.renova.scraper.BookReservedException;
 import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.RenewDateException;
+import br.ufu.renova.scraper.RenewException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -252,13 +251,8 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
             try {
                 library.renew(library.getBooks().get(mPosition));
-            } catch (IOException e) {
-                Log.d("RenewTask", e.toString());
-                e.printStackTrace();
-            } catch (BookReservedException e) {
-                e.printStackTrace();
-            } catch (RenewDateException e) {
-                e.printStackTrace();
+            } catch (IOException | RenewException e) {
+                Log.e(this.getClass().getName(), "", e);
             }
             return null;
         }

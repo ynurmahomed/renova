@@ -17,6 +17,7 @@ import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.scraper.HttpClient;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
+import br.ufu.renova.scraper.ScrapeException;
 
 import java.io.IOException;
 
@@ -101,7 +102,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     .setMessage(R.string.message_incorrect_login);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            builder
+                    .setTitle(R.string.title_generic_error)
+                    .setMessage(R.string.message_unprocessable_response);
+            Log.e(this.getClass().getName(), "", e);
         }
 
         builder
@@ -139,14 +143,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                 return library;
 
-            } catch (IOException e) {
+            } catch (IOException | ScrapeException | LoginException e) {
                 this.e = e;
-                Log.d("LoginTask", e.toString());
-                e.printStackTrace();
-            } catch (LoginException e) {
-                this.e = e;
-                Log.d("LoginTask", "Login Error");
-                e.printStackTrace();
+                Log.e(this.getClass().getName(), "", e);
             }
 
             return null;

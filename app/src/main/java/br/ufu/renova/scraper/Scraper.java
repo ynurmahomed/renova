@@ -25,7 +25,7 @@ public class Scraper {
      */
     private static final String AUTHORS_INVALID_CHAR_REGEX = "[.\\[\\]-]";
 
-    public static String login(String patronhost, String username, String password) throws IOException, LoginException {
+    public static String login(String patronhost, String username, String password) throws LoginException, IOException {
 
         Document doc = Jsoup.connect(buildLoginURL(patronhost, username, password)).get();
 
@@ -40,7 +40,7 @@ public class Scraper {
         return scrapeSessionId(doc);
     }
 
-    public static void renew(String patronhost, String sessionId, String username, Book book) throws IOException, BookReservedException, RenewDateException {
+    public static void renew(String patronhost, String sessionId, String username, Book book) throws RenewException, IOException {
 
         Log.d("Scraper", "renewing book " + book.getBarcode() + "...");
 
@@ -77,8 +77,7 @@ public class Scraper {
             }
 
         } catch (ParseException e) {
-            Log.d("Scraper", "renew failed: " + renewMessage);
-            e.printStackTrace();
+            Log.e("Scraper", "renew failed: ", e);
         }
 
     }
@@ -126,7 +125,7 @@ public class Scraper {
                 .toString();
     }
 
-    public static String scrapePatronhost() throws IOException {
+    public static String scrapePatronhost() throws ScrapeException, IOException {
         Document doc = Jsoup.connect(URL).get();
         String patronhost = doc.select("input[name=patronhost]")
                                .first()
@@ -149,12 +148,12 @@ public class Scraper {
         return sessionId;
     }
 
-    public static List<Book> scrapeBooks(String sessionId) throws ParseException, IOException, SessionException {
+    public static List<Book> scrapeBooks(String sessionId) throws SessionExpiredException, ScrapeException, IOException {
 
         Document doc = Jsoup.connect(buildBooksURL(sessionId)).get();
 
         if (isSessionExpired(doc)) {
-            throw new SessionException();
+            throw new SessionExpiredException();
         }
 
         Elements bookTableRows = doc.select("table.patSumCheckedOutTable > tbody > tr:not(:first-child)");
@@ -194,8 +193,12 @@ public class Scraper {
             }
 
             // Parse das datas
-            expirations[i] = dateFormat.parse(expirationDates.get(i)
-                                                             .text());
+            try {
+                expirations[i] = dateFormat.parse(expirationDates.get(i)
+                                                                 .text());
+            } catch (ParseException e) {
+                throw new ScrapeException(e);
+            }
 
             // Cria os livros
             Book b = new Book();

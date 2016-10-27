@@ -11,5 +11,5 @@ public interface IHttpClient extends Serializable {
 
     List<Book> getBooks();
 
-    void renew(Book b) throws RenewDateException, BookReservedException, IOException;
+    void renew(Book b) throws IOException, RenewException;
 }

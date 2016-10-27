@@ -1,7 +1,8 @@
 package br.ufu.renova.scraper;
 
+import android.util.Log;
+
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class HttpClient implements IHttpClient {
 
     private List<Book> books;
 
-    public HttpClient(String username, String password) throws IOException, LoginException {
+    public HttpClient(String username, String password) throws ScrapeException, LoginException, IOException {
 
         this.username = username;
         patronhost = Scraper.scrapePatronhost();
@@ -23,10 +24,8 @@ public class HttpClient implements IHttpClient {
 
         try {
             books = Scraper.scrapeBooks(sessionId);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (SessionException e) {
-            e.printStackTrace();
+        } catch (ScrapeException | SessionExpiredException e) {
+            Log.e(this.getClass().getName(), "", e);
         }
     }
 
@@ -37,7 +36,7 @@ public class HttpClient implements IHttpClient {
     }
 
     @Override
-    public void renew(Book b) throws RenewDateException, BookReservedException, IOException {
+    public void renew(Book b) throws RenewException, IOException {
         Scraper.renew(patronhost, sessionId, username, b);
     }
 }

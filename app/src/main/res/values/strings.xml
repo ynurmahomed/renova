@@ -37,5 +37,7 @@
     <string name="leave_dialog_positive_text">Sair</string>
 
     <string name="number_picker_dialog_positive_text">Selecionar</string>
+    <string name="title_generic_error">Erro</string>
+    <string name="message_unprocessable_response">Não foi possível processar a resposta do servidor</string>
 
 </resources>

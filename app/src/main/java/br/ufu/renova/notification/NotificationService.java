@@ -10,6 +10,7 @@ import br.ufu.renova.scraper.Book;
 import br.ufu.renova.scraper.HttpClient;
 import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.R;
+import br.ufu.renova.scraper.ScrapeException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,10 +55,8 @@ public class NotificationService extends Service {
                             sendBroadcast(i);
                         }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (LoginException e) {
-                        e.printStackTrace();
+                    } catch (IOException | ScrapeException | LoginException e) {
+                        Log.e(this.getClass().getName(), "", e);
                     }
                 }
 
