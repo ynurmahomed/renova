@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import br.ufu.renova.login.LoginActivity;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.RenewException;
 
