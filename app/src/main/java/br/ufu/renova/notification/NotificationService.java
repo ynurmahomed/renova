@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 import br.ufu.renova.scraper.Book;
-import br.ufu.renova.scraper.HttpClient;
+import br.ufu.renova.scraper.UFUHttpClient;
 import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.R;
 import br.ufu.renova.scraper.ScrapeException;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class NotificationService extends Service {
 
-    private HttpClient library;
+    private UFUHttpClient library;
     private SharedPreferences prefs;
 
     @Override
@@ -39,7 +39,8 @@ public class NotificationService extends Service {
 
                     try {
 
-                        library = new HttpClient(login, password);
+                        library = UFUHttpClient.getInstance();
+                        library.login(login, password);
                         List<Book> books = library.getBooks();
                         List<Book> toExpire = new ArrayList<Book>();
 

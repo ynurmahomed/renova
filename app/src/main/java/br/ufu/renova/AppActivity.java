@@ -17,11 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import br.ufu.renova.login.LoginActivity;
-import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.RenewException;
+import br.ufu.renova.scraper.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,12 +30,15 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
         BookListFragment.BookClickListener {
 
-    public static final String EXTRA_LIBRARY_CLIENT = "EXTRA_LIBRARY_CLIENT";
-
     private ViewPager viewPager;
+
     private IHttpClient library;
+
     private AppPagerAdapter appPagerAdapter;
+
     private SharedPreferences prefs;
+
+    private List<Book> mBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,13 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         final ActionBar actionBar = getSupportActionBar();
 
-        library = (IHttpClient) getIntent().getSerializableExtra(EXTRA_LIBRARY_CLIENT);
+        mBooks = new ArrayList<>();
+        library = UFUHttpClient.getInstance();
+        try {
+            mBooks = library.getBooks();
+        } catch (IOException | SessionExpiredException | ScrapeException e) {
+            Log.e(this.getClass().getName(), "", e);
+        }
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -205,7 +215,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             Context appContext = AppActivity.this;
 
             if (index == BOOK_LIST_FRAGMENT) {
-                fragment = BookListFragment.newInstance(library.getBooks().toArray());
+                fragment = BookListFragment.newInstance(mBooks.toArray());
             } else if (index == SETTINGS_FRAGMENT) {
                 int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
                 String resource = appContext.getString(R.string.preference_notifications);
@@ -251,7 +261,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             mPosition = params[0];
 
             try {
-                library.renew(library.getBooks().get(mPosition));
+                library.renew(mBooks.get(mPosition));
             } catch (IOException | RenewException e) {
                 Log.e(this.getClass().getName(), "", e);
             }

@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface IHttpClient extends Serializable {
 
-    List<Book> getBooks();
+    void login(String username, String password) throws IOException, LoginException, ScrapeException;
+
+    List<Book> getBooks() throws IOException, SessionExpiredException, ScrapeException;
 
     void renew(Book b) throws IOException, RenewException;
 }

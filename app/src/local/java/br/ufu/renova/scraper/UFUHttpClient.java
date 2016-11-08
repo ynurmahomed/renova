@@ -10,11 +10,20 @@ import java.util.List;
 /**
  * Created by yassin on 04/12/14.
  */
-public class HttpClient implements IHttpClient {
+public class UFUHttpClient implements IHttpClient {
+
+    private static UFUHttpClient INSTANCE;
 
     private Book[] books;
 
-    public HttpClient(String username, String password) throws ScrapeException, LoginException, IOException {
+    public static UFUHttpClient getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UFUHttpClient();
+        }
+        return INSTANCE;
+    }
+
+    private UFUHttpClient() {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
@@ -34,6 +43,11 @@ public class HttpClient implements IHttpClient {
     }
 
     @Override
+    public void login(String username, String password) throws IOException, LoginException, ScrapeException {
+
+    }
+
+    @Override
     public List<Book> getBooks() {
         return Arrays.asList(books);
     }
@@ -46,7 +60,7 @@ public class HttpClient implements IHttpClient {
         b.setExpiration(nextWeek.getTime());
         b.setState(Book.State.RENEWED);
         try {
-            Thread.sleep(1000l);
+            Thread.sleep(1000L);
         } catch (InterruptedException e) {
             Log.e(this.getClass().getName(), "", e);
         }

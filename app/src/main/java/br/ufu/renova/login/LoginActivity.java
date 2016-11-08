@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import br.ufu.renova.AppActivity;
 import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
+import br.ufu.renova.scraper.UFUHttpClient;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
 
@@ -53,7 +55,9 @@ public class LoginActivity extends Activity implements LoginContract.View {
         mLoginProgress.setMessage(getString(R.string.message_login_progress));
         mLoginProgress.setCancelable(false);
 
-        setPresenter(new LoginPresenter(this, getPreferences(Context.MODE_PRIVATE)));
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        IHttpClient mHttpClient = UFUHttpClient.getInstance();
+        setPresenter(new LoginPresenter(this, preferences, mHttpClient));
     }
 
     @Override
@@ -79,9 +83,8 @@ public class LoginActivity extends Activity implements LoginContract.View {
     }
 
     @Override
-    public void showBooksView(IHttpClient library) {
+    public void showBooksView() {
         Intent intent = new Intent(LoginActivity.this, AppActivity.class);
-        intent.putExtra(AppActivity.EXTRA_LIBRARY_CLIENT, library);
         startActivity(intent);
     }
 

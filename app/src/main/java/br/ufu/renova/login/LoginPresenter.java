@@ -3,7 +3,6 @@ package br.ufu.renova.login;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import br.ufu.renova.scraper.HttpClient;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.scraper.ScrapeException;
@@ -19,15 +18,18 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String PREFERENCE_PASSWORD = "pref_password";
 
-    private  static final String PREFERENCE_FIRST_RUN = "pref_first_run";
+    private static final String PREFERENCE_FIRST_RUN = "pref_first_run";
 
     private LoginContract.View mLoginView;
 
     private SharedPreferences mPreferences;
 
-    public LoginPresenter(LoginContract.View loginView, SharedPreferences preferences) {
-        this.mLoginView = loginView;
-        this.mPreferences = preferences;
+    private IHttpClient mHttpClient;
+
+    public LoginPresenter(LoginContract.View loginView, SharedPreferences preferences, IHttpClient httpClient) {
+        mLoginView = loginView;
+        mPreferences = preferences;
+        mHttpClient = httpClient;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
     }
 
-    private class LoginTask extends AsyncTask<String, Void, IHttpClient> {
+    private class LoginTask extends AsyncTask<String, Void, Void> {
 
         private Exception e = null;
 
@@ -71,18 +73,13 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        protected IHttpClient doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             String login = params[0];
             String password = params[1];
 
             try {
-
-                IHttpClient library = new HttpClient(login, password);
+                mHttpClient.login(login, password);
                 saveLogin(login, password);
-
-
-                return library;
-
             } catch (IOException | ScrapeException | LoginException e) {
                 this.e = e;
                 Log.e(this.getClass().getName(), "", e);
@@ -92,7 +89,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        protected void onPostExecute(IHttpClient library) {
+        protected void onPostExecute(Void nothing) {
 
             mLoginView.hideProgressDialog();
 
@@ -110,7 +107,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 mLoginView.startNotificationService();
             }
 
-            mLoginView.showBooksView(library);
+            mLoginView.showBooksView();
         }
     }
 }
