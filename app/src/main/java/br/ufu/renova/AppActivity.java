@@ -6,39 +6,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import br.ufu.renova.books.BooksFragment;
+import br.ufu.renova.books.BooksPresenter;
 import br.ufu.renova.login.LoginActivity;
 import br.ufu.renova.scraper.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
 public class AppActivity extends ActionBarActivity implements SettingsFragment.SettingsFragmentListener,
-        NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler,
-        BookListFragment.BookClickListener {
+        NumberPickerDialogFragment.NumberPickerDialogFragmentResultHandler {
 
     private ViewPager viewPager;
-
-    private IHttpClient library;
 
     private AppPagerAdapter appPagerAdapter;
 
     private SharedPreferences prefs;
-
-    private List<Book> mBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +38,6 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         setContentView(R.layout.app);
 
         final ActionBar actionBar = getSupportActionBar();
-
-        mBooks = new ArrayList<>();
-        library = UFUHttpClient.getInstance();
-        try {
-            mBooks = library.getBooks();
-        } catch (IOException | SessionExpiredException | ScrapeException e) {
-            Log.e(this.getClass().getName(), "", e);
-        }
 
         appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
@@ -102,42 +86,36 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         actionBar.addTab(
                 actionBar.newTab()
-                    //.setText(BookListFragment.TITLE)
-                    .setIcon(R.drawable.ic_action_view_as_list)
-                    .setTabListener(tabListener)
+                        //.setText(BooksFragment.TITLE)
+                        .setIcon(R.drawable.ic_action_view_as_list)
+                        .setTabListener(tabListener)
         );
 
         actionBar.addTab(
                 actionBar.newTab()
-                    //.setText(SettingsFragment.TITLE)
-                    .setIcon(R.drawable.ic_action_settings)
-                    .setTabListener(tabListener)
+                        //.setText(SettingsFragment.TITLE)
+                        .setIcon(R.drawable.ic_action_settings)
+                        .setTabListener(tabListener)
         );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.app, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-
-
     public void onNotificationPreferenceClick() {
         int defaultValue = getResources().getInteger(R.integer.preference_notifications_default);
         String numDaysPref = getString(R.string.preference_notifications);
         int numDays = prefs.getInt(numDaysPref, defaultValue);
-        DialogFragment numberPickerDialog = NumberPickerDialogFragment.newInstance("Antecedência", 1,7, numDays, R.plurals.dia);
+        DialogFragment numberPickerDialog = NumberPickerDialogFragment.newInstance("Antecedência", 1, 7, numDays, R.plurals.dia);
         numberPickerDialog.show(getSupportFragmentManager(), "NumberPicker");
     }
 
@@ -182,19 +160,12 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
     }
 
     @Override
-    public void onBookClick(int position) {
-        new RenewTask().execute(position);
-    }
-
-    @Override
     public void handleNumberPickerDialogFragmentResult(int result) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(getString(R.string.preference_notifications), result);
         editor.commit();
         SettingsFragment settingsFragment = (SettingsFragment) appPagerAdapter.getFragment(AppPagerAdapter.SETTINGS_FRAGMENT);
         settingsFragment.setNumDays(result);
-
-
     }
 
     private class AppPagerAdapter extends FragmentPagerAdapter {
@@ -206,7 +177,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
 
         public AppPagerAdapter(FragmentManager fm) {
             super(fm);
-            mPageReferenceMap = new HashMap<Integer, Fragment>();
+            mPageReferenceMap = new HashMap<>();
         }
 
         @Override
@@ -215,7 +186,11 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             Context appContext = AppActivity.this;
 
             if (index == BOOK_LIST_FRAGMENT) {
-                fragment = BookListFragment.newInstance(mBooks.toArray());
+                BooksFragment frag = BooksFragment.newInstance();
+                UFUHttpClient httpClient = UFUHttpClient.getInstance();
+                BooksPresenter presenter = new BooksPresenter(frag, httpClient);
+                frag.setPresenter(presenter);
+                fragment = frag;
             } else if (index == SETTINGS_FRAGMENT) {
                 int defaultValue = appContext.getResources().getInteger(R.integer.preference_notifications_default);
                 String resource = appContext.getString(R.string.preference_notifications);
@@ -240,7 +215,7 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
         @Override
         public CharSequence getPageTitle(int position) {
             if (position == BOOK_LIST_FRAGMENT) {
-                return BookListFragment.TITLE;
+                return BooksFragment.TITLE;
             } else if (position == SETTINGS_FRAGMENT) {
                 return SettingsFragment.TITLE;
             }
@@ -251,28 +226,4 @@ public class AppActivity extends ActionBarActivity implements SettingsFragment.S
             return mPageReferenceMap.get(index);
         }
     }
-
-    private class RenewTask extends AsyncTask<Integer, Void, Void> {
-
-        private int mPosition;
-
-        @Override
-        protected Void doInBackground(Integer... params) {
-            mPosition = params[0];
-
-            try {
-                library.renew(mBooks.get(mPosition));
-            } catch (IOException | RenewException e) {
-                Log.e(this.getClass().getName(), "", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void nothing) {
-            BookListFragment f = (BookListFragment) appPagerAdapter.getFragment(AppPagerAdapter.BOOK_LIST_FRAGMENT);
-            f.notifyItemChanged(mPosition);
-        }
-    }
-
 }
