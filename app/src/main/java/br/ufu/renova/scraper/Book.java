@@ -16,14 +16,14 @@ public class Book implements Serializable {
         REQUESTED("O livro foi solicitado.", true),
         RENEW_LIMIT_REACHED("O limite de renovações do livro foi alcançado.", true);
 
-        public final String msg;
-        public final boolean isErrorState;
+        public final String MSG;
+        public final boolean IS_ERROR_STATE;
 
         State(String msg, boolean isErrorState) {
-            this.msg = msg;
-            this.isErrorState = isErrorState;
+            this.MSG = msg;
+            this.IS_ERROR_STATE = isErrorState;
         }
-    };
+    }
     private State state = State.INITIAL;
     private String barcode;
     private String title;
