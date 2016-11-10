@@ -44,11 +44,20 @@ public class UFUHttpClient implements IHttpClient {
 
     @Override
     public void login(String username, String password) throws IOException, LoginException, ScrapeException {
-
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            Log.e(this.getClass().getName(), "", e);
+        }
     }
 
     @Override
     public List<Book> getBooks() {
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            Log.e(this.getClass().getName(), "", e);
+        }
         return Arrays.asList(books);
     }
 
