@@ -58,4 +58,16 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
         editor.putInt(NOTIFICATION_ADVANCE, days);
         editor.commit();
     }
+
+    @Override
+    public void setFirstRun(boolean firstRun) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(FIRST_RUN, firstRun);
+        editor.commit();
+    }
+
+    @Override
+    public boolean isFirstRun() {
+        return mPreferences.getBoolean(FIRST_RUN, true);
+    }
 }

@@ -15,6 +15,8 @@ import android.widget.Toast;
 import br.ufu.renova.AppActivity;
 import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
+import br.ufu.renova.preferences.AppPreferences;
+import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.scraper.UFUHttpClient;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
@@ -55,9 +57,10 @@ public class LoginActivity extends Activity implements LoginContract.View {
         mLoginProgress.setMessage(getString(R.string.message_login_progress));
         mLoginProgress.setCancelable(false);
 
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences mPreferences = getPreferences(Context.MODE_PRIVATE);
+        AppPreferences appPreferences = new AppPreferences(mPreferences);
         IHttpClient mHttpClient = UFUHttpClient.getInstance();
-        setPresenter(new LoginPresenter(this, preferences, mHttpClient));
+        setPresenter(new LoginPresenter(this, appPreferences, mHttpClient));
     }
 
     @Override

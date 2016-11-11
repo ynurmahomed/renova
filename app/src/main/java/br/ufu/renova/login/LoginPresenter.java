@@ -1,8 +1,8 @@
 package br.ufu.renova.login;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.scraper.ScrapeException;
@@ -14,28 +14,22 @@ import java.io.IOException;
  */
 public class LoginPresenter implements LoginContract.Presenter {
 
-    private static final String PREFERENCE_LOGIN = "pref_login";
+    private LoginContract.View mView;
 
-    private static final String PREFERENCE_PASSWORD = "pref_password";
-
-    private static final String PREFERENCE_FIRST_RUN = "pref_first_run";
-
-    private LoginContract.View mLoginView;
-
-    private SharedPreferences mPreferences;
+    private PreferencesContract.AppPreferences mPreferences;
 
     private IHttpClient mHttpClient;
 
-    public LoginPresenter(LoginContract.View loginView, SharedPreferences preferences, IHttpClient httpClient) {
-        mLoginView = loginView;
+    public LoginPresenter(LoginContract.View loginView, PreferencesContract.AppPreferences preferences, IHttpClient httpClient) {
+        mView = loginView;
         mPreferences = preferences;
         mHttpClient = httpClient;
     }
 
     @Override
     public void start() {
-        String login = mPreferences.getString(PREFERENCE_LOGIN, "");
-        String password = mPreferences.getString(PREFERENCE_PASSWORD, "");
+        String login = mPreferences.getLogin();
+        String password = mPreferences.getPassword();
         if (!login.isEmpty() && !password.isEmpty()) {
             login(login, password);
         }
@@ -44,22 +38,20 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(String login, String password) {
         if (login.isEmpty()) {
-            mLoginView.showLoginEmptyToast();
+            mView.showLoginEmptyToast();
         } else if (password.isEmpty()) {
-            mLoginView.showPasswordEmptyToast();
+            mView.showPasswordEmptyToast();
         }
 
         new LoginTask().execute(login, password);
     }
 
     private void saveLogin(String login, String password) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        String prefLogin = mPreferences.getString(PREFERENCE_LOGIN, "");
-        String prefPassword = mPreferences.getString(PREFERENCE_PASSWORD, "");
+        String prefLogin = mPreferences.getLogin();
+        String prefPassword = mPreferences.getPassword();
         if (prefLogin.isEmpty() || prefPassword.isEmpty()) {
-            editor.putString(PREFERENCE_LOGIN, login);
-            editor.putString(PREFERENCE_PASSWORD, password);
-            editor.commit();
+            mPreferences.setLogin(login);
+            mPreferences.setPassword(password);
         }
     }
 
@@ -69,7 +61,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         @Override
         protected void onPreExecute() {
-            mLoginView.showProgressDialog();
+            mView.showProgressDialog();
         }
 
         @Override
@@ -91,23 +83,19 @@ public class LoginPresenter implements LoginContract.Presenter {
         @Override
         protected void onPostExecute(Void nothing) {
 
-            mLoginView.hideProgressDialog();
+            mView.hideProgressDialog();
 
             if (this.e != null) {
-                mLoginView.showErrorDialog(this.e);
+                mView.showErrorDialog(this.e);
                 return;
             }
 
-            Boolean firstRun = mPreferences.getBoolean(PREFERENCE_FIRST_RUN, true);
-
-            if (firstRun) {
-                SharedPreferences.Editor editor = mPreferences.edit();
-                editor.putBoolean(PREFERENCE_FIRST_RUN, false);
-                editor.commit();
-                mLoginView.startNotificationService();
+            if (mPreferences.isFirstRun()) {
+                mPreferences.setFirstRun(false);
+                mView.startNotificationService();
             }
 
-            mLoginView.showBooksView();
+            mView.showBooksView();
         }
     }
 }

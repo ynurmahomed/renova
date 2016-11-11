@@ -51,6 +51,10 @@ public interface PreferencesContract {
         int getNotificationAdvance();
 
         void setNotificationAdvance(int days);
+
+        void setFirstRun(boolean firstRun);
+
+        boolean isFirstRun();
     }
 
 }
