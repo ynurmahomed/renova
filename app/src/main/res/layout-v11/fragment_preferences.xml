@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               style="@style/ViewWithPadding"
-              tools:context="br.ufu.renova.SettingsFragment"
+              tools:context=".preferences.PreferencesFragment"
               android:orientation="vertical">
 
     <LinearLayout

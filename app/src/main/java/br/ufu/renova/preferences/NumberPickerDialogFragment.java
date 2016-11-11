@@ -1,6 +1,5 @@
-package br.ufu.renova;
+package br.ufu.renova.preferences;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import br.ufu.renova.R;
+
+import java.io.Serializable;
 
 
 /**
@@ -29,6 +31,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
     private static final String ARG_LABEL = "param3";
     private static final String ARG_TITLE = "param4";
     private static final String ARG_VALUE = "param5";
+    private static final String ARG_HANDLER = "param6";
 
     // TODO: Rename and change types of parameters
     private int minValue;
@@ -36,8 +39,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
     private int labelPluralString;
     private String title;
     private int value;
-
-    private NumberPickerDialogFragmentResultHandler mListener;
+    private NumberPickerDialogFragmentResultHandler mHandler;
 
     /**
      * Use this factory method to create a new instance of
@@ -51,7 +53,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
      * @return A new instance of fragment NumberPickerDialogFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NumberPickerDialogFragment newInstance(String title, int minValue, int maxValue, int value, int labelPluralStringId) {
+    public static NumberPickerDialogFragment newInstance(String title, int minValue, int maxValue, int value, int labelPluralStringId, NumberPickerDialogFragmentResultHandler handler) {
         NumberPickerDialogFragment fragment = new NumberPickerDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
@@ -59,6 +61,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
         args.putInt(ARG_MAX_VALUE, maxValue);
         args.putInt(ARG_VALUE, value);
         args.putInt(ARG_LABEL, labelPluralStringId);
+        args.putSerializable(ARG_HANDLER, handler);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,6 +78,7 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
             labelPluralString = getArguments().getInt(ARG_LABEL);
             title = getArguments().getString(ARG_TITLE);
             value = getArguments().getInt(ARG_VALUE);
+            mHandler = ((NumberPickerDialogFragmentResultHandler) getArguments().getSerializable(ARG_HANDLER));
         }
     }
 
@@ -119,42 +123,14 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
         return builder.create();
     }
 
-
     public void onPositiveClick(int result) {
-        if (mListener != null) {
-            mListener.handleNumberPickerDialogFragmentResult(result);
+        if (mHandler != null) {
+            mHandler.handleNumberPickerDialogFragmentResult(result);
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (NumberPickerDialogFragmentResultHandler) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement NumberPickerDialogFragmentResultHandler");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface NumberPickerDialogFragmentResultHandler {
-        public void handleNumberPickerDialogFragmentResult(int result);
+    public interface NumberPickerDialogFragmentResultHandler extends Serializable{
+        void handleNumberPickerDialogFragmentResult(int result);
     }
 
 }
