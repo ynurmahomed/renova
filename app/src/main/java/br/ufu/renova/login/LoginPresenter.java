@@ -34,9 +34,15 @@ public class LoginPresenter implements LoginContract.Presenter {
             login(login, password);
         }
     }
-
+    
     @Override
-    public void login(String login, String password) {
+    public void onLoginClick() {
+        String login = mView.getLogin();
+        String password = mView.getPassword();
+        login(login, password);
+    }
+
+    private void login(String login, String password) {
         if (login.isEmpty()) {
             mView.showLoginEmptyToast();
         } else if (password.isEmpty()) {

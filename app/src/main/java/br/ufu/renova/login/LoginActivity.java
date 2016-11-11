@@ -46,9 +46,7 @@ public class LoginActivity extends Activity implements LoginContract.View {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String login = mLoginEditText.getText().toString();
-                String password = mPasswordEditText.getText().toString();
-                mPresenter.login(login, password);
+                mPresenter.onLoginClick();
             }
         });
 
@@ -129,6 +127,16 @@ public class LoginActivity extends Activity implements LoginContract.View {
     @Override
     public void showPasswordEmptyToast() {
         Toast.makeText(LoginActivity.this, R.string.message_password_empty, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getLogin() {
+        return mLoginEditText.getText().toString().trim();
+    }
+
+    @Override
+    public String getPassword() {
+        return mPasswordEditText.getText().toString().trim();
     }
 
     @Override

@@ -23,9 +23,13 @@ public interface LoginContract {
         void showLoginEmptyToast();
 
         void showPasswordEmptyToast();
+
+        String getLogin();
+
+        String getPassword();
     }
 
     interface Presenter extends BasePresenter {
-        void login(String username, String password);
+        void onLoginClick();
     }
 }
