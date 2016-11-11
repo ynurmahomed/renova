@@ -11,12 +11,12 @@ import java.io.IOException;
  */
 public class BooksPresenter implements BooksContract.Presenter {
 
-    private BooksContract.View mBooksView;
+    private BooksContract.View mView;
 
     private IHttpClient mHttpClient;
 
     public BooksPresenter(BooksContract.View booksView, IHttpClient httpClient) {
-        this.mBooksView = booksView;
+        this.mView = booksView;
         this.mHttpClient = httpClient;
     }
 
@@ -26,7 +26,7 @@ public class BooksPresenter implements BooksContract.Presenter {
         // Fazer o getBooks asyncrono e pegar resultado com callbacks.
         // Acabar com AsyncTasks.
         try {
-            mBooksView.showBooksList(mHttpClient.getBooks());
+            mView.showBooksList(mHttpClient.getBooks());
         } catch (IOException | SessionExpiredException |
                 ScrapeException e) {
             Log.e(this.getClass().getName(), "", e);
@@ -34,8 +34,13 @@ public class BooksPresenter implements BooksContract.Presenter {
     }
 
     @Override
-    public void renew(Book b) {
+    public void onBookClick(Book b) {
         new RenewTask().execute(b);
+    }
+
+    @Override
+    public void onBookErrorIconClick(Book b) {
+        mView.showBookErrorToast(b);
     }
 
     private class RenewTask extends AsyncTask<Book, Void, Void> {
@@ -55,7 +60,7 @@ public class BooksPresenter implements BooksContract.Presenter {
         @Override
         protected void onPostExecute(Void nothing) {
             try {
-                mBooksView.showBooksList(mHttpClient.getBooks());
+                mView.showBooksList(mHttpClient.getBooks());
             } catch (IOException | SessionExpiredException | ScrapeException e) {
                 Log.e(this.getClass().getName(), "", e);
             }

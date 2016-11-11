@@ -24,7 +24,6 @@ public class BooksFragment extends Fragment implements BooksContract.View {
 
 
     public BooksFragment() {
-        // Required empty public constructor
     }
 
     public static BooksFragment newInstance() {
@@ -71,15 +70,20 @@ public class BooksFragment extends Fragment implements BooksContract.View {
         mAdapter.replaceData(books);
     }
 
+    @Override
+    public void showBookErrorToast(Book b) {
+        Toast.makeText(getContext(), b.getState().MSG, Toast.LENGTH_SHORT).show();
+    }
+
     private BookItemListener mBookItemListener = new BookItemListener() {
         @Override
         public void onBookClick(Book b) {
-            mPresenter.renew(b);
+            mPresenter.onBookClick(b);
         }
 
         @Override
         public void onBookErrorIconClick(Book b) {
-            Toast.makeText(getContext(), b.getState().MSG, Toast.LENGTH_SHORT).show();
+            mPresenter.onBookErrorIconClick(b);
         }
     };
 

@@ -12,10 +12,16 @@ import java.util.List;
 public interface BooksContract {
 
     interface View extends BaseView<Presenter> {
+
         void showBooksList(List<Book> books);
+
+        void showBookErrorToast(Book b);
     }
 
     interface Presenter extends BasePresenter {
-        void renew(Book b);
+
+        void onBookClick(Book b);
+
+        void onBookErrorIconClick(Book b);
     }
 }
