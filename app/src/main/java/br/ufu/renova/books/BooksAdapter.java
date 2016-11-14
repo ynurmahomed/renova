@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.ufu.renova.R;
-import br.ufu.renova.scraper.Book;
+import br.ufu.renova.model.Book;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -18,13 +18,17 @@ public interface LoginContract {
 
         void showBooksView();
 
-        void showErrorDialog(Exception ex);
+        void showLoginErrorDialog();
+
+        void showConnectionErrorDialog();
+
+        void showErrorDialog();
 
         void showLoginEmptyToast();
 
         void showPasswordEmptyToast();
 
-        String getLogin();
+        String getUsername();
 
         String getPassword();
     }

@@ -21,8 +21,7 @@ public class PreferencesPresenter implements PreferencesContract.Presenter {
 
     @Override
     public void logout() {
-        mPreferences.setLogin("");
-        mPreferences.setPassword("");
+        mPreferences.setUser(null);
         mView.showLogin();
     }
 

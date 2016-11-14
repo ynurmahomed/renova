@@ -1,13 +1,14 @@
 package br.ufu.renova.preferences;
 
 import android.content.SharedPreferences;
+import br.ufu.renova.model.User;
 
 /**
  * Created by yassin on 11/10/16.
  */
 public class AppPreferences implements PreferencesContract.AppPreferences {
 
-    private static final String LOGIN = "pref_login";
+    private static final String USERNAME = "pref_username";
 
     private static final String PASSWORD = "pref_password";
 
@@ -24,27 +25,28 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
     }
 
     @Override
-    public String getLogin() {
-        return mPreferences.getString(LOGIN, "");
+    public User getUser() {
+        return new User(
+            mPreferences.getString(USERNAME, ""),
+            mPreferences.getString(PASSWORD, "")
+        );
     }
 
     @Override
-    public void setLogin(String login) {
+    public void setUser(User u) {
+        if (u == null) {
+            u = new User("","");
+        }
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(LOGIN, login);
-        editor.commit();
+        editor.putString(USERNAME, u.getUsername());
+        editor.putString(PASSWORD, u.getPassword());
+        editor.apply();
     }
 
     @Override
-    public String getPassword() {
-        return mPreferences.getString(PASSWORD, "");
-    }
-
-    @Override
-    public void setPassword(String password) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(PASSWORD, password);
-        editor.commit();
+    public boolean isUserSaved() {
+        User user = getUser();
+        return !user.getUsername().isEmpty() && !user.getPassword().isEmpty();
     }
 
     @Override
@@ -56,14 +58,14 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
     public void setNotificationAdvance(int days) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt(NOTIFICATION_ADVANCE, days);
-        editor.commit();
+        editor.apply();
     }
 
     @Override
     public void setFirstRun(boolean firstRun) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(FIRST_RUN, firstRun);
-        editor.commit();
+        editor.apply();
     }
 
     @Override

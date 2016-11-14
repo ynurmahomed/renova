@@ -1,6 +1,9 @@
 package br.ufu.renova;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -128,7 +131,8 @@ public class AppActivity extends ActionBarActivity {
                 fragment = frag;
             } else if (index == SETTINGS_FRAGMENT) {
                 PreferencesFragment frag = PreferencesFragment.newInstance();
-                PreferencesContract.AppPreferences preferences = new AppPreferences(getPreferences(MODE_PRIVATE));
+                SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                PreferencesContract.AppPreferences preferences = new AppPreferences(shared);
                 PreferencesPresenter presenter = new PreferencesPresenter(frag, preferences);
                 frag.setPresenter(presenter);
                 fragment = frag;

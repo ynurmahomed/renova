@@ -1,10 +1,10 @@
 package br.ufu.renova.books;
 
-import android.os.AsyncTask;
 import android.util.Log;
+import br.ufu.renova.model.Book;
 import br.ufu.renova.scraper.*;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by yassin on 11/10/16.
@@ -22,48 +22,46 @@ public class BooksPresenter implements BooksContract.Presenter {
 
     @Override
     public void start() {
-        // TODO: Tirar da main thread.
-        // Fazer o getBooks asyncrono e pegar resultado com callbacks.
-        // Acabar com AsyncTasks.
-        try {
-            mView.showBooksList(mHttpClient.getBooks());
-        } catch (IOException | SessionExpiredException |
-                ScrapeException e) {
-            Log.e(this.getClass().getName(), "", e);
-        }
+        mHttpClient.getBooks(new IHttpClient.GetBooksCallback() {
+            @Override
+            public void onComplete(List<Book> books) {
+                mView.showBooksList(books);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(this.getClass().getName(), "", e);
+            }
+        });
     }
 
     @Override
     public void onBookClick(Book b) {
-        new RenewTask().execute(b);
+        mHttpClient.renew(b, new IHttpClient.RenewCallback() {
+            @Override
+            public void onComplete(Book book) {
+                mHttpClient.getBooks(new IHttpClient.GetBooksCallback() {
+                    @Override
+                    public void onComplete(List<Book> books) {
+                        mView.showBooksList(books);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e(this.getClass().getName(), "", e);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(this.getClass().getName(), "", e);
+            }
+        });
     }
 
     @Override
     public void onBookErrorIconClick(Book b) {
         mView.showBookErrorToast(b);
-    }
-
-    private class RenewTask extends AsyncTask<Book, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Book... params) {
-            Book b = params[0];
-
-            try {
-                mHttpClient.renew(b);
-            } catch (IOException | RenewException e) {
-                Log.e(this.getClass().getName(), "", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void nothing) {
-            try {
-                mView.showBooksList(mHttpClient.getBooks());
-            } catch (IOException | SessionExpiredException | ScrapeException e) {
-                Log.e(this.getClass().getName(), "", e);
-            }
-        }
     }
 }

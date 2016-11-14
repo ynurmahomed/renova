@@ -1,4 +1,4 @@
-package br.ufu.renova.scraper;
+package br.ufu.renova.model;
 
 import java.io.Serializable;
 import java.text.DateFormat;

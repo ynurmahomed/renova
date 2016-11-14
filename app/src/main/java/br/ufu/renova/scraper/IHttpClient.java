@@ -1,6 +1,8 @@
 package br.ufu.renova.scraper;
 
-import java.io.IOException;
+import br.ufu.renova.model.Book;
+import br.ufu.renova.model.User;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,9 +11,24 @@ import java.util.List;
  */
 public interface IHttpClient extends Serializable {
 
-    void login(String username, String password) throws IOException, LoginException, ScrapeException;
+    interface LoginCallback {
+        void onComplete(User user);
+        void onError(Exception e);
+    }
 
-    List<Book> getBooks() throws IOException, SessionExpiredException, ScrapeException;
+    interface GetBooksCallback {
+        void  onComplete(List<Book> books);
+        void  onError(Exception e);
+    }
 
-    void renew(Book b) throws IOException, RenewException;
+    interface RenewCallback {
+        void onComplete(Book book);
+        void onError(Exception e);
+    }
+
+    void login(String username, String password, LoginCallback callback);
+
+    void getBooks(GetBooksCallback callback);
+
+    void renew(Book b, RenewCallback callback);
 }

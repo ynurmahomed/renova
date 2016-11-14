@@ -3,6 +3,7 @@ package br.ufu.renova.scraper;
 
 import android.net.Uri;
 import android.util.Log;
+import br.ufu.renova.model.Book;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

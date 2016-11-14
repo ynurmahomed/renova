@@ -1,11 +1,9 @@
 package br.ufu.renova.login;
 
-import android.os.AsyncTask;
-import android.util.Log;
+import br.ufu.renova.model.User;
 import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.LoginException;
-import br.ufu.renova.scraper.ScrapeException;
 
 import java.io.IOException;
 
@@ -28,80 +26,57 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void start() {
-        String login = mPreferences.getLogin();
-        String password = mPreferences.getPassword();
-        if (!login.isEmpty() && !password.isEmpty()) {
-            login(login, password);
+        if (mPreferences.isUserSaved()) {
+            User user = mPreferences.getUser();
+            login(user.getUsername(), user.getPassword());
         }
     }
     
     @Override
     public void onLoginClick() {
-        String login = mView.getLogin();
+        String username = mView.getUsername();
         String password = mView.getPassword();
-        login(login, password);
-    }
 
-    private void login(String login, String password) {
-        if (login.isEmpty()) {
+        if (username.isEmpty()) {
             mView.showLoginEmptyToast();
-        } else if (password.isEmpty()) {
+            return;
+        } else if (password.isEmpty()){
             mView.showPasswordEmptyToast();
+            return;
         }
 
-        new LoginTask().execute(login, password);
+        login(username, password);
     }
 
-    private void saveLogin(String login, String password) {
-        String prefLogin = mPreferences.getLogin();
-        String prefPassword = mPreferences.getPassword();
-        if (prefLogin.isEmpty() || prefPassword.isEmpty()) {
-            mPreferences.setLogin(login);
-            mPreferences.setPassword(password);
-        }
-    }
-
-    private class LoginTask extends AsyncTask<String, Void, Void> {
-
-        private Exception e = null;
-
-        @Override
-        protected void onPreExecute() {
-            mView.showProgressDialog();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            String login = params[0];
-            String password = params[1];
-
-            try {
-                mHttpClient.login(login, password);
-                saveLogin(login, password);
-            } catch (IOException | ScrapeException | LoginException e) {
-                this.e = e;
-                Log.e(this.getClass().getName(), "", e);
+    private void login(final String username, final String password) {
+        mView.showProgressDialog();
+        mHttpClient.login(username, password, new IHttpClient.LoginCallback() {
+            @Override
+            public void onComplete(User user) {
+                if (!mPreferences.isUserSaved()) {
+                    mPreferences.setUser(user);
+                }
+                if (mPreferences.isFirstRun()) {
+                    mPreferences.setFirstRun(false);
+                    mView.startNotificationService();
+                }
+                mView.hideProgressDialog();
+                mView.showBooksView();
             }
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void nothing) {
-
-            mView.hideProgressDialog();
-
-            if (this.e != null) {
-                mView.showErrorDialog(this.e);
-                return;
+            @Override
+            public void onError(Exception e) {
+                mView.hideProgressDialog();
+                try {
+                    throw e;
+                } catch (IOException ex) {
+                    mView.showConnectionErrorDialog();
+                } catch (LoginException ex) {
+                    mView.showLoginErrorDialog();
+                } catch (Exception ex) {
+                    mView.showErrorDialog();
+                }
             }
-
-            if (mPreferences.isFirstRun()) {
-                mPreferences.setFirstRun(false);
-                mView.startNotificationService();
-            }
-
-            mView.showBooksView();
-        }
+        });
     }
 }

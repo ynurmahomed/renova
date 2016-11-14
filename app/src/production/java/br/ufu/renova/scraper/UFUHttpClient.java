@@ -1,5 +1,9 @@
 package br.ufu.renova.scraper;
 
+import android.os.Handler;
+import br.ufu.renova.model.Book;
+import br.ufu.renova.model.User;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -14,7 +18,7 @@ public class UFUHttpClient implements IHttpClient {
 
     private String sessionId;
 
-    private String username;
+    private User user;
 
     public static UFUHttpClient getInstance() {
         if (INSTANCE == null) {
@@ -27,19 +31,83 @@ public class UFUHttpClient implements IHttpClient {
     }
 
     @Override
-    public void login(String username, String password) throws IOException, LoginException, ScrapeException {
-        this.username = username;
-        patronhost = Scraper.scrapePatronhost();
-        sessionId = Scraper.login(patronhost, username, password);
+    public void login(final String username, final String password, final LoginCallback callback) {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    patronhost = Scraper.scrapePatronhost();
+                    sessionId = Scraper.login(patronhost, username, password);
+                    user = new User(username, password);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onComplete(user);
+                        }
+                    });
+                } catch (ScrapeException | IOException | LoginException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(e);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     @Override
-    public List<Book> getBooks() throws IOException, SessionExpiredException, ScrapeException {
-        return Scraper.scrapeBooks(sessionId);
+    public void getBooks(final GetBooksCallback callback) {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final List<Book> books = Scraper.scrapeBooks(sessionId);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onComplete(books);
+                        }
+                    });
+                } catch (SessionExpiredException | ScrapeException | IOException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(e);
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     @Override
-    public void renew(Book b) throws RenewException, IOException {
-        Scraper.renew(patronhost, sessionId, username, b);
+    public void renew(final Book b, final RenewCallback callback) {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Scraper.renew(patronhost, sessionId, user.getUsername(), b);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onComplete(b);
+                        }
+                    });
+                } catch (RenewException | IOException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(e);
+                        }
+                    });
+                }
+            }
+        }).start();
+
     }
 }

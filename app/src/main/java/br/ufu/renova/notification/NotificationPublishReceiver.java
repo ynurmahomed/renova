@@ -10,7 +10,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import br.ufu.renova.login.LoginActivity;
-import br.ufu.renova.scraper.Book;
+import br.ufu.renova.model.Book;
 import br.ufu.renova.R;
 
 import java.util.Arrays;

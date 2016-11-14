@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import br.ufu.renova.R;
-import br.ufu.renova.scraper.Book;
+import br.ufu.renova.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,7 @@ public class BooksFragment extends Fragment implements BooksContract.View {
     private BooksAdapter mAdapter;
 
     private BooksContract.Presenter mPresenter;
-
-
+    
     public BooksFragment() {
     }
 

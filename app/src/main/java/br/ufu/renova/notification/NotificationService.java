@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
-import br.ufu.renova.scraper.Book;
+import br.ufu.renova.model.Book;
+import br.ufu.renova.model.User;
+import br.ufu.renova.scraper.IHttpClient;
 import br.ufu.renova.scraper.UFUHttpClient;
-import br.ufu.renova.scraper.LoginException;
 import br.ufu.renova.R;
-import br.ufu.renova.scraper.ScrapeException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.List;
 public class NotificationService extends Service {
 
     private UFUHttpClient library;
+
     private SharedPreferences prefs;
 
     @Override
@@ -31,37 +31,40 @@ public class NotificationService extends Service {
         final String password = prefs.getString(getString(R.string.preference_password), "");
 
         if (!(login.isEmpty() || password.isEmpty())) {
-
-            new Thread(new Runnable() {
-
+            library = UFUHttpClient.getInstance();
+            library.login(login, password, new IHttpClient.LoginCallback() {
                 @Override
-                public void run() {
+                public void onComplete(User user) {
+                    library.getBooks(new IHttpClient.GetBooksCallback() {
+                        @Override
+                        public void onComplete(List<Book> books) {
+                            List<Book> toExpire = new ArrayList<Book>();
 
-                    try {
+                            for(Book b: books) {
+                                if (shouldNotify(b)) {
+                                    toExpire.add(b);
+                                }
+                            }
 
-                        library = UFUHttpClient.getInstance();
-                        library.login(login, password);
-                        List<Book> books = library.getBooks();
-                        List<Book> toExpire = new ArrayList<Book>();
-
-                        for(Book b: books) {
-                            if (shouldNotify(b)) {
-                                toExpire.add(b);
+                            if (!toExpire.isEmpty()) {
+                                Intent i = new Intent(NotificationService.this, NotificationPublishReceiver.class);
+                                i.putExtra(NotificationPublishReceiver.EXTRA_BOOKS, toExpire.toArray());
+                                sendBroadcast(i);
                             }
                         }
 
-                        if (!toExpire.isEmpty()) {
-                            Intent i = new Intent(NotificationService.this, NotificationPublishReceiver.class);
-                            i.putExtra(NotificationPublishReceiver.EXTRA_BOOKS, toExpire.toArray());
-                            sendBroadcast(i);
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e(this.getClass().getName(), "", e);
                         }
-
-                    } catch (IOException | ScrapeException | LoginException e) {
-                        Log.e(this.getClass().getName(), "", e);
-                    }
+                    });
                 }
 
-            }).start();
+                @Override
+                public void onError(Exception e) {
+                    Log.e(this.getClass().getName(), "", e);
+                }
+            });
         }
 
 

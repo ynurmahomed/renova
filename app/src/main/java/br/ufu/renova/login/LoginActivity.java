@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,11 +17,8 @@ import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.UFUHttpClient;
 import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.LoginException;
-
-import java.io.IOException;
+import br.ufu.renova.scraper.UFUHttpClient;
 
 
 public class LoginActivity extends Activity implements LoginContract.View {
@@ -55,10 +52,16 @@ public class LoginActivity extends Activity implements LoginContract.View {
         mLoginProgress.setMessage(getString(R.string.message_login_progress));
         mLoginProgress.setCancelable(false);
 
-        SharedPreferences mPreferences = getPreferences(Context.MODE_PRIVATE);
-        AppPreferences appPreferences = new AppPreferences(mPreferences);
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        PreferencesContract.AppPreferences preferences = new AppPreferences(shared);
         IHttpClient mHttpClient = UFUHttpClient.getInstance();
-        setPresenter(new LoginPresenter(this, appPreferences, mHttpClient));
+        setPresenter(new LoginPresenter(this, preferences, mHttpClient));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
@@ -90,33 +93,30 @@ public class LoginActivity extends Activity implements LoginContract.View {
     }
 
     @Override
-    public void showErrorDialog(Exception ex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        try {
-
-            throw ex;
-
-        } catch (IOException e) {
-            builder
-                .setTitle(R.string.title_connection_error)
-                .setMessage(R.string.message_connection_error);
-
-        } catch (LoginException e) {
-            builder
+    public void showLoginErrorDialog() {
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.title_incorrect_login)
-                .setMessage(R.string.message_incorrect_login);
+                .setMessage(R.string.message_incorrect_login)
+                .setPositiveButton("OK", null)
+                .show();
+    }
 
-        } catch (Exception e) {
-            builder
+    @Override
+    public void showConnectionErrorDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.title_connection_error)
+                .setMessage(R.string.message_connection_error)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+    @Override
+    public void showErrorDialog() {
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.title_generic_error)
-                .setMessage(R.string.message_unprocessable_response);
-            Log.e(this.getClass().getName(), "", e);
-        }
-
-        builder
-            .setPositiveButton("OK", null)
-            .show();
+                .setMessage(R.string.message_unprocessable_response)
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     @Override
@@ -130,13 +130,13 @@ public class LoginActivity extends Activity implements LoginContract.View {
     }
 
     @Override
-    public String getLogin() {
-        return mLoginEditText.getText().toString().trim();
+    public String getUsername() {
+        return mLoginEditText.getText().toString();
     }
 
     @Override
     public String getPassword() {
-        return mPasswordEditText.getText().toString().trim();
+        return mPasswordEditText.getText().toString();
     }
 
     @Override

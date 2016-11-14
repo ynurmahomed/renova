@@ -1,11 +1,12 @@
 package br.ufu.renova.scraper;
 
-import android.util.Log;
+import android.os.Handler;
+import br.ufu.renova.model.Book;
+import br.ufu.renova.model.User;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by yassin on 04/12/14.
@@ -13,6 +14,8 @@ import java.util.List;
 public class UFUHttpClient implements IHttpClient {
 
     private static UFUHttpClient INSTANCE;
+
+    private final long DELAY = 1000L;
 
     private Book[] books;
 
@@ -39,39 +42,66 @@ public class UFUHttpClient implements IHttpClient {
         b2.setBarcode("987654321");
         b2.setExpiration(tomorrow.getTime());
 
-        books = new Book[]{b1, b2};
+        Book b3 = new Book();
+        b3.setTitle("Introduction to Algorithms");
+        b3.setAuthors("Charles E. Leiserson, Thomas H. Cormen, Clifford Stein, Ronald Rivest");
+        b3.setBarcode("123456789");
+        b3.setExpiration(tomorrow.getTime());
+
+        Book b4 = new Book();
+        b4.setTitle("Design Patterns: Elements of Reusable Object-Oriented Software");
+        b4.setAuthors("Erich Gamma, Ralph Johnson, Richard Helm, John Vlissides");
+        b4.setBarcode("987654321");
+        b4.setExpiration(tomorrow.getTime());
+
+        books = new Book[]{b1, b2, b3, b4};
     }
 
     @Override
-    public void login(String username, String password) throws IOException, LoginException, ScrapeException {
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            Log.e(this.getClass().getName(), "", e);
-        }
+    public void login(final String login, final String password, final LoginCallback callback) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                callback.onComplete(new User(login, password));
+            }
+        }, DELAY);
     }
 
     @Override
-    public List<Book> getBooks() {
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            Log.e(this.getClass().getName(), "", e);
-        }
-        return Arrays.asList(books);
+    public void getBooks(final GetBooksCallback callback) {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onComplete(Arrays.asList(books));
+                    }
+                }, DELAY);
+            }
+        }).start();
     }
 
     @Override
-    public void renew(Book b) throws RenewDateException, BookReservedException, IOException {
-        Calendar nextWeek = Calendar.getInstance();
-        nextWeek.setTime(b.getExpiration());
-        nextWeek.add(Calendar.DAY_OF_MONTH, 7);
-        b.setExpiration(nextWeek.getTime());
-        b.setState(Book.State.RENEWED);
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            Log.e(this.getClass().getName(), "", e);
-        }
+    public void renew(final Book b, final RenewCallback callback) {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Calendar nextWeek = Calendar.getInstance();
+                        nextWeek.setTime(b.getExpiration());
+                        nextWeek.add(Calendar.DAY_OF_MONTH, 7);
+                        b.setExpiration(nextWeek.getTime());
+                        b.setState(Book.State.RENEWED);
+                        callback.onComplete(b);
+                    }
+                }, DELAY);
+            }
+        }).start();
     }
 }

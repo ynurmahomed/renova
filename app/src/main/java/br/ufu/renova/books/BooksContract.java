@@ -2,7 +2,7 @@ package br.ufu.renova.books;
 
 import br.ufu.renova.BasePresenter;
 import br.ufu.renova.BaseView;
-import br.ufu.renova.scraper.Book;
+import br.ufu.renova.model.Book;
 
 import java.util.List;
 

@@ -2,6 +2,7 @@ package br.ufu.renova.preferences;
 
 import br.ufu.renova.BasePresenter;
 import br.ufu.renova.BaseView;
+import br.ufu.renova.model.User;
 
 /**
  * Created by yassin on 11/10/16.
@@ -40,13 +41,11 @@ public interface PreferencesContract {
 
     interface AppPreferences {
 
-        String getLogin();
+        User getUser();
 
-        void setLogin(String login);
+        void setUser(User u);
 
-        String getPassword();
-
-        void setPassword(String password);
+        boolean isUserSaved();
 
         int getNotificationAdvance();
 
