@@ -12,9 +12,12 @@
     <string name="message_incorrect_login">O login ou a senha não estão corretos.</string>
     <string name="title_connection_error">Sem conexão</string>
     <string name="message_connection_error">Certifique-se que está conectado à internet.</string>
+    <string name="message_no_connection">Sem conexão.</string>
     <string name="message_login_progress">Conectando...</string>
-    <string name="message_book_list_empty">Nenhum livro emprestado.</string>
+    <string name="message_book_list_empty">Sem livros, toque para carregar.</string>
     <string name="message_book_renewing">Renovando...</string>
+    <string name="message_session_expired">A sua sessão espirou.</string>
+    <string name="message_unprocessable_response">Não foi possível processar a resposta.</string>
     <string name="title_activity_app">RenovApp</string>
     <string name="hello_blank_fragment">Settings</string>
     <string name="preference_file_key">prefs</string>
@@ -38,6 +41,5 @@
 
     <string name="number_picker_dialog_positive_text">Selecionar</string>
     <string name="title_generic_error">Erro</string>
-    <string name="message_unprocessable_response">Não foi possível processar a resposta do servidor</string>
 
 </resources>

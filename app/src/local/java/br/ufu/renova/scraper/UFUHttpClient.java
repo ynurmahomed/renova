@@ -4,7 +4,6 @@ import android.os.Handler;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 

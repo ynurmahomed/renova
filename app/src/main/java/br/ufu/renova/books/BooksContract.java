@@ -15,6 +15,16 @@ public interface BooksContract {
 
         void showBooksList(List<Book> books);
 
+        void showEmptyView();
+
+        void showProgress();
+
+        void showSessionExpiredToast();
+
+        void showScrapeErrorToast();
+
+        void showNoConnectionToast();
+
         void showBookErrorToast(Book b);
     }
 
@@ -23,5 +33,7 @@ public interface BooksContract {
         void onBookClick(Book b);
 
         void onBookErrorIconClick(Book b);
+
+        void onReloadClick();
     }
 }
