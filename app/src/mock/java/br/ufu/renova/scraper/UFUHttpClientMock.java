@@ -10,22 +10,22 @@ import java.util.Calendar;
 /**
  * Created by yassin on 04/12/14.
  */
-public class UFUHttpClient implements IHttpClient {
+public class UFUHttpClientMock implements IHttpClient {
 
-    private static UFUHttpClient INSTANCE;
+    private static UFUHttpClientMock INSTANCE;
 
     private final long DELAY = 1000L;
 
     private Book[] books;
 
-    public static UFUHttpClient getInstance() {
+    public static UFUHttpClientMock getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UFUHttpClient();
+            INSTANCE = new UFUHttpClientMock();
         }
         return INSTANCE;
     }
 
-    private UFUHttpClient() {
+    private UFUHttpClientMock() {
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 

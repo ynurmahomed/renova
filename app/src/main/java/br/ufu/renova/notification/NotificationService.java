@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
+import br.ufu.renova.Injection;
+import br.ufu.renova.R;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
 import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.UFUHttpClient;
-import br.ufu.renova.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class NotificationService extends Service {
 
-    private UFUHttpClient library;
+    private IHttpClient library;
 
     private SharedPreferences prefs;
 
@@ -31,7 +31,7 @@ public class NotificationService extends Service {
         final String password = prefs.getString(getString(R.string.preference_password), "");
 
         if (!(login.isEmpty() || password.isEmpty())) {
-            library = UFUHttpClient.getInstance();
+            library = Injection.provideHttpClient();
             library.login(login, password, new IHttpClient.LoginCallback() {
                 @Override
                 public void onComplete(User user) {

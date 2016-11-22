@@ -4,20 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import br.ufu.renova.AppActivity;
+import br.ufu.renova.Injection;
 import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
-import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.UFUHttpClient;
 
 
 public class LoginActivity extends Activity implements LoginContract.View {
@@ -51,9 +48,8 @@ public class LoginActivity extends Activity implements LoginContract.View {
         mLoginProgress.setMessage(getString(R.string.message_login_progress));
         mLoginProgress.setCancelable(false);
 
-        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        PreferencesContract.AppPreferences preferences = new AppPreferences(shared);
-        IHttpClient mHttpClient = UFUHttpClient.getInstance();
+        PreferencesContract.AppPreferences preferences = Injection.provideAppPreferences(getApplicationContext());
+        IHttpClient mHttpClient = Injection.provideHttpClient();
         setPresenter(new LoginPresenter(this, preferences, mHttpClient));
     }
 
