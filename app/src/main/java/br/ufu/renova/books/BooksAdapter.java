@@ -56,41 +56,40 @@ public class BooksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         DateFormat mDateFormat = new SimpleDateFormat("dd 'de' MMMM", new Locale("pt", "BR"));
 
-        if (holder instanceof ViewHolder) {
-            final Book book = mBooks.get(position);
-            final ViewHolder vh = (ViewHolder) holder;
 
-            vh.titleTextView.setText(book.getTitle());
-            vh.authorsTextView.setText(book.getAuthors());
-            vh.callNumberTextView.setText(book.getCallNumber());
-            vh.renewDateTextView.setText(mDateFormat.format(book.getExpiration()));
+        final Book book = mBooks.get(position);
+        final ViewHolder vh = (ViewHolder) holder;
 
-            if (vh.loader.getVisibility() == View.VISIBLE) {
-                crossfade(vh.loader, vh.renewDateTextView);
-            }
+        vh.titleTextView.setText(book.getTitle());
+        vh.authorsTextView.setText(book.getAuthors());
+        vh.callNumberTextView.setText(book.getCallNumber());
+        vh.renewDateTextView.setText(mDateFormat.format(book.getExpiration()));
 
-            if (book.getState().IS_ERROR_STATE) {
-                zoomIn(vh.errorIconImageView);
-            }
-
-            vh.errorIconImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mBookItemListener.onBookErrorIconClick(book);
-                }
-            });
-
-            vh.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    crossfade(vh.renewDateTextView, vh.loader);
-                    if (vh.errorIconImageView.getVisibility() == View.VISIBLE) {
-                        zoomOut(vh.errorIconImageView);
-                    }
-                    mBookItemListener.onBookClick(book);
-                }
-            });
+        if (vh.loader.getVisibility() == View.VISIBLE) {
+            crossfade(vh.loader, vh.renewDateTextView);
         }
+
+        if (book.getState().IS_ERROR_STATE) {
+            zoomIn(vh.errorIconImageView);
+        }
+
+        vh.errorIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBookItemListener.onBookErrorIconClick(book);
+            }
+        });
+
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crossfade(vh.renewDateTextView, vh.loader);
+                if (vh.errorIconImageView.getVisibility() == View.VISIBLE) {
+                    zoomOut(vh.errorIconImageView);
+                }
+                mBookItemListener.onBookClick(book);
+            }
+        });
     }
 
     public void replaceData(List<Book> books) {
