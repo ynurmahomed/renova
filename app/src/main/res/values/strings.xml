@@ -41,5 +41,6 @@
 
     <string name="number_picker_dialog_positive_text">Selecionar</string>
     <string name="title_generic_error">Erro</string>
+    <string name="notification_preference_value">Notificações</string>
 
 </resources>

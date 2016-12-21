@@ -26,32 +26,34 @@ public class UFUHttpClientMock implements IHttpClient {
     }
 
     private UFUHttpClientMock() {
-        Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 24);
+        cal.set(Calendar.MONTH, Calendar.NOVEMBER);
+        cal.set(Calendar.YEAR, 2016);
 
         Book b1 = new Book();
         b1.setTitle("Effective Java");
         b1.setAuthors("Joshua Bloch");
         b1.setBarcode("123456789");
-        b1.setExpiration(tomorrow.getTime());
+        b1.setExpiration(cal.getTime());
 
         Book b2 = new Book();
         b2.setTitle("Machine Learning");
         b2.setAuthors("Tom M. Mitchell");
         b2.setBarcode("987654321");
-        b2.setExpiration(tomorrow.getTime());
+        b2.setExpiration(cal.getTime());
 
         Book b3 = new Book();
         b3.setTitle("Introduction to Algorithms");
         b3.setAuthors("Charles E. Leiserson, Thomas H. Cormen, Clifford Stein, Ronald Rivest");
         b3.setBarcode("123456789");
-        b3.setExpiration(tomorrow.getTime());
+        b3.setExpiration(cal.getTime());
 
         Book b4 = new Book();
         b4.setTitle("Design Patterns: Elements of Reusable Object-Oriented Software");
         b4.setAuthors("Erich Gamma, Ralph Johnson, Richard Helm, John Vlissides");
         b4.setBarcode("987654321");
-        b4.setExpiration(tomorrow.getTime());
+        b4.setExpiration(cal.getTime());
 
         books = new Book[]{b1, b2, b3, b4};
     }

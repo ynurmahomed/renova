@@ -24,8 +24,6 @@ import java.io.Serializable;
  *
  */
 public class NumberPickerDialogFragment extends android.support.v4.app.DialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MIN_VALUE = "param1";
     private static final String ARG_MAX_VALUE = "param2";
     private static final String ARG_LABEL = "param3";
@@ -33,7 +31,6 @@ public class NumberPickerDialogFragment extends android.support.v4.app.DialogFra
     private static final String ARG_VALUE = "param5";
     private static final String ARG_HANDLER = "param6";
 
-    // TODO: Rename and change types of parameters
     private int minValue;
     private int maxValue;
     private int labelPluralString;

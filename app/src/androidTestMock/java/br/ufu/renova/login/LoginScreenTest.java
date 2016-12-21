@@ -1,25 +1,20 @@
-package br.ufu.renova;
+package br.ufu.renova.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import br.ufu.renova.login.LoginActivity;
+import br.ufu.renova.R;
 import br.ufu.renova.util.EspressoIdlingResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -35,7 +30,7 @@ import static org.hamcrest.core.IsNot.not;
  */
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityTest {
+public class LoginScreenTest {
 
     @Before
     public void before() {
@@ -54,7 +49,7 @@ public class LoginActivityTest {
 
     @Test
     public void mostraToastAoFazerLoginSemUsername() {
-        onView(withId(R.id.login_button)).perform(click());
+        onView(ViewMatchers.withId(R.id.login_button)).perform(click());
         onView(withText(R.string.message_login_empty))
             .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
             .check(matches(isDisplayed()));
@@ -71,19 +66,10 @@ public class LoginActivityTest {
 
     @Test
     public void fazLoginAoClicarNoBotaoEntrar() {
-        Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
-
         onView(withId(R.id.login_edit_text)).perform(typeText("login"));
         onView(withId(R.id.password_edit_text)).perform(typeText("password"));
         onView(withId(R.id.login_button)).perform(click());
-
-        ViewInteraction recyclerView = onView(withId(R.id.books_recycler_view));
-
-        recyclerView.check(matches(hasDescendant(withText("Effective Java"))));
-        recyclerView.check(matches(hasDescendant(withText("Joshua Bloch"))));
-        recyclerView.check(matches(hasDescendant(withText("Machine Learning"))));
-
+        onView(withId(R.id.books_recycler_view)).check(matches(isDisplayed()));
     }
 
     private void clearSharedPreferences() {

@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Notificações"/>
+                android:text="@string/notification_preference_value"/>
 
 
         <TextView
