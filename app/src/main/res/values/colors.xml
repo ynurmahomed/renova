@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="login_background">#ff1c9b80</color>
-    <color name="login_background_darker">#ff1A8269</color>
+    <color name="primary">#ff1c9b80</color>
+    <color name="primary_dark">#ff1A8269</color>
+    <color name="accent">#ffffff</color>
     <color name="login_background_darkest">#ff176953</color>
     <color name="book_list_item_border">#ffafafaf</color>
     <color name="book_list_background">#22487d67</color>

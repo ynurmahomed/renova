@@ -3,15 +3,12 @@ package br.ufu.renova;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import br.ufu.renova.books.BooksFragment;
 import br.ufu.renova.books.BooksPresenter;
@@ -25,85 +22,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class AppActivity extends ActionBarActivity {
-
-    private ViewPager viewPager;
-
-    private AppPagerAdapter appPagerAdapter;
+public class AppActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_library_books_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_settings_white_24dp));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ActionBar actionBar = getSupportActionBar();
-
-        appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
-
-        viewPager = (ViewPager) findViewById(R.id.app_view_pager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.app_view_pager);
+        AppPagerAdapter appPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(appPagerAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i2) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                // When swiping between pages, select the
-                // corresponding tab.
-                getSupportActionBar().setSelectedNavigationItem(i);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
-        // Specify that tabs should be displayed in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // When the tab is selected, switch to the
-                // corresponding page in the ViewPager.
+            public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // hide the given tab
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
             }
 
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-                // probably ignore this event
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
-        };
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        //.setText(BooksFragment.TITLE)
-                        .setIcon(R.drawable.ic_action_view_as_list)
-                        .setTabListener(tabListener)
-        );
-
-        actionBar.addTab(
-                actionBar.newTab()
-                        //.setText(PreferencesFragment.TITLE)
-                        .setIcon(R.drawable.ic_action_settings)
-                        .setTabListener(tabListener)
-        );
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.app, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        });
     }
 
     private class AppPagerAdapter extends FragmentPagerAdapter {
