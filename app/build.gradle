@@ -17,7 +17,7 @@ android {
     buildToolsVersion '21.1.1'
     defaultConfig {
         applicationId 'br.ufu.renova'
-        minSdkVersion 12
+        minSdkVersion 15
         targetSdkVersion 24
         versionCode 10012
         versionName '2.0.7'
@@ -43,7 +43,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:cardview-v7:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 
     androidTestCompile 'com.android.support:support-annotations:24.0.0'
