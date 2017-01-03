@@ -10,22 +10,22 @@ import java.util.Calendar;
 /**
  * Created by yassin on 04/12/14.
  */
-public class UFUHttpClientMock implements IHttpClient {
+public class UFULibraryDataSourceMock implements ILibraryDataSource {
 
-    private static UFUHttpClientMock INSTANCE;
+    private static UFULibraryDataSourceMock INSTANCE;
 
     private final long DELAY = 1000L;
 
     private Book[] books;
 
-    public static UFUHttpClientMock getInstance() {
+    public static UFULibraryDataSourceMock getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UFUHttpClientMock();
+            INSTANCE = new UFULibraryDataSourceMock();
         }
         return INSTANCE;
     }
 
-    private UFUHttpClientMock() {
+    private UFULibraryDataSourceMock() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, 24);
         cal.set(Calendar.MONTH, Calendar.NOVEMBER);

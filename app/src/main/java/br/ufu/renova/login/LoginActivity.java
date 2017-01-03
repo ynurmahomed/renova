@@ -14,7 +14,7 @@ import br.ufu.renova.Injection;
 import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.IHttpClient;
+import br.ufu.renova.scraper.ILibraryDataSource;
 
 
 public class LoginActivity extends Activity implements LoginContract.View {
@@ -49,8 +49,8 @@ public class LoginActivity extends Activity implements LoginContract.View {
         mLoginProgress.setCancelable(false);
 
         PreferencesContract.AppPreferences preferences = Injection.provideAppPreferences(getApplicationContext());
-        IHttpClient mHttpClient = Injection.provideHttpClient();
-        setPresenter(new LoginPresenter(this, preferences, mHttpClient));
+        ILibraryDataSource mDataSource = Injection.provideDataSource();
+        setPresenter(new LoginPresenter(this, preferences, mDataSource));
     }
 
     @Override

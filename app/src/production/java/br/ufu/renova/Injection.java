@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.IHttpClient;
-import br.ufu.renova.scraper.UFUHttpClient;
+import br.ufu.renova.scraper.ILibraryDataSource;
+import br.ufu.renova.scraper.UFULibraryDataSource;
 
 /**
  * Created by yassin on 11/22/16.
@@ -18,7 +18,7 @@ public class Injection {
         return new AppPreferences(defaultSharedPreferences);
     }
 
-    public static IHttpClient provideHttpClient() {
-        return UFUHttpClient.getInstance();
+    public static ILibraryDataSource provideDataSource() {
+        return UFULibraryDataSource.getInstance();
     }
 }

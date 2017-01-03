@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by yassin on 10/19/16.
  */
-public interface IHttpClient extends Serializable {
+public interface ILibraryDataSource extends Serializable {
 
     interface LoginCallback {
         void onComplete(User user);

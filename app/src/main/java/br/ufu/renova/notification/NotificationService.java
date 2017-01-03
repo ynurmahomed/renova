@@ -10,7 +10,7 @@ import br.ufu.renova.Injection;
 import br.ufu.renova.R;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
-import br.ufu.renova.scraper.IHttpClient;
+import br.ufu.renova.scraper.ILibraryDataSource;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,24 +18,24 @@ import java.util.List;
 
 public class NotificationService extends Service {
 
-    private IHttpClient library;
+    private ILibraryDataSource mDataSource;
 
-    private SharedPreferences prefs;
+    private SharedPreferences mPreferences;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("NotificationService", "Received start id " + startId + ": " + intent);
 
-        prefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        final String login = prefs.getString(getString(R.string.preference_login), "");
-        final String password = prefs.getString(getString(R.string.preference_password), "");
+        mPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        final String login = mPreferences.getString(getString(R.string.preference_login), "");
+        final String password = mPreferences.getString(getString(R.string.preference_password), "");
 
         if (!(login.isEmpty() || password.isEmpty())) {
-            library = Injection.provideHttpClient();
-            library.login(login, password, new IHttpClient.LoginCallback() {
+            mDataSource = Injection.provideDataSource();
+            mDataSource.login(login, password, new ILibraryDataSource.LoginCallback() {
                 @Override
                 public void onComplete(User user) {
-                    library.getBooks(new IHttpClient.GetBooksCallback() {
+                    mDataSource.getBooks(new ILibraryDataSource.GetBooksCallback() {
                         @Override
                         public void onComplete(List<Book> books) {
                             List<Book> toExpire = new ArrayList<Book>();
@@ -73,7 +73,7 @@ public class NotificationService extends Service {
 
     private boolean shouldNotify(Book b) {
         int defaultValue = getResources().getInteger(R.integer.preference_notifications_default);
-        int defaultDays = prefs.getInt(getString(R.string.preference_notifications), defaultValue);
+        int defaultDays = mPreferences.getInt(getString(R.string.preference_notifications), defaultValue);
 
         Calendar today = Calendar.getInstance();
 

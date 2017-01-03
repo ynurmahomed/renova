@@ -2,7 +2,7 @@ package br.ufu.renova.login;
 
 import br.ufu.renova.model.User;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.IHttpClient;
+import br.ufu.renova.scraper.ILibraryDataSource;
 import br.ufu.renova.scraper.LoginException;
 
 import java.io.IOException;
@@ -16,12 +16,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private PreferencesContract.AppPreferences mPreferences;
 
-    private IHttpClient mHttpClient;
+    private ILibraryDataSource mDataSource;
 
-    public LoginPresenter(LoginContract.View loginView, PreferencesContract.AppPreferences preferences, IHttpClient httpClient) {
+    public LoginPresenter(LoginContract.View loginView, PreferencesContract.AppPreferences preferences, ILibraryDataSource dataSource) {
         mView = loginView;
         mPreferences = preferences;
-        mHttpClient = httpClient;
+        mDataSource = dataSource;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void login(final String username, final String password) {
         mView.showProgressDialog();
-        mHttpClient.login(username, password, new IHttpClient.LoginCallback() {
+        mDataSource.login(username, password, new ILibraryDataSource.LoginCallback() {
             @Override
             public void onComplete(User user) {
                 if (!mPreferences.isUserSaved()) {

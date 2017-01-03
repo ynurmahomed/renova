@@ -14,11 +14,11 @@ public class BooksPresenter implements BooksContract.Presenter {
 
     private BooksContract.View mView;
 
-    private IHttpClient mHttpClient;
+    private ILibraryDataSource mDataSource;
 
-    public BooksPresenter(BooksContract.View booksView, IHttpClient httpClient) {
+    public BooksPresenter(BooksContract.View booksView, ILibraryDataSource dataSource) {
         this.mView = booksView;
-        this.mHttpClient = httpClient;
+        this.mDataSource = dataSource;
     }
 
     @Override
@@ -28,10 +28,10 @@ public class BooksPresenter implements BooksContract.Presenter {
 
     @Override
     public void onBookClick(Book b) {
-        mHttpClient.renew(b, new IHttpClient.RenewCallback() {
+        mDataSource.renew(b, new ILibraryDataSource.RenewCallback() {
             @Override
             public void onComplete(Book book) {
-                mHttpClient.getBooks(new IHttpClient.GetBooksCallback() {
+                mDataSource.getBooks(new ILibraryDataSource.GetBooksCallback() {
                     @Override
                     public void onComplete(List<Book> books) {
                         mView.showBooksList(books);
@@ -63,7 +63,7 @@ public class BooksPresenter implements BooksContract.Presenter {
 
     private void loadBooks() {
         mView.showProgress();
-        mHttpClient.getBooks(new IHttpClient.GetBooksCallback() {
+        mDataSource.getBooks(new ILibraryDataSource.GetBooksCallback() {
             @Override
             public void onComplete(List<Book> books) {
                 if (books.size() == 0) {

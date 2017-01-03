@@ -19,7 +19,7 @@ import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.preferences.PreferencesFragment;
 import br.ufu.renova.preferences.PreferencesPresenter;
-import br.ufu.renova.scraper.IHttpClient;
+import br.ufu.renova.scraper.ILibraryDataSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +124,8 @@ public class AppActivity extends ActionBarActivity {
 
             if (index == BOOK_LIST_FRAGMENT) {
                 BooksFragment frag = BooksFragment.newInstance();
-                IHttpClient httpClient = Injection.provideHttpClient();
-                BooksPresenter presenter = new BooksPresenter(frag, httpClient);
+                ILibraryDataSource dataSource = Injection.provideDataSource();
+                BooksPresenter presenter = new BooksPresenter(frag, dataSource);
                 frag.setPresenter(presenter);
                 fragment = frag;
             } else if (index == SETTINGS_FRAGMENT) {

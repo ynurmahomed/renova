@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * Created by yassin on 04/12/14.
  */
-public class UFUHttpClient implements IHttpClient {
+public class UFULibraryDataSource implements ILibraryDataSource {
 
-    private static UFUHttpClient INSTANCE;
+    private static UFULibraryDataSource INSTANCE;
 
     private String patronhost;
 
@@ -20,14 +20,14 @@ public class UFUHttpClient implements IHttpClient {
 
     private User user;
 
-    public static UFUHttpClient getInstance() {
+    public static UFULibraryDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UFUHttpClient();
+            INSTANCE = new UFULibraryDataSource();
         }
         return INSTANCE;
     }
 
-    private UFUHttpClient() {
+    private UFULibraryDataSource() {
     }
 
     @Override

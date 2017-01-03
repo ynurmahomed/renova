@@ -7,19 +7,19 @@ import br.ufu.renova.model.User;
 import java.util.List;
 
 /**
- * Embrulha métodos de {@link IHttpClient} de forma que os testes de tela esperem
+ * Embrulha métodos de {@link ILibraryDataSource} de forma que os testes de tela esperem
  * que as operações assincronas terminem.
  *
  * Created by yassin on 11/22/16.
  */
-public class DecoratedUFUHttpClientMock implements IHttpClient {
+public class DecoratedUFULibraryDataSourceMock implements ILibraryDataSource {
 
-    private final IHttpClient httpClient;
+    private final ILibraryDataSource dataSource;
 
     private final CountingIdlingResource idlingResource;
 
-    public DecoratedUFUHttpClientMock(IHttpClient httpClient, CountingIdlingResource idlingResource) {
-        this.httpClient = httpClient;
+    public DecoratedUFULibraryDataSourceMock(ILibraryDataSource dataSource, CountingIdlingResource idlingResource) {
+        this.dataSource = dataSource;
         this.idlingResource = idlingResource;
     }
 
@@ -27,7 +27,7 @@ public class DecoratedUFUHttpClientMock implements IHttpClient {
     @Override
     public void login(String username, String password, final LoginCallback callback) {
         idlingResource.increment();
-        httpClient.login(username, password, new LoginCallback() {
+        dataSource.login(username, password, new LoginCallback() {
             @Override
             public void onComplete(User user) {
                 callback.onComplete(user);
@@ -45,7 +45,7 @@ public class DecoratedUFUHttpClientMock implements IHttpClient {
     @Override
     public void getBooks(final GetBooksCallback callback) {
         idlingResource.increment();
-        httpClient.getBooks(new GetBooksCallback() {
+        dataSource.getBooks(new GetBooksCallback() {
             @Override
             public void onComplete(List<Book> books) {
                 callback.onComplete(books);
@@ -63,7 +63,7 @@ public class DecoratedUFUHttpClientMock implements IHttpClient {
     @Override
     public void renew(Book b, final RenewCallback callback) {
         idlingResource.increment();
-        httpClient.renew(b, new RenewCallback() {
+        dataSource.renew(b, new RenewCallback() {
             @Override
             public void onComplete(Book book) {
                 callback.onComplete(book);
