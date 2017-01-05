@@ -16,34 +16,13 @@ public class PreferencesPresenter implements PreferencesContract.Presenter {
 
     @Override
     public void start() {
-        mView.setNotificationAdvance(mPreferences.getNotificationAdvance());
+        mView.updateNotificationPreferenceSummary();
     }
 
     @Override
     public void logout() {
         mPreferences.setUser(null);
         mView.showLogin();
-    }
-
-    @Override
-    public void setNotificationAdvance(int days) {
-        mPreferences.setNotificationAdvance(days);
-        mView.setNotificationAdvance(days);
-    }
-
-    @Override
-    public void onNotificationPreferenceClick() {
-        mView.showNumberPicker();
-    }
-
-    @Override
-    public void onSharePreferenceClick() {
-        mView.showShareApp();
-    }
-
-    @Override
-    public void onRatePreferenceClick() {
-        mView.showRateApp();
     }
 
     @Override

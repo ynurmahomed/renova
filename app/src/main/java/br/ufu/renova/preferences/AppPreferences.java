@@ -14,10 +14,6 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
 
     private static final String FIRST_RUN = "pref_first_run";
 
-    private static final String NOTIFICATION_ADVANCE = "pref_notifications";
-
-    private static final int DEFAULT_NOTIFICATION_ADVANCE = 2;
-
     private SharedPreferences mPreferences;
 
     public AppPreferences(SharedPreferences mPreferences) {
@@ -47,18 +43,6 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
     public boolean isUserSaved() {
         User user = getUser();
         return !user.getUsername().isEmpty() && !user.getPassword().isEmpty();
-    }
-
-    @Override
-    public int getNotificationAdvance() {
-        return mPreferences.getInt(NOTIFICATION_ADVANCE, DEFAULT_NOTIFICATION_ADVANCE);
-    }
-
-    @Override
-    public void setNotificationAdvance(int days) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(NOTIFICATION_ADVANCE, days);
-        editor.apply();
     }
 
     @Override

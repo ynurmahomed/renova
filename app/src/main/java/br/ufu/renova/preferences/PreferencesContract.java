@@ -11,28 +11,14 @@ public interface PreferencesContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showNumberPicker();
-
-        void showShareApp();
-
-        void showRateApp();
-
         void showLogoutConfirmation();
 
         void showLogin();
 
-        void setNotificationAdvance(int days);
+        void updateNotificationPreferenceSummary();
     }
 
     interface Presenter extends BasePresenter {
-
-        void setNotificationAdvance(int days);
-
-        void onNotificationPreferenceClick();
-
-        void onSharePreferenceClick();
-
-        void onRatePreferenceClick();
 
         void onLogoutClick();
 
@@ -46,10 +32,6 @@ public interface PreferencesContract {
         void setUser(User u);
 
         boolean isUserSaved();
-
-        int getNotificationAdvance();
-
-        void setNotificationAdvance(int days);
 
         void setFirstRun(boolean firstRun);
 

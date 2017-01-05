@@ -1,8 +1,6 @@
 package br.ufu.renova;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,10 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import br.ufu.renova.books.BooksFragment;
 import br.ufu.renova.books.BooksPresenter;
-import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.preferences.PreferencesFragment;
 import br.ufu.renova.preferences.PreferencesPresenter;
+import br.ufu.renova.preferences.SettingsFragment;
 import br.ufu.renova.scraper.ILibraryDataSource;
 
 import java.util.HashMap;
@@ -78,10 +75,9 @@ public class AppActivity extends AppCompatActivity {
                 frag.setPresenter(presenter);
                 fragment = frag;
             } else if (index == SETTINGS_FRAGMENT) {
-                PreferencesFragment frag = PreferencesFragment.newInstance();
-                SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                PreferencesContract.AppPreferences preferences = new AppPreferences(shared);
-                PreferencesPresenter presenter = new PreferencesPresenter(frag, preferences);
+                SettingsFragment frag = new SettingsFragment();
+                PreferencesContract.AppPreferences prefs = Injection.provideAppPreferences(getApplicationContext());
+                PreferencesPresenter presenter = new PreferencesPresenter(frag, prefs);
                 frag.setPresenter(presenter);
                 fragment = frag;
             }
@@ -99,16 +95,6 @@ public class AppActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            if (position == BOOK_LIST_FRAGMENT) {
-                return BooksFragment.TITLE;
-            } else if (position == SETTINGS_FRAGMENT) {
-                return PreferencesFragment.TITLE;
-            }
-            return "";
         }
 
         public Fragment getFragment(int index) {

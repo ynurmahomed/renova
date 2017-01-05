@@ -13,9 +13,9 @@
     <string name="title_connection_error">Sem conexão</string>
     <string name="message_connection_error">Certifique-se que está conectado à internet.</string>
     <string name="message_no_connection">Sem conexão.</string>
-    <string name="message_login_progress">Conectando...</string>
+    <string name="message_login_progress">Conectando…</string>
     <string name="message_book_list_empty">Sem livros, toque para carregar.</string>
-    <string name="message_book_renewing">Renovando...</string>
+    <string name="message_book_renewing">Renovando…</string>
     <string name="message_session_expired">A sua sessão espirou.</string>
     <string name="message_unprocessable_response">Não foi possível processar a resposta.</string>
     <string name="title_activity_app">RenovApp</string>
@@ -24,23 +24,24 @@
     <string name="preference_login">pref_login</string>
     <string name="preference_password">pref_password</string>
     <string name="preference_notifications">pref_notifications</string>
-    <string name="logout_preference_value">Sair</string>
-    <string name="share_preference_value">Compartilhar</string>
-    <string name="rate_renovapp">Avalie o RenovApp</string>
-    <string name="help_us">Ajude o RenovApp</string>
-    <string name="help_us_explanation">Visualizar um anúncio</string>
+    <string name="logout_preference_title">Sair</string>
+    <string name="logout_preference_summary">Ir para tela de login</string>
+    <string name="share_preference_title">Compartilhar</string>
+    <string name="rate_preference_title">Avaliar</string>
     <string name="preference_first_run">pref_first_run</string>
-
-    <string name="banner_ad_unit_id">ca-app-pub-2113484633994413/8374737681</string>
-
+    <string name="contribute_preference_title">Contribuir</string>
+    <string name="contribute_preference_summary">Código-fonte, bugs</string>
+    <string name="version_preference_title">Versão</string>
     <string name="dialog_negative_text">Cancelar</string>
-
     <string name="leave_dialog_title">Sair?</string>
     <string name="leave_dialog_message">Se sair não poderá mais receber notificações.</string>
     <string name="leave_dialog_positive_text">Sair</string>
-
-    <string name="number_picker_dialog_positive_text">Selecionar</string>
+    <string name="number_picker_dialog_positive_text">OK</string>
     <string name="title_generic_error">Erro</string>
-    <string name="notification_preference_value">Notificações</string>
+    <string name="notification_preference_title">Notificar</string>
+    <string name="notification_preference_dialog_title">Antecedência</string>
+    <string name="market_url">market://details?id=br.ufu.renova</string>
+    <string name="github_url">https://github.com/ynurmahomed/renova"</string>
+    <string name="share_summary">Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova</string>
 
 </resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <br.ufu.renova.preferences.NumberPickerPreference
+            android:title="@string/notification_preference_title"
+            android:key="@string/preference_notifications"
+            android:icon="@drawable/ic_notifications_36dp"
+            app:minValue="@integer/preference_notifications_min_value"
+            app:maxValue="@integer/preference_notifications_max_value"/>
+
+    <android.support.v7.preference.Preference
+            android:title="@string/share_preference_title"
+            android:icon="@drawable/ic_share_36dp">
+        <intent android:action="android.intent.action.SEND"
+                android:mimeType="text/plain">
+            <extra android:name="android.intent.extra.TEXT"
+                   android:value="@string/share_summary"/>
+        </intent>
+    </android.support.v7.preference.Preference>
+
+    <android.support.v7.preference.Preference
+            android:title="@string/rate_preference_title"
+            android:icon="@drawable/ic_star_36dp">
+        <intent android:action="android.intent.action.VIEW"
+                android:data="@string/market_url"/>
+    </android.support.v7.preference.Preference>
+
+    <android.support.v7.preference.Preference
+            android:title="@string/logout_preference_title"
+            android:summary="@string/logout_preference_summary"
+            android:key="logout"
+            android:icon="@drawable/ic_account_circle_36dp"/>
+
+    <android.support.v7.preference.Preference
+            android:title="@string/contribute_preference_title"
+            android:summary="@string/contribute_preference_summary"
+            android:icon="@drawable/ic_code_36dp">
+        <intent android:action="android.intent.action.VIEW"
+                android:data="@string/github_url"/>
+    </android.support.v7.preference.Preference>
+
+
+    <android.support.v7.preference.Preference
+            android:title="@string/version_preference_title"
+            android:summary="@string/versionName"
+            android:icon="@drawable/ic_action_info_36dp"/>
+</android.support.v7.preference.PreferenceScreen>

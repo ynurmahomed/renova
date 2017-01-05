@@ -10,6 +10,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -33,7 +34,8 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.scrollTo
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
  * Created by yassin on 11/23/16.
@@ -88,73 +90,114 @@ public class AppScreenTest {
 
     @Test
     public void mostraTelaDePreferenciasAoArrastar() {
+        Context ctx = InstrumentationRegistry.getTargetContext();
+        int numDays = ctx.getResources().getInteger(R.integer.preference_notifications_default);
+        String quantityString = ctx.getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
+
         onView(withId(R.id.app_view_pager)).perform(swipeLeft());
-        onView(withId(R.id.notification_preference)).check(matches(isDisplayed()));
-        onView(withId(R.id.share_preference)).check(matches(isDisplayed()));
-        onView(withId(R.id.rate_renovapp)).check(matches(isDisplayed()));
-        onView(withId(R.id.logout_preference)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.list))
+                .check(matches(atPosition(0, allOf(
+                        hasDescendant(withText(R.string.notification_preference_title)),
+                        hasDescendant(withText(quantityString)),
+                        isDisplayed()))))
+
+                .check(matches(atPosition(1, allOf(
+                        hasDescendant(withText(R.string.share_preference_title)),
+                        isDisplayed()))))
+
+                .check(matches(atPosition(2, allOf(
+                        hasDescendant(withText(R.string.rate_preference_title)),
+                        isDisplayed()))))
+
+                .check(matches(atPosition(3, allOf(
+                        hasDescendant(withText(R.string.logout_preference_title)),
+                        hasDescendant(withText(R.string.logout_preference_summary)),
+                        isDisplayed()))))
+
+                .check(matches(atPosition(4, allOf(
+                        hasDescendant(withText(R.string.contribute_preference_title)),
+                        hasDescendant(withText(R.string.contribute_preference_summary)),
+                        isDisplayed()))))
+
+                .check(matches(atPosition(5, allOf(
+                        hasDescendant(withText(R.string.version_preference_title)),
+                        hasDescendant(withText(R.string.versionName)),
+                        isDisplayed()))));
     }
 
 
     @Test
     public void alteraAntecedenciaDasNotificacoes() {
         int numDays = 6;
-        onView(withId(R.id.app_view_pager)).perform(swipeLeft());
-        // Usando sleep porque o espresso não espera a animação do swipe terminar
-        // antes de executar o click, outra solução seria usar IdlingResource
-        SystemClock.sleep(500);
-        onView(withId(R.id.notification_preference)).perform(click());
+        Context ctx = InstrumentationRegistry.getTargetContext();
+
+        navigateToSettings();
+
+        ViewInteraction recyclerView = onView(withId(R.id.list));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
         onView(withId(R.id.number_picker)).perform(pickNumber(numDays));
         onView(withText(R.string.number_picker_dialog_positive_text)).perform(click());
-        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
         String quantityString = ctx.getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
-        onView(withId(R.id.notification_preference))
-                .check(matches(hasDescendant(withText(quantityString))));
+        recyclerView.check(matches(atPosition(0, allOf(
+                hasDescendant(withText(R.string.notification_preference_title)),
+                hasDescendant(withText(quantityString)),
+                isDisplayed()))));
     }
 
     @Test
     public void mostraTelaParaCompartilhar() {
-        onView(withId(R.id.app_view_pager)).perform(swipeLeft());
-        // Usando sleep porque o espresso não espera a animação do swipe terminar
-        // antes de executar o click, outra solução seria usar IdlingResource
-        SystemClock.sleep(500);
-        onView(withId(R.id.share_preference)).perform(click());
-        intended(chooser(allOf(
+        Context ctx = InstrumentationRegistry.getTargetContext();
+        String shareSummary = ctx.getString(R.string.share_summary);
+        navigateToSettings();
+        onView(withId(R.id.list)).perform(actionOnItemAtPosition(1, click()));
+        intended(allOf(
                 hasAction(equalTo(Intent.ACTION_SEND)),
                 hasType("text/plain"),
-                hasExtra(Intent.EXTRA_TEXT, "Renove seus livros na biblioteca UFU com um toque - https://play.google.com/store/apps/details?id=br.ufu.renova"))));
+                hasExtra(Intent.EXTRA_TEXT, shareSummary)));
     }
 
     @Test
     @Ignore("Testar com Google APIs image")
     @Suppress
     public void mostraTelaParaAvaliar() {
-        onView(withId(R.id.app_view_pager)).perform(swipeLeft());
-        // Usando sleep porque o espresso não espera a animação do swipe terminar
-        // antes de executar o click, outra solução seria usar IdlingResource
-        SystemClock.sleep(500);
-        onView(withId(R.id.rate_renovapp)).perform(click());
+        Context ctx = InstrumentationRegistry.getTargetContext();
+        String marketUrl = ctx.getString(R.string.market_url);
+        navigateToSettings();
+        onView(withId(R.id.list)).perform(actionOnItemAtPosition(2, click()));
         intended(allOf(
                 hasAction(Intent.ACTION_VIEW),
-                hasData(Uri.parse("market://details?id=br.ufu.renova"))));
+                hasData(Uri.parse(marketUrl))));
     }
 
     @Test
     public void fazLogout() {
-        onView(withId(R.id.app_view_pager)).perform(swipeLeft());
-        // Usando sleep porque o espresso não espera a animação do swipe terminar
-        // antes de executar o click, outra solução seria usar IdlingResource
-        SystemClock.sleep(500);
-        onView(withId(R.id.logout_preference)).perform(click());
+        navigateToSettings();
+        onView(withId(R.id.list)).perform(actionOnItemAtPosition(3, click()));
         onView(withText("Sair")).perform(click());
         onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 
-    public static Matcher<Intent> chooser(Matcher<Intent> matcher) {
-        return allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), matcher));
+    @Test
+    public void mostraPaginaParaContribuir() {
+        Context ctx = InstrumentationRegistry.getTargetContext();
+        String githubUrl = ctx.getString(R.string.github_url);
+        navigateToSettings();
+        onView(withId(R.id.list)).perform(actionOnItemAtPosition(4, click()));
+        intended(allOf(
+                hasAction(equalTo(Intent.ACTION_VIEW)),
+                hasData(Uri.parse(githubUrl))));
     }
 
-    public static Matcher<View> atPosition(final int position, final Matcher<View> itemMatcher) {
+    private void navigateToSettings() {
+        onView(withId(R.id.app_view_pager)).perform(swipeLeft());
+        // Usando sleep porque o espresso não espera a animação do swipe terminar
+        // antes de executar o click, outra solução seria usar IdlingResource
+        SystemClock.sleep(500);
+    }
+
+    private static Matcher<View> atPosition(final int position, final Matcher<View> itemMatcher) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
             @Override
             public void describeTo(Description description) {

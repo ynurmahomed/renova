@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="preference_notifications_default">2</integer>
+    <integer name="preference_notifications_min_value">1</integer>
+    <integer name="preference_notifications_max_value">7</integer>
 </resources>
