@@ -44,6 +44,7 @@ public class BooksFragment extends Fragment implements BooksContract.View {
         ArrayList<Book> books = new ArrayList<>(0);
 
         mAdapter = new BooksAdapter(books, mBookItemListener, shortAnimationDuration);
+        setRetainInstance(true);
     }
 
     @Override

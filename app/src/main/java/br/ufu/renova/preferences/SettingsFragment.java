@@ -33,6 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 return true;
             }
         });
+        setRetainInstance(true);
     }
 
     @Override
