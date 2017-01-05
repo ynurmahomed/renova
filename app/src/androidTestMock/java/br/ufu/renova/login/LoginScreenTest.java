@@ -48,7 +48,7 @@ public class LoginScreenTest {
     public ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
-    public void mostraToastAoFazerLoginSemUsername() {
+    public void shouldShowToastOnLoginWihoutUsername() {
         onView(ViewMatchers.withId(R.id.login_button)).perform(click());
         onView(withText(R.string.message_login_empty))
             .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow().getDecorView()))))
@@ -56,7 +56,7 @@ public class LoginScreenTest {
     }
 
     @Test
-    public void mostraToastAoFazerLoginSemPassword() {
+    public void shouldShowToastOnLoginWithoutPassword() {
         onView(withId(R.id.login_edit_text)).perform(typeText("login"));
         onView(withId(R.id.login_button)).perform(click());
         onView(withText(R.string.message_password_empty))
@@ -65,7 +65,7 @@ public class LoginScreenTest {
     }
 
     @Test
-    public void fazLoginAoClicarNoBotaoEntrar() {
+    public void shouldLoginUser() {
         onView(withId(R.id.login_edit_text)).perform(typeText("login"));
         onView(withId(R.id.password_edit_text)).perform(typeText("password"));
         onView(withId(R.id.login_button)).perform(click());

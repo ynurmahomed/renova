@@ -1,5 +1,7 @@
 package br.ufu.renova;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -60,7 +63,7 @@ public class AppScreenTest {
     }
 
     @Test
-    public void mostraListadeLivros() {
+    public void shouldShowBookList() {
         onView(withId(R.id.books_recycler_view))
             .check(matches(atPosition(0, hasDescendant(withText("Effective Java")))))
             .check(matches(atPosition(0, hasDescendant(withText("Joshua Bloch")))))
@@ -81,7 +84,7 @@ public class AppScreenTest {
     }
 
     @Test
-    public void renovaUmLivroAoClicar() {
+    public void shouldRenewBookExpirationDate() {
         onView(withId(R.id.books_recycler_view))
                 .check(matches(atPosition(0, hasDescendant(withText("24 de novembro")))))
                 .perform(actionOnItemAtPosition(0, click()))
@@ -89,7 +92,7 @@ public class AppScreenTest {
     }
 
     @Test
-    public void mostraTelaDePreferenciasAoArrastar() {
+    public void shouldShowPreferencesScreen() {
         Context ctx = InstrumentationRegistry.getTargetContext();
         int numDays = ctx.getResources().getInteger(R.integer.preference_notifications_default);
         String quantityString = ctx.getResources().getQuantityString(R.plurals.config_notifications, numDays, numDays);
@@ -126,9 +129,8 @@ public class AppScreenTest {
                         isDisplayed()))));
     }
 
-
     @Test
-    public void alteraAntecedenciaDasNotificacoes() {
+    public void shouldChangeNotificationAdvancePreference() {
         int numDays = 6;
         Context ctx = InstrumentationRegistry.getTargetContext();
 
@@ -147,9 +149,11 @@ public class AppScreenTest {
     }
 
     @Test
-    public void mostraTelaParaCompartilhar() {
+    public void shouldShowShareScreen() {
         Context ctx = InstrumentationRegistry.getTargetContext();
         String shareSummary = ctx.getString(R.string.share_summary);
+        Intent intent = new Intent();
+        intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, intent));
         navigateToSettings();
         onView(withId(R.id.list)).perform(actionOnItemAtPosition(1, click()));
         intended(allOf(
@@ -161,9 +165,11 @@ public class AppScreenTest {
     @Test
     @Ignore("Testar com Google APIs image")
     @Suppress
-    public void mostraTelaParaAvaliar() {
+    public void shouldShowAppInPlayStore() {
         Context ctx = InstrumentationRegistry.getTargetContext();
         String marketUrl = ctx.getString(R.string.market_url);
+        Intent intent = new Intent();
+        intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, intent));
         navigateToSettings();
         onView(withId(R.id.list)).perform(actionOnItemAtPosition(2, click()));
         intended(allOf(
@@ -172,7 +178,7 @@ public class AppScreenTest {
     }
 
     @Test
-    public void fazLogout() {
+    public void shouldLogoutUser() {
         navigateToSettings();
         onView(withId(R.id.list)).perform(actionOnItemAtPosition(3, click()));
         onView(withText("Sair")).perform(click());
@@ -180,14 +186,22 @@ public class AppScreenTest {
     }
 
     @Test
-    public void mostraPaginaParaContribuir() {
+    public void shouldShowProjectPage() {
         Context ctx = InstrumentationRegistry.getTargetContext();
         String githubUrl = ctx.getString(R.string.github_url);
+        Intent intent = new Intent();
+        intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, intent));
         navigateToSettings();
         onView(withId(R.id.list)).perform(actionOnItemAtPosition(4, click()));
         intended(allOf(
                 hasAction(equalTo(Intent.ACTION_VIEW)),
                 hasData(Uri.parse(githubUrl))));
+    }
+
+    @Test
+    public void shouldSurviveOrientationChange() {
+        TestUtils.rotateOrientation(TestUtils.getCurrentActivity());
+        onView(withId(R.id.books_recycler_view)).check(matches(isDisplayed()));
     }
 
     private void navigateToSettings() {
