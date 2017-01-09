@@ -20,8 +20,9 @@
 
     <ProgressBar
             android:id="@+id/books_progress_bar"
+            style="@style/AppTheme.ProgressBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     <LinearLayout
             android:id="@+id/empty_books_list_message"

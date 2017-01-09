@@ -11,6 +11,8 @@
 
     <style name="AppTheme" parent="AppTheme.Base"/>
 
+    <style name="AppTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar"/>
+
     <style name="ViewWithPadding">
         <item name="android:paddingLeft">@dimen/activityHorizontalPadding</item>
         <item name="android:paddingRight">@dimen/activityHorizontalPadding</item>
