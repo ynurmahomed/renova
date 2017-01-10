@@ -5,15 +5,18 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import br.ufu.renova.Injection;
 
 import java.util.Calendar;
 
 /**
- * Created by pablohenrique on 11/24/14.
+ * Escalona o serviço de notificações para correr a cada intervalo de {@code REPEAT_TIME}.
+ *
+ * @author pablohenrique on 11/24/14.
  */
 public class NotificationServiceScheduleReceiver extends BroadcastReceiver {
 
-    private static final long REPEAT_TIME = 1000 * 60 * 60 * 24; // mSecs
+    private static final long REPEAT_TIME = Injection.provideNotificationRepeatTime();
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -3,13 +3,13 @@ package br.ufu.renova.notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 import br.ufu.renova.Injection;
 import br.ufu.renova.R;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
+import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.scraper.ILibraryDataSource;
 
 import java.util.ArrayList;
@@ -20,19 +20,20 @@ public class NotificationService extends Service {
 
     private ILibraryDataSource mDataSource;
 
-    private SharedPreferences mPreferences;
+    private PreferencesContract.AppPreferences mPreferences;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("NotificationService", "Received start id " + startId + ": " + intent);
 
-        mPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        final String login = mPreferences.getString(getString(R.string.preference_login), "");
-        final String password = mPreferences.getString(getString(R.string.preference_password), "");
+        mPreferences = Injection.provideAppPreferences(getApplicationContext());
+        mDataSource  = Injection.provideDataSource();
 
-        if (!(login.isEmpty() || password.isEmpty())) {
-            mDataSource = Injection.provideDataSource();
-            mDataSource.login(login, password, new ILibraryDataSource.LoginCallback() {
+        if (mPreferences.isUserSaved()) {
+            User user = mPreferences.getUser();
+            String username = user.getUsername();
+            String password = user.getPassword();
+            mDataSource.login(username, password, new ILibraryDataSource.LoginCallback() {
                 @Override
                 public void onComplete(User user) {
                     mDataSource.getBooks(new ILibraryDataSource.GetBooksCallback() {
@@ -73,7 +74,7 @@ public class NotificationService extends Service {
 
     private boolean shouldNotify(Book b) {
         int defaultValue = getResources().getInteger(R.integer.preference_notifications_default);
-        int defaultDays = mPreferences.getInt(getString(R.string.preference_notifications), defaultValue);
+        int defaultDays = mPreferences.getNotificationAdvance(defaultValue);
 
         Calendar today = Calendar.getInstance();
 

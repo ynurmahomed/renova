@@ -36,6 +36,8 @@ public interface PreferencesContract {
         void setFirstRun(boolean firstRun);
 
         boolean isFirstRun();
+
+        int getNotificationAdvance(int defaultNotificationAdvance);
     }
 
 }

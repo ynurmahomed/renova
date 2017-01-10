@@ -9,7 +9,9 @@ import br.ufu.renova.scraper.ILibraryDataSource;
 import br.ufu.renova.scraper.UFULibraryDataSource;
 
 /**
- * Created by yassin on 11/22/16.
+ * Classe para injeção de depenências manualmente.
+ *
+ * @author yassin on 11/22/16.
  */
 public class Injection {
 
@@ -20,5 +22,12 @@ public class Injection {
 
     public static ILibraryDataSource provideDataSource() {
         return UFULibraryDataSource.getInstance();
+    }
+
+    /**
+     * @return Intervalo de repetição do serviço de notificação em milisegundos.
+     */
+    public static long provideNotificationRepeatTime() {
+        return 1000 * 60 * 60 * 24;
     }
 }

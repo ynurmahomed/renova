@@ -14,6 +14,8 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
 
     private static final String FIRST_RUN = "pref_first_run";
 
+    private static final String NOTIFICATION_ADVANCE = "pref_notifications";
+
     private SharedPreferences mPreferences;
 
     public AppPreferences(SharedPreferences mPreferences) {
@@ -55,5 +57,10 @@ public class AppPreferences implements PreferencesContract.AppPreferences {
     @Override
     public boolean isFirstRun() {
         return mPreferences.getBoolean(FIRST_RUN, true);
+    }
+
+    @Override
+    public int getNotificationAdvance(int defaultNotificationAdvance) {
+        return mPreferences.getInt(NOTIFICATION_ADVANCE, defaultNotificationAdvance);
     }
 }

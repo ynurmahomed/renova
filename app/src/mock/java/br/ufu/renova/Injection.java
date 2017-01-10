@@ -11,7 +11,9 @@ import br.ufu.renova.scraper.UFULibraryDataSourceMock;
 import br.ufu.renova.util.EspressoIdlingResource;
 
 /**
- * Created by yassin on 11/15/16.
+ * Classe para injeção de depenências manualmente.
+ *
+ * @author yassin on 11/15/16.
  */
 public class Injection {
 
@@ -23,5 +25,12 @@ public class Injection {
     public static ILibraryDataSource provideDataSource() {
         UFULibraryDataSourceMock dataSource = UFULibraryDataSourceMock.getInstance();
         return new DecoratedUFULibraryDataSourceMock(dataSource, EspressoIdlingResource.getIdlingResource());
+    }
+
+    /**
+     * @return Intervalo de repetição do serviço de notificação em milisegundos.
+     */
+    public static long provideNotificationRepeatTime() {
+        return 1000 * 60;
     }
 }
