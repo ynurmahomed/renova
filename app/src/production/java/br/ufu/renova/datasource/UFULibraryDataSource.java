@@ -1,8 +1,9 @@
-package br.ufu.renova.scraper;
+package br.ufu.renova.datasource;
 
 import android.os.Handler;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
+import br.ufu.renova.scraper.*;
 
 import java.io.IOException;
 import java.util.List;

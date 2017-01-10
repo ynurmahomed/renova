@@ -1,4 +1,4 @@
-package br.ufu.renova.scraper;
+package br.ufu.renova.datasource;
 
 import android.os.Handler;
 import br.ufu.renova.model.Book;

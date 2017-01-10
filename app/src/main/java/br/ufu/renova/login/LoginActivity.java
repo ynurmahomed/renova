@@ -14,7 +14,7 @@ import br.ufu.renova.Injection;
 import br.ufu.renova.R;
 import br.ufu.renova.notification.NotificationServiceScheduleReceiver;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.ILibraryDataSource;
+import br.ufu.renova.datasource.ILibraryDataSource;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {

@@ -3,15 +3,15 @@ package br.ufu.renova;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import br.ufu.renova.datasource.DecoratedUFULibraryDataSourceMock;
+import br.ufu.renova.datasource.UFULibraryDataSourceMock;
 import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.DecoratedUFULibraryDataSourceMock;
-import br.ufu.renova.scraper.ILibraryDataSource;
-import br.ufu.renova.scraper.UFULibraryDataSourceMock;
+import br.ufu.renova.datasource.ILibraryDataSource;
 import br.ufu.renova.util.EspressoIdlingResource;
 
 /**
- * Classe para injeção de depenências manualmente.
+ * Classe para injeção de dependências manualmente.
  *
  * @author yassin on 11/15/16.
  */

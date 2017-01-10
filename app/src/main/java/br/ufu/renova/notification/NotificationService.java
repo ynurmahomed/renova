@@ -1,7 +1,6 @@
 package br.ufu.renova.notification;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -10,7 +9,7 @@ import br.ufu.renova.R;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.ILibraryDataSource;
+import br.ufu.renova.datasource.ILibraryDataSource;
 
 import java.util.ArrayList;
 import java.util.Calendar;

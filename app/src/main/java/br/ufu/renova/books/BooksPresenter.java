@@ -1,6 +1,7 @@
 package br.ufu.renova.books;
 
 import android.util.Log;
+import br.ufu.renova.datasource.ILibraryDataSource;
 import br.ufu.renova.model.Book;
 import br.ufu.renova.scraper.*;
 

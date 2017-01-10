@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import br.ufu.renova.preferences.AppPreferences;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.ILibraryDataSource;
-import br.ufu.renova.scraper.UFULibraryDataSource;
+import br.ufu.renova.datasource.ILibraryDataSource;
+import br.ufu.renova.datasource.UFULibraryDataSource;
 
 /**
- * Classe para injeção de depenências manualmente.
+ * Classe para injeção de dependências manualmente.
  *
  * @author yassin on 11/22/16.
  */

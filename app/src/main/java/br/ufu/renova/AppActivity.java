@@ -13,7 +13,7 @@ import br.ufu.renova.books.BooksPresenter;
 import br.ufu.renova.preferences.PreferencesContract;
 import br.ufu.renova.preferences.PreferencesPresenter;
 import br.ufu.renova.preferences.SettingsFragment;
-import br.ufu.renova.scraper.ILibraryDataSource;
+import br.ufu.renova.datasource.ILibraryDataSource;
 
 import java.util.HashMap;
 import java.util.Map;

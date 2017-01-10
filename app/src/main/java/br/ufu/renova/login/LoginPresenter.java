@@ -2,7 +2,7 @@ package br.ufu.renova.login;
 
 import br.ufu.renova.model.User;
 import br.ufu.renova.preferences.PreferencesContract;
-import br.ufu.renova.scraper.ILibraryDataSource;
+import br.ufu.renova.datasource.ILibraryDataSource;
 import br.ufu.renova.scraper.LoginException;
 
 import java.io.IOException;

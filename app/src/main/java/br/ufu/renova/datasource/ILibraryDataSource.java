@@ -1,4 +1,4 @@
-package br.ufu.renova.scraper;
+package br.ufu.renova.datasource;
 
 import br.ufu.renova.model.Book;
 import br.ufu.renova.model.User;
