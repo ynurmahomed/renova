@@ -17,8 +17,11 @@
 package br.ufu.renova;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitor;
@@ -94,5 +97,11 @@ public class TestUtils {
             }
         });
         return resumedActivity[0];
+    }
+
+    public static void clearSharedPreferences(Context context) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.clear();
+        editor.commit();
     }
 }

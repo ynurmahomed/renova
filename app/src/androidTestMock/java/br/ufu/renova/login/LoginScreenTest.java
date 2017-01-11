@@ -9,6 +9,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import br.ufu.renova.R;
+import br.ufu.renova.TestUtils;
 import br.ufu.renova.util.EspressoIdlingResource;
 import org.junit.After;
 import org.junit.Before;
@@ -35,13 +36,15 @@ public class LoginScreenTest {
     @Before
     public void before() {
         Espresso.registerIdlingResources(EspressoIdlingResource.getIdlingResource());
-        clearSharedPreferences();
+        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        TestUtils.clearSharedPreferences(ctx);
     }
 
     @After
     public void after() {
-        clearSharedPreferences();
         Espresso.unregisterIdlingResources(EspressoIdlingResource.getIdlingResource());
+        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        TestUtils.clearSharedPreferences(ctx);
     }
 
     @Rule
@@ -71,12 +74,4 @@ public class LoginScreenTest {
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.books_recycler_view)).check(matches(isDisplayed()));
     }
-
-    private void clearSharedPreferences() {
-        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
-        editor.clear();
-        editor.commit();
-    }
-
 }

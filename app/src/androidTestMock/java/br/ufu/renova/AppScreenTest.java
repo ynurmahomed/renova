@@ -53,13 +53,15 @@ public class AppScreenTest {
     @Before
     public void before() {
         Espresso.registerIdlingResources(EspressoIdlingResource.getIdlingResource());
-        clearSharedPreferences();
+        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        TestUtils.clearSharedPreferences(ctx);
     }
 
     @After
     public void after() {
         Espresso.unregisterIdlingResources(EspressoIdlingResource.getIdlingResource());
-        clearSharedPreferences();
+        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        TestUtils.clearSharedPreferences(ctx);
     }
 
     @Test
@@ -245,12 +247,5 @@ public class AppScreenTest {
                 np.setValue(number);
             }
         };
-    }
-
-    private void clearSharedPreferences() {
-        Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
-        editor.clear();
-        editor.commit();
     }
 }
