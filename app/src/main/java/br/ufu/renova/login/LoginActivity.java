@@ -135,6 +135,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
+    public void fillLoginFields(String username, String password) {
+        if (mLoginEditText.getText().toString().isEmpty() && mPasswordEditText.getText().toString().isEmpty()) {
+            mLoginEditText.setText(username);
+            mPasswordEditText.setText(password);
+        }
+    }
+
+    @Override
     public void setPresenter(LoginContract.Presenter presenter) {
         this.mPresenter = presenter;
     }

@@ -31,6 +31,8 @@ public interface LoginContract {
         String getUsername();
 
         String getPassword();
+
+        void fillLoginFields(String username, String password);
     }
 
     interface Presenter extends BasePresenter {

@@ -50,6 +50,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void login(final String username, final String password) {
         mView.showProgressDialog();
+        mView.fillLoginFields(username, password);
         mDataSource.login(username, password, new ILibraryDataSource.LoginCallback() {
             @Override
             public void onComplete(User user) {
