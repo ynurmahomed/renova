@@ -7,8 +7,8 @@ android {
         applicationId 'br.ufu.renova'
         minSdkVersion 12
         targetSdkVersion 25
-        versionCode 10012
-        versionName '2.0.7'
+        versionCode 10013
+        versionName '3.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     applicationVariants.all { variant ->
